@@ -25,9 +25,11 @@ public class SecurityConfig  {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        .authorizeHttpRequests((requests) -> requests
-            .anyRequest().permitAll()
-        );
+      .csrf().disable()
+      .authorizeHttpRequests(authz -> authz
+        .anyRequest().permitAll()  // 모든 요청을 허용
+      );  // CSRF 비활성화 (개발 환경에서만 사용)
+
     return http.build();
   }
 }
