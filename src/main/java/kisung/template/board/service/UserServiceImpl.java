@@ -1,15 +1,12 @@
 package kisung.template.board.service;
 
-import kisung.template.board.common.code.ErrorCode;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.User;
 import kisung.template.board.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
