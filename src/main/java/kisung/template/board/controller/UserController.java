@@ -3,7 +3,10 @@ package kisung.template.board.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import kisung.template.board.common.response.BasicResponse;
+import kisung.template.board.common.response.ErrorResponse;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +26,24 @@ public class UserController {
   private final UserService userService;
 
   @Operation(summary = "유저 회원가입", description = "유저 회원가입 입니다.")
-  @ApiResponses({
-    @ApiResponse(responseCode = "BOARD_ERROR_001", description = "Email is empty"),
-    @ApiResponse(responseCode = "BOARD_ERROR_002", description = "Password is empty"),
-    @ApiResponse(responseCode = "BOARD_ERROR_003", description = "Nickname is empty"),
-    @ApiResponse(responseCode = "BOARD_ERROR_004", description = "Email is invalid"),
-    @ApiResponse(responseCode = "BOARD_ERROR_005", description = "Password is invalid"),
-    @ApiResponse(responseCode = "BOARD_ERROR_006", description = "Nickname is invalid"),
-    @ApiResponse(responseCode = "SERVER_ERROR_001", description = "Server Error")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Success"),
+      @ApiResponse(responseCode = "BOARD_ERROR_001", description = "Email is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "BOARD_ERROR_002", description = "Password is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "BOARD_ERROR_003", description = "Nickname is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "BOARD_ERROR_004", description = "Email is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "BOARD_ERROR_005", description = "Password is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "BOARD_ERROR_006", description = "Nickname is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "SERVER_ERROR_001", description = "Server Error",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })
-  @PostMapping("")
+  @PostMapping(value = "", produces = "application/json")
   public BasicResponse<UserDto.PostUsersRes> postUsers(@RequestBody UserDto.PostUserReq postUserReq) {
     return BasicResponse.success(userService.createUser(postUserReq), CREATE_SUCCESS);
   }
