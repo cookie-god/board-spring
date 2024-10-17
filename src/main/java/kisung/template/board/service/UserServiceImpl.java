@@ -2,7 +2,7 @@ package kisung.template.board.service;
 
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.UserDto;
-import kisung.template.board.entity.User;
+import kisung.template.board.entity.UserInfo;
 import kisung.template.board.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +28,12 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public UserDto.PostUsersRes createUser(UserDto.PostUserReq postUserReq) {
     validate(postUserReq);
-    User user = CreateUserEntity(postUserReq); // 유저 생성
+    UserInfo userInfo = CreateUserEntity(postUserReq); // 유저 생성
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    user = user.hashPassword(bCryptPasswordEncoder); // 해시 패스워드 생성
-    user = userRepository.save(user); // 유저 저장
+    userInfo = userInfo.hashPassword(bCryptPasswordEncoder); // 해시 패스워드 생성
+    userInfo = userRepository.save(userInfo); // 유저 저장
     return UserDto.PostUsersRes.builder()
-      .userId(user.getId())
+      .userId(userInfo.getId())
       .build();
   }
 
@@ -56,6 +56,8 @@ public class UserServiceImpl implements UserService {
    * 4. 비밀번호 정규식 체크
    * 5. 닉네임 존재 여부 체크
    * 6. 닉네임 10자 이내 체크
+   * 7. 이메일 중복 체크
+   * 8. 닉네임 중복 체크
    */
   public void validate(UserDto.PostUserReq postUserReq) {
     if (postUserReq.getEmail() == null || postUserReq.getEmail().isEmpty()) {
@@ -75,6 +77,12 @@ public class UserServiceImpl implements UserService {
     }
     if (!postUserReq.isNickname()) {
       throw new BoardException(INVALID_NICKNAME);
+    }
+    if (userRepository.existsByEmail(postUserReq.getEmail())) {
+      throw new BoardException(DUPLICATE_EMAIL);
+    }
+    if (userRepository.existsByNickname(postUserReq.getNickname())) {
+      throw new BoardException(DUPLICATE_NICKNAME);
     }
   }
 
@@ -104,9 +112,9 @@ public class UserServiceImpl implements UserService {
   /**
    * 유저 엔티티 인스턴스 생성하는 메서드
    */
-  private User CreateUserEntity(UserDto.PostUserReq postUserReq) {
+  private UserInfo CreateUserEntity(UserDto.PostUserReq postUserReq) {
     LocalDateTime now = LocalDateTime.now();
-    return User.builder()
+    return UserInfo.builder()
       .email(postUserReq.getEmail())
       .nickname(postUserReq.getNickname())
       .password(postUserReq.getPassword())

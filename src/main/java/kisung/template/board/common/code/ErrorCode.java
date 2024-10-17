@@ -12,6 +12,8 @@ public enum ErrorCode {
   INVALID_EMAIL(400, "BOARD_ERROR_004", "Email is invalid"),
   INVALID_PASSWORD(400, "BOARD_ERROR_005", "Password is invalid"),
   INVALID_NICKNAME(400, "BOARD_ERROR_006", "Nickname is invalid"),
+  DUPLICATE_EMAIL(404, "BOARD_ERROR_007", "email is already exist"),
+  DUPLICATE_NICKNAME(404, "BOARD_ERROR_008", "Nickname is already exist"),
 
   INTERNAL_SERVER_ERROR(500, "SERVER_ERROR_001", "Server Error");
 

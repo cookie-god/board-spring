@@ -41,6 +41,10 @@ public class UserController {
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "BOARD_ERROR_006", description = "Nickname is invalid",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "BOARD_ERROR_007", description = "Email is already exist",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "BOARD_ERROR_008", description = "Nickname is already exist",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "SERVER_ERROR_001", description = "Server Error",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })

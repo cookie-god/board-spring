@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
-public class User extends BaseEntity {
+public class UserInfo extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -24,7 +24,7 @@ public class User extends BaseEntity {
   private String nickname;
 
   // 비밀번호 암호화
-  public User hashPassword(PasswordEncoder passwordEncoder) {
+  public UserInfo hashPassword(PasswordEncoder passwordEncoder) {
     this.password = passwordEncoder.encode(this.password);
     return this;
   }
