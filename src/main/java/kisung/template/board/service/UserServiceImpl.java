@@ -40,10 +40,11 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto.PostUserLoginRes login(UserDto.PostUserLoginReq postUserLoginReq) {
     validate(postUserLoginReq);
+    UserInfo userInfo = userRepository.findByEmail(postUserLoginReq.getEmail()).orElseThrow(() -> new BoardException(NOT_EXIST_USER_BY_EMAIL));
     return UserDto.PostUserLoginRes.builder()
-        .userId(1L)
-        .email(postUserLoginReq.getEmail())
-        .nickname("ccec")
+        .userId(userInfo.getId())
+        .email(userInfo.getEmail())
+        .nickname(userInfo.getNickname())
         .build();
   }
 
