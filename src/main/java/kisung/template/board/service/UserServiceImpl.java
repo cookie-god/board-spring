@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
   public UserDto.PostUserLoginRes login(UserDto.PostUserLoginReq postUserLoginReq) {
     validate(postUserLoginReq);
     UserInfo userInfo = userRepository.findByEmail(postUserLoginReq.getEmail()).orElseThrow(() -> new BoardException(NOT_EXIST_USER_BY_EMAIL));
+    // TODO: jwt 발급 해보기
     return UserDto.PostUserLoginRes.builder()
         .userId(userInfo.getId())
         .email(userInfo.getEmail())
