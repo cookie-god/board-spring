@@ -36,4 +36,30 @@ public class UserDto {
     @Schema(description = "유저 아이디", example = "1")
     private Long userId;
   }
+
+  @Getter
+  public static class PostUserLoginReq {
+    @Schema(description = "이메일", example = "lion0193@gmail.com")
+    private String email;
+    @Schema(description = "비밀번호 (영문 숫자 특수기호 조합 8자리 이상)", example = "qwer1234!")
+    private String password;
+
+    public boolean isEmail() {
+      return Pattern.matches(EMAIL_PATTERN, email);
+    }
+    public boolean isPassword() {
+      return Pattern.matches(PASSWORD_PATTERN, password);
+    }
+  }
+
+  @Getter
+  @Builder
+  public static class PostUserLoginRes {
+    @Schema(description = "유저 아이디", example = "1")
+    private Long userId;
+    @Schema(description = "이메일", example = "lion0193@gmail.com")
+    private String email;
+    @Schema(description = "닉네임", example = "쿠키갓")
+    private String nickname;
+  }
 }

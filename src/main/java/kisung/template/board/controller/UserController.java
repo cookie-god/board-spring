@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static kisung.template.board.common.code.SuccessCode.CREATE_SUCCESS;
+import static kisung.template.board.common.code.SuccessCode.READ_SUCCESS;
 
 @RestController
 @RequestMapping(value = "/apis/v1/users")
@@ -25,7 +26,7 @@ import static kisung.template.board.common.code.SuccessCode.CREATE_SUCCESS;
 public class UserController {
   private final UserService userService;
 
-  @Operation(summary = "유저 회원가입", description = "유저 회원가입 입니다.")
+  @Operation(summary = "유저 회원 가입", description = "유저 회원 가입 입니다.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Success"),
       @ApiResponse(responseCode = "BOARD_ERROR_001", description = "Email is empty",
@@ -46,5 +47,11 @@ public class UserController {
   @PostMapping(value = "", produces = "application/json")
   public BasicResponse<UserDto.PostUsersRes> postUsers(@RequestBody UserDto.PostUserReq postUserReq) {
     return BasicResponse.success(userService.createUser(postUserReq), CREATE_SUCCESS);
+  }
+
+  @Operation(summary = "유저 로그인", description = "유저 로그인 입니다.")
+  @PostMapping(value = "login", produces = "application/json")
+  public BasicResponse<UserDto.PostUserLoginRes> postUserLogin(@RequestBody UserDto.PostUserLoginReq postUserLoginReq) {
+    return BasicResponse.success(userService.login(postUserLoginReq), READ_SUCCESS);
   }
 }
