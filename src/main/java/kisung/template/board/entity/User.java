@@ -2,14 +2,16 @@ package kisung.template.board.entity;
 
 import jakarta.persistence.*;
 import kisung.template.board.entity.base.BaseEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table(name = "USER_INFO")
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 public class User extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +33,4 @@ public class User extends BaseEntity {
   public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
     return passwordEncoder.matches(plainPassword, this.password);
   }
-
 }
