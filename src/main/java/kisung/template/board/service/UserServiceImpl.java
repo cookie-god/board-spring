@@ -1,6 +1,8 @@
 package kisung.template.board.service;
 
+import kisung.template.board.config.jwt.JwtTokenProvider;
 import kisung.template.board.config.exception.BoardException;
+import kisung.template.board.config.jwt.CustomPrincipal;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.repository.user.UserRepository;
@@ -21,6 +23,7 @@ import static kisung.template.board.enums.Status.ACTIVE;
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final JwtTokenProvider jwtTokenProvider;
 
   /**
    * 유저 회원 가입 서비스 메서드
@@ -43,12 +46,20 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto.PostUserLoginRes login(UserDto.PostUserLoginReq postUserLoginReq) {
     validate(postUserLoginReq);
-    UserInfo userInfo = userRepository.findByEmail(postUserLoginReq.getEmail()).orElseThrow(() -> new BoardException(NOT_EXIST_USER_BY_EMAIL));
+    UserInfo userInfo = userRepository.findUserInfoByEmail(postUserLoginReq.getEmail()).orElseThrow(() -> new BoardException(NOT_EXIST_USER_BY_EMAIL));
     if (!checkPassword(userInfo, postUserLoginReq.getPassword())) { // 비밀번호 확인
       throw new BoardException(WRONG_PASSWORD);
     }
+    String jwt = jwtTokenProvider.createAccessToken(
+      CustomPrincipal.builder()
+        .userId(userInfo.getId())
+        .email(userInfo.getEmail())
+        .nickname(userInfo.getNickname())
+        .build()
+    );
     // TODO: jwt 발급 해보기
     return UserDto.PostUserLoginRes.builder()
+      .token(jwt)
       .userId(userInfo.getId())
       .email(userInfo.getEmail())
       .nickname(userInfo.getNickname())
@@ -84,6 +95,7 @@ public class UserServiceImpl implements UserService {
       throw new BoardException(NON_EXIST_NICKNAME);
     }
     if (!postUserReq.isNickname()) {
+      throw new BoardException(INVALID_NICKNAME);
     }
     if (userRepository.existsByEmail(postUserReq.getEmail())) {
       throw new BoardException(DUPLICATE_EMAIL);
@@ -91,7 +103,6 @@ public class UserServiceImpl implements UserService {
     if (userRepository.existsByNickname(postUserReq.getNickname())) {
       throw new BoardException(DUPLICATE_NICKNAME);
     }
-    throw new BoardException(INVALID_NICKNAME);
   }
 
   /**

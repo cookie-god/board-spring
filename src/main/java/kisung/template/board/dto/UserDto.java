@@ -55,6 +55,8 @@ public class UserDto {
   @Getter
   @Builder
   public static class PostUserLoginRes {
+    @Schema(description = "jwt 토큰", example = "asdasdasd")
+    private String token;
     @Schema(description = "유저 아이디", example = "1")
     private Long userId;
     @Schema(description = "이메일", example = "lion0193@gmail.com")

@@ -44,7 +44,7 @@ public class UserRepositoryImpl implements CustomUserRepository {
   }
 
   @Override
-  public Optional<UserInfo> findByEmail(String email) {
+  public Optional<UserInfo> findUserInfoByEmail(String email) {
     return Optional.ofNullable(
         jpaQueryFactory
             .select(userInfo)
@@ -54,6 +54,21 @@ public class UserRepositoryImpl implements CustomUserRepository {
                 userInfo.status.eq(ACTIVE.name())
             )
             .fetchFirst()
+
+    );
+  }
+
+  @Override
+  public Optional<UserInfo> findUserInfoById(Long userId) {
+    return Optional.ofNullable(
+      jpaQueryFactory
+        .select(userInfo)
+        .from(userInfo)
+        .where(
+          userInfo.id.eq(userId),
+          userInfo.status.eq(ACTIVE.name())
+        )
+        .fetchFirst()
 
     );
   }

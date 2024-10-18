@@ -17,3 +17,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+jwt:
+  expiration_time: 86400000 #1일
+  secret: cookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegod
