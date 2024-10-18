@@ -20,6 +20,7 @@ import static kisung.template.board.enums.Status.ACTIVE;
 @Slf4j
 public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   /**
    * 유저 회원 가입 서비스 메서드
@@ -29,7 +30,6 @@ public class UserServiceImpl implements UserService {
   public UserDto.PostUsersRes createUser(UserDto.PostUserReq postUserReq) {
     validate(postUserReq);
     UserInfo userInfo = CreateUserEntity(postUserReq); // 유저 생성
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     userInfo = userInfo.hashPassword(bCryptPasswordEncoder); // 해시 패스워드 생성
     userInfo = userRepository.save(userInfo); // 유저 저장
     return UserDto.PostUsersRes.builder()
@@ -37,16 +37,22 @@ public class UserServiceImpl implements UserService {
       .build();
   }
 
+  /**
+   * 유저 로그인 서비스 메서드
+   */
   @Override
   public UserDto.PostUserLoginRes login(UserDto.PostUserLoginReq postUserLoginReq) {
     validate(postUserLoginReq);
     UserInfo userInfo = userRepository.findByEmail(postUserLoginReq.getEmail()).orElseThrow(() -> new BoardException(NOT_EXIST_USER_BY_EMAIL));
+    if (!checkPassword(userInfo, postUserLoginReq.getPassword())) { // 비밀번호 확인
+      throw new BoardException(WRONG_PASSWORD);
+    }
     // TODO: jwt 발급 해보기
     return UserDto.PostUserLoginRes.builder()
-        .userId(userInfo.getId())
-        .email(userInfo.getEmail())
-        .nickname(userInfo.getNickname())
-        .build();
+      .userId(userInfo.getId())
+      .email(userInfo.getEmail())
+      .nickname(userInfo.getNickname())
+      .build();
   }
 
   /**
@@ -78,7 +84,6 @@ public class UserServiceImpl implements UserService {
       throw new BoardException(NON_EXIST_NICKNAME);
     }
     if (!postUserReq.isNickname()) {
-      throw new BoardException(INVALID_NICKNAME);
     }
     if (userRepository.existsByEmail(postUserReq.getEmail())) {
       throw new BoardException(DUPLICATE_EMAIL);
@@ -86,6 +91,7 @@ public class UserServiceImpl implements UserService {
     if (userRepository.existsByNickname(postUserReq.getNickname())) {
       throw new BoardException(DUPLICATE_NICKNAME);
     }
+    throw new BoardException(INVALID_NICKNAME);
   }
 
   /**
@@ -95,7 +101,8 @@ public class UserServiceImpl implements UserService {
    * 2. 이메일 정규식 체크
    * 3. 비밀번호 값 존재 여부 체크
    * 4. 비밀번호 정규식 체크
-   * */
+   * 5. 비밀번호 일치 여부 체크
+   */
   public void validate(UserDto.PostUserLoginReq postUserLoginReq) {
     if (postUserLoginReq.getEmail() == null || postUserLoginReq.getEmail().isEmpty()) {
       throw new BoardException(NON_EXIST_EMAIL);
@@ -109,6 +116,13 @@ public class UserServiceImpl implements UserService {
     if (!postUserLoginReq.isPassword()) {
       throw new BoardException(INVALID_PASSWORD);
     }
+  }
+
+  /**
+   * 로그인 여부 체크
+   */
+  private boolean checkPassword(UserInfo userInfo, String password) {
+    return userInfo.checkPassword(password, bCryptPasswordEncoder);
   }
 
   /**
