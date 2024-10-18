@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface CustomUserRepository {
   boolean existsByEmail(String email);
   boolean existsByNickname(String nickname);
-  Optional<UserInfo> findByEmail(String email);
+  Optional<UserInfo> findUserInfoByEmail(String email);
+  Optional<UserInfo> findUserInfoById(Long userId);
 }
