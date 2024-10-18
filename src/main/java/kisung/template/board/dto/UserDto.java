@@ -64,4 +64,12 @@ public class UserDto {
     @Schema(description = "닉네임", example = "쿠키갓")
     private String nickname;
   }
+
+  @Getter
+  @Builder
+  public static class UserBasicInfo {
+    private Long userId;
+    private String email;
+    private String nickname;
+  }
 }

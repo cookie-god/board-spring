@@ -2,7 +2,6 @@ package kisung.template.board.service;
 
 import kisung.template.board.config.jwt.JwtTokenProvider;
 import kisung.template.board.config.exception.BoardException;
-import kisung.template.board.config.jwt.CustomPrincipal;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.repository.user.UserRepository;
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService {
       throw new BoardException(WRONG_PASSWORD);
     }
     String jwt = jwtTokenProvider.createAccessToken(
-      CustomPrincipal.builder()
+      UserDto.UserBasicInfo.builder()
         .userId(userInfo.getId())
         .email(userInfo.getEmail())
         .nickname(userInfo.getNickname())
