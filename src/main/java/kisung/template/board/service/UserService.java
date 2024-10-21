@@ -54,7 +54,7 @@ public class UserService {
         .nickname(userInfo.getNickname())
         .build()
     );
-    // TODO: jwt 발급 해보기
+
     return UserDto.PostUserLoginRes.builder()
       .token(jwt)
       .userId(userInfo.getId())
