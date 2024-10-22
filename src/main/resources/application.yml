@@ -7,6 +7,12 @@ spring:
     url: jdbc:mysql://board.cfecma82cjiu.ap-northeast-2.rds.amazonaws.com:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
     password: rnrltjd!1
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-timeout: 30000
 
   jpa:
     show-sql: true
