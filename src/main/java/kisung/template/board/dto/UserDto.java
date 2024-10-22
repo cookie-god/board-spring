@@ -11,6 +11,7 @@ public class UserDto {
   private static final String PASSWORD_PATTERN = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$";
 
   @Getter
+  @Builder
   public static class PostUserReq {
     @Schema(description = "이메일", example = "lion0193@gmail.com")
     private String email;

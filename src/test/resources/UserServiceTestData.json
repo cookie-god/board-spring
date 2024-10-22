@@ -1,9 +1,9 @@
 {
   "postUserReq": {
     "validUser": {
-      "email": "cookie-god",
-      "password": "lion0193@gmail.com",
-      "nickname": "qwer1234!"
+      "email": "lion0193@gmail.com",
+      "password": "qwer1234!",
+      "nickname": "cookie-god"
     }
   }
 }

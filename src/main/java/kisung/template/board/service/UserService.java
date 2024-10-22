@@ -31,7 +31,6 @@ public class UserService {
   public UserDto.PostUsersRes createUser(UserDto.PostUserReq postUserReq) {
     validate(postUserReq);
     UserInfo userInfo = CreateUserEntity(postUserReq); // 유저 생성
-    userInfo = userInfo.hashPassword(bCryptPasswordEncoder); // 해시 패스워드 생성
     userInfo = userRepository.save(userInfo); // 유저 저장
     return UserDto.PostUsersRes.builder()
       .userId(userInfo.getId())
@@ -130,18 +129,18 @@ public class UserService {
    * 로그인 여부 체크
    */
   private boolean checkPassword(UserInfo userInfo, String password) {
-    return userInfo.checkPassword(password, bCryptPasswordEncoder);
+    return bCryptPasswordEncoder.matches(password, userInfo.getPassword());
   }
 
   /**
    * 유저 엔티티 인스턴스 생성하는 메서드
    */
-  private UserInfo CreateUserEntity(UserDto.PostUserReq postUserReq) {
+  public UserInfo CreateUserEntity(UserDto.PostUserReq postUserReq) {
     LocalDateTime now = LocalDateTime.now();
     return UserInfo.builder()
       .email(postUserReq.getEmail())
       .nickname(postUserReq.getNickname())
-      .password(postUserReq.getPassword())
+      .password(bCryptPasswordEncoder.encode(postUserReq.getPassword()))
       .createdAt(now)
       .updatedAt(now)
       .status(ACTIVE.name())
