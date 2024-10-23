@@ -23,4 +23,15 @@ public class UserInfo extends BaseEntity {
   private String password;
   @Column(name = "nickname")
   private String nickname;
+
+  // 비밀번호 암호화
+  public UserInfo hashPassword(PasswordEncoder passwordEncoder) {
+    this.password = passwordEncoder.encode(this.password);
+    return this;
+  }
+
+  // 비밀번호 확인
+  public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
+    return passwordEncoder.matches(plainPassword, this.password);
+  }
 }
