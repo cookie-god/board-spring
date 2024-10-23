@@ -1,4 +1,4 @@
-package kisung.template.board.service;
+package kisung.template.board.service.user;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,15 +6,13 @@ import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.repository.user.UserRepository;
-import org.junit.jupiter.api.Assertions;
+import kisung.template.board.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -27,7 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class PostUserTest {
   @Mock
   private UserRepository userRepository; // UserRepository Mock
   @Mock
@@ -42,7 +40,6 @@ class UserServiceTest {
   void setUp() throws Exception {
     objectMapper = new ObjectMapper();
     testData = objectMapper.readTree(new File("src/test/resources/UserServiceTestData.json"));
-//    MockitoAnnotations.openMocks(this);
   }
 
   @Test
