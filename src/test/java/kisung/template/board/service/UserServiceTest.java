@@ -2,11 +2,13 @@ package kisung.template.board.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.repository.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -20,8 +22,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 
 import static kisung.template.board.enums.Status.ACTIVE;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -41,54 +42,108 @@ class UserServiceTest {
   void setUp() throws Exception {
     objectMapper = new ObjectMapper();
     testData = objectMapper.readTree(new File("src/test/resources/UserServiceTestData.json"));
-    MockitoAnnotations.openMocks(this);
+//    MockitoAnnotations.openMocks(this);
   }
 
   @Test
-  void createUser_Success() {
+  @DisplayName("회원가입 성공")
+  void createUser_success() {
     // given
     JsonNode validUser = testData.get("postUserReq").get("validUser");
-    UserDto.PostUserReq postUserReq = UserDto.PostUserReq.builder()
-        .email(validUser.get("email").asText())
-        .nickname(validUser.get("nickname").asText())
-        .password(validUser.get("password").asText())
-        .build();
-    LocalDateTime now = LocalDateTime.now();
-
+    UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
 
     // 유저 엔티티 생성
-    UserInfo userInfo = UserInfo.builder()
-        .id(1L)
-        .email(postUserReq.getEmail())
-        .nickname(postUserReq.getNickname())
-        .password(postUserReq.getPassword())
-        .createdAt(now)
-        .updatedAt(now)
-        .status(ACTIVE.name())
-        .build();
+    UserInfo userInfo = makeUserInfoEntity(postUserReq.getEmail(), postUserReq.getNickname(), postUserReq.getPassword());
 
-    // 패스워드 해시값 모킹
-    when(bCryptPasswordEncoder.encode(postUserReq.getPassword())).thenReturn("hashedPassword");
-
-    when(userService.CreateUserEntity(postUserReq)).thenReturn(userInfo);
-
-    // 저장된 유저 정보 모킹
+    // when
     when(userRepository.save(any(UserInfo.class))).thenReturn(userInfo);
+    UserDto.PostUsersRes result = userService.createUser(postUserReq);
 
-    UserDto.PostUsersRes postUsersRes = userService.createUser(postUserReq);
+    // then
+    assertNotNull(result);
+    assertEquals(userInfo.getId(), result.getUserId());  // userId 검증
+  }
 
-//    // then
-//    assertNotNull(postUsersRes);
-//    assertEquals(postUsersRes.getUserId(), 1L);
+  @Test
+  @DisplayName("회원가입 실패 - 유효하지 않은 이메일")
+  void createUser_fail_invalid_email() {
+    //given
+    JsonNode inValidUserByEmail = testData.get("postUserReq").get("invalidUserByEmail");
+    UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
 
-    // 저장된 객체 검증
-    ArgumentCaptor<UserInfo> captor = ArgumentCaptor.forClass(UserInfo.class);
-    verify(userRepository).save(captor.capture());
-    UserInfo savedUserInfo = captor.getValue();
+    //then
+    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+  }
 
-    assertEquals(savedUserInfo.getEmail(), postUserReq.getEmail());
-    assertEquals(savedUserInfo.getNickname(), postUserReq.getNickname());
-    assertEquals(savedUserInfo.getPassword(), "hashedPassword");
+  @Test
+  @DisplayName("회원가입 실패 - 유효하지 않은 비밀번호")
+  void createUser_fail_invalid_password() {
+    //given
+    JsonNode inValidUserByEmail = testData.get("postUserReq").get("invalidUserByPassword");
+    UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
+
+    //then
+    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+  }
+
+  @Test
+  @DisplayName("회원가입 실패 - 유효하지 않은 닉네임")
+  void createUser_fail_invalid_nickname() {
+    //given
+    JsonNode inValidUserByEmail = testData.get("postUserReq").get("invalidUserByNickname");
+    UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
+
+    //then
+    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+  }
+
+  @Test
+  @DisplayName("회원가입 실패 - 중복된 이메일")
+  void createUser_fail_duplicate_email() {
+    //given
+    JsonNode validUser = testData.get("postUserReq").get("validUser");
+    UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
+
+    //when
+    when(userRepository.existsByEmail(anyString())).thenReturn(true);
+
+    //then
+    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+  }
+
+  @Test
+  @DisplayName("회원가입 실패 - 중복된 닉네임")
+  void createUser_fail_duplicate_nickname() {
+    //given
+    JsonNode validUser = testData.get("postUserReq").get("validUser");
+    UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
+
+    //when
+    when(userRepository.existsByNickname(anyString())).thenReturn(true);
+
+    //then
+    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+  }
+
+  private UserDto.PostUserReq makePostUserReq(String email, String nickname, String password) {
+    return UserDto.PostUserReq.builder()
+      .email(email)
+      .nickname(nickname)
+      .password(password)
+      .build();
+  }
+
+  private UserInfo makeUserInfoEntity(String email, String nickname, String password) {
+    LocalDateTime now = LocalDateTime.now();
+    return UserInfo.builder()
+      .id(1L)
+      .email(email)
+      .nickname(nickname)
+      .password(password)
+      .createdAt(now)
+      .updatedAt(now)
+      .status(ACTIVE.name())
+      .build();
   }
 
 }
