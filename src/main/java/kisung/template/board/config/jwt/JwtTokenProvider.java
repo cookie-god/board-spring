@@ -22,7 +22,7 @@ public class JwtTokenProvider {
   private static final String TOKEN_USER_ID = "userId";
   private static final String TOKEN_EMAIL = "email";
   private static final String TOKEN_NICKNAME = "nickname";
-  private static final String DEFAULT_ROLE_PREFIX = "ROLE_";
+  private static final String TOKEN_ROLE = "role";
   private final Key key;
   private final long accessTokenExpTime;
 
@@ -56,11 +56,10 @@ public class JwtTokenProvider {
     claims.put(TOKEN_USER_ID, userBasicInfo.getUserId());
     claims.put(TOKEN_EMAIL, userBasicInfo.getEmail());
     claims.put(TOKEN_NICKNAME, userBasicInfo.getNickname());
-    claims.put(DEFAULT_ROLE_PREFIX, userBasicInfo.getRole());
+    claims.put(TOKEN_ROLE, userBasicInfo.getRole());
 
     ZonedDateTime now = ZonedDateTime.now();
     ZonedDateTime tokenValidity = now.plusSeconds(expireTime);
-
 
     return Jwts.builder()
       .setClaims(claims)
