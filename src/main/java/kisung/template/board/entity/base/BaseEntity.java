@@ -2,7 +2,6 @@ package kisung.template.board.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
-import kisung.template.board.enums.Status;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

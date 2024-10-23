@@ -1,8 +1,7 @@
 package kisung.template.board.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.regex.Pattern;
 
@@ -10,8 +9,10 @@ public class UserDto {
   private static final String EMAIL_PATTERN = "^[a-z0-9A-Z._-]*@[a-z0-9A-Z]*.[a-zA-Z.]*$";
   private static final String PASSWORD_PATTERN = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$";
 
-  @Getter
+  @Data
   @Builder
+  @AllArgsConstructor
+  @NoArgsConstructor
   public static class PostUserReq {
     @Schema(description = "이메일", example = "lion0193@gmail.com")
     private String email;
@@ -64,6 +65,8 @@ public class UserDto {
     private String email;
     @Schema(description = "닉네임", example = "쿠키갓")
     private String nickname;
+    @Schema(description = "권한", example = "ROLE_USER")
+    private String role;
   }
 
   @Getter
@@ -72,5 +75,6 @@ public class UserDto {
     private Long userId;
     private String email;
     private String nickname;
+    private String role;
   }
 }

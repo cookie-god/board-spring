@@ -4,6 +4,7 @@ import kisung.template.board.config.jwt.JwtTokenProvider;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
+import kisung.template.board.enums.Role;
 import kisung.template.board.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 import static kisung.template.board.common.code.ErrorCode.*;
+import static kisung.template.board.enums.Role.*;
 import static kisung.template.board.enums.Status.ACTIVE;
 
 @Service
@@ -34,8 +36,8 @@ public class UserService {
     userInfo = userInfo.hashPassword(bCryptPasswordEncoder); // 해시 패스워드 생성
     userInfo = userRepository.save(userInfo); // 유저 저장
     return UserDto.PostUsersRes.builder()
-      .userId(userInfo.getId())
-      .build();
+        .userId(userInfo.getId())
+        .build();
   }
 
   /**
@@ -48,19 +50,21 @@ public class UserService {
       throw new BoardException(WRONG_PASSWORD);
     }
     String jwt = jwtTokenProvider.createAccessToken(
-      UserDto.UserBasicInfo.builder()
-        .userId(userInfo.getId())
-        .email(userInfo.getEmail())
-        .nickname(userInfo.getNickname())
-        .build()
+        UserDto.UserBasicInfo.builder()
+            .userId(userInfo.getId())
+            .email(userInfo.getEmail())
+            .nickname(userInfo.getNickname())
+            .role(userInfo.getRole())
+            .build()
     );
 
     return UserDto.PostUserLoginRes.builder()
-      .token(jwt)
-      .userId(userInfo.getId())
-      .email(userInfo.getEmail())
-      .nickname(userInfo.getNickname())
-      .build();
+        .token(jwt)
+        .userId(userInfo.getId())
+        .email(userInfo.getEmail())
+        .nickname(userInfo.getNickname())
+        .role(userInfo.getRole())
+        .build();
   }
 
   /**
@@ -139,12 +143,13 @@ public class UserService {
   private UserInfo CreateUserEntity(UserDto.PostUserReq postUserReq) {
     LocalDateTime now = LocalDateTime.now();
     return UserInfo.builder()
-      .email(postUserReq.getEmail())
-      .nickname(postUserReq.getNickname())
-      .password(postUserReq.getPassword())
-      .createdAt(now)
-      .updatedAt(now)
-      .status(ACTIVE.name())
-      .build();
+        .email(postUserReq.getEmail())
+        .nickname(postUserReq.getNickname())
+        .password(postUserReq.getPassword())
+        .role(ROLE_USER.value())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
   }
 }

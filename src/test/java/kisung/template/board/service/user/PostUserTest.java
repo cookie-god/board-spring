@@ -139,7 +139,7 @@ class PostUserTest {
       .password(password)
       .createdAt(now)
       .updatedAt(now)
-      .status(ACTIVE.name())
+      .status(ACTIVE.value())
       .build();
   }
 
