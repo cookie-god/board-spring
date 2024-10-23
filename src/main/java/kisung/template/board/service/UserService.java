@@ -146,7 +146,7 @@ public class UserService {
         .email(postUserReq.getEmail())
         .nickname(postUserReq.getNickname())
         .password(postUserReq.getPassword())
-        .role(ROLE_USER.value())
+        .role(USER.value())
         .createdAt(now)
         .updatedAt(now)
         .status(ACTIVE.value())
