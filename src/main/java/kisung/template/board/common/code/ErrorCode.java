@@ -17,6 +17,7 @@ public enum ErrorCode {
   NOT_EXIST_USER_BY_EMAIL(404, "USER_ERROR_009", "User's email is not exist."),
   WRONG_PASSWORD(404, "USER_ERROR_010", "User's password is wrong."),
   NON_EXIST_USER(400, "USER_ERROR_011", "Not exist user"),
+  USER_AUTHORIZE_ERROR(401, "AUTHORIZE_ERROR_001", "Authorize Error"),
 
   INTERNAL_SERVER_ERROR(500, "SERVER_ERROR_001", "Server Error");
 

@@ -21,7 +21,7 @@ import static kisung.template.board.common.code.SuccessCode.READ_SUCCESS;
 @Slf4j
 public class FeedController {
   @Operation(summary = "피드 조회", description = "피드 조회 서비스 입니다.")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('USER')")
   @PostMapping(value = "")
   public String getFeeds() {
     return "admin";
