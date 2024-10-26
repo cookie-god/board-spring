@@ -24,7 +24,6 @@ public class SecurityConfig {
   private final JwtTokenProvider jwtTokenProvider;
   private final AuthService authService;
 
-
   /**
    * PasswordEncoder를 Bean으로 등록
    */
@@ -34,7 +33,7 @@ public class SecurityConfig {
   }
 
   @Bean
-  public RoleHierarchy roleHierarchy() {
+  public RoleHierarchy roleHierarchy() { // 권한 계급 순서 나열
     RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
     roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
     return roleHierarchy;
@@ -54,8 +53,8 @@ public class SecurityConfig {
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authz -> authz
             .requestMatchers("/apis/v1/users/**").permitAll()  // 모든 요청을 허용
-            .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()  // 모든 요청을 허용\
-            .requestMatchers("/apis/v1/feeds/**").authenticated()
+            .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()  // 모든 요청을 허용
+            .requestMatchers("/apis/v1/feeds/**").authenticated() // 피드 시스템엔 인증 정보 체크
             .anyRequest().authenticated()
         )
         .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)

@@ -40,16 +40,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = request.getHeader(HEADER_AUTHORIZATION);
             if (token != null && token.startsWith(TOKEN_PREFIX)) {
                 token = token.substring(TOKEN_PREFIX.length()); // bearer 토큰 만큼 문자열 자름
-                jwtTokenProvider.validateToken(token);
-                UserInfo userInfo = authService.retrieveUserInfoById(jwtTokenProvider.getUserId(token));
-                if (userInfo == null) {
+                jwtTokenProvider.validateToken(token); // 토큰 유효성 체크 -> AccessDeniedException 나올 수 있음
+                UserInfo userInfo = authService.retrieveUserInfoById(jwtTokenProvider.getUserId(token)); // NullPointerException 나올 수 있음
+                if (userInfo == null) { // 존재하지 않는 유저 체크
                     throw new BoardException(ErrorCode.NON_EXIST_USER);
                 }
                 Collection<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + userInfo.getRole()));
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userInfo, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                authorities.add(new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + userInfo.getRole())); // 유저 권한 authority에 삽입
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userInfo, null, authorities); // authentication 생성
+                SecurityContextHolder.getContext().setAuthentication(authentication); // authetication 셋팅
 
                 log.info("Current Authentication: {}", SecurityContextHolder.getContext().getAuthentication());
                 filterChain.doFilter(request, response);
