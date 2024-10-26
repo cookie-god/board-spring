@@ -65,14 +65,12 @@ public class JwtTokenProvider {
         claims.put(TOKEN_EMAIL, userBasicInfo.getEmail());
         claims.put(TOKEN_NICKNAME, userBasicInfo.getNickname());
         claims.put(TOKEN_ROLE, userBasicInfo.getRole());
-
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime tokenValidity = now.plusSeconds(expireTime);
+        Date now = new Date();
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setIssuedAt(Date.from(now.toInstant()))
-                .setExpiration(Date.from(tokenValidity.toInstant()))
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + expireTime))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
