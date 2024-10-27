@@ -1,6 +1,5 @@
 package kisung.template.board.config;
 
-import kisung.template.board.config.jwt.ExceptionHandlerFilter;
 import kisung.template.board.config.jwt.JwtAuthenticationFilter;
 import kisung.template.board.config.jwt.JwtTokenProvider;
 import kisung.template.board.service.AuthService;
@@ -21,47 +20,46 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-  private final JwtTokenProvider jwtTokenProvider;
-  private final AuthService authService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthService authService;
 
-  /**
-   * PasswordEncoder를 Bean으로 등록
-   */
-  @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    /**
+     * PasswordEncoder를 Bean으로 등록
+     */
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Bean
-  public RoleHierarchy roleHierarchy() { // 권한 계급 순서 나열
-    RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-    roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
-    return roleHierarchy;
-  }
+    @Bean
+    public RoleHierarchy roleHierarchy() { // 권한 계급 순서 나열
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return roleHierarchy;
+    }
 
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer() {
-    return (web) -> web.ignoring().requestMatchers("/apis/v1/users/**");  // /public 경로는 시큐리티 필터 체인에서 제외
-  }
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/apis/v1/users/**");  // /public 경로는 시큐리티 필터 체인에서 제외
+    }
 
-  /**
-   * 인증/인가에 대한 설정
-   */
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http, RoleHierarchy roleHierarchy) throws Exception {
-    http
-        .csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(authz -> authz
-            .requestMatchers("/apis/v1/users/**").permitAll()  // 모든 요청을 허용
-            .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()  // 모든 요청을 허용
-            .requestMatchers("/apis/v1/feeds/**").authenticated() // 피드 시스템엔 인증 정보 체크
-            .anyRequest().authenticated()
-        )
-        .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, authService), UsernamePasswordAuthenticationFilter.class)
-    ;  // CSRF 비활성화
+    /**
+     * 인증/인가에 대한 설정
+     */
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, RoleHierarchy roleHierarchy) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/apis/v1/users/**").permitAll()  // 모든 요청을 허용
+                        .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()  // 모든 요청을 허용
+                        .requestMatchers("/apis/v1/feeds/**").authenticated() // 피드 시스템엔 인증 정보 체크
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, authService), UsernamePasswordAuthenticationFilter.class)
+        ;  // CSRF 비활성화
 
 
-    return http.build();
-  }
+        return http.build();
+    }
 }
