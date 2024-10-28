@@ -4,6 +4,7 @@ import kisung.template.board.common.code.ErrorCode;
 import kisung.template.board.common.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,6 +17,16 @@ public class GlobalExceptionHandler {
     return ResponseEntity
         .status(errorResponse.getStatus())
         .body(errorResponse);
+  }
+
+  @ExceptionHandler(AuthorizationDeniedException.class)
+  public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(AuthorizationDeniedException ex){
+    ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.USER_AUTHORIZE_ERROR);
+    StackTraceElement[] stackTraceElements = ex.getStackTrace();
+    log.error("error = {}", stackTraceElements[0]);
+    return ResponseEntity
+            .status(errorResponse.getStatus())
+            .body(errorResponse);
   }
 
   @ExceptionHandler(Exception.class)

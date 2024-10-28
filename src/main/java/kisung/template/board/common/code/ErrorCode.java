@@ -6,6 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+  INVALID_TOKEN(400, "AUTH_ERROR_001", "Token is invalid"),
+  USER_AUTHORIZE_ERROR(401, "AUTH_ERROR_002", "Authorize Error"),
+
   NON_EXIST_EMAIL(400, "USER_ERROR_001", "Email is empty"),
   NON_EXIST_PASSWORD(400, "USER_ERROR_002", "Password is empty"),
   NON_EXIST_NICKNAME(400, "USER_ERROR_003", "Nickname is empty"),
@@ -17,6 +20,7 @@ public enum ErrorCode {
   NOT_EXIST_USER_BY_EMAIL(404, "USER_ERROR_009", "User's email is not exist."),
   WRONG_PASSWORD(404, "USER_ERROR_010", "User's password is wrong."),
   NON_EXIST_USER(400, "USER_ERROR_011", "Not exist user"),
+
 
   INTERNAL_SERVER_ERROR(500, "SERVER_ERROR_001", "Server Error");
 
