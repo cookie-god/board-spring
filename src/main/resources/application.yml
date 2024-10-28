@@ -4,9 +4,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://board.cfecma82cjiu.ap-northeast-2.rds.amazonaws.com:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username: root
-    password: rnrltjd!1
+    url: ${JDBC_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
@@ -26,4 +26,4 @@ spring:
 
 jwt:
   expiration_time: 259200000 #3일
-  secret: cookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegodcookiegod
+  secret: ${SECRET_KEY}
