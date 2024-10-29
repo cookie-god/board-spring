@@ -1,6 +1,7 @@
 package kisung.template.board.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kisung.template.board.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class FeedController {
+  private final FeedService feedService;
+
   @Operation(summary = "피드 조회", description = "피드 조회 서비스 입니다.")
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping(value = "")

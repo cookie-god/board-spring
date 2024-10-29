@@ -18,9 +18,9 @@ import static kisung.template.board.common.code.ErrorCode.*;
 import static kisung.template.board.enums.Role.*;
 import static kisung.template.board.enums.Status.ACTIVE;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserService {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;

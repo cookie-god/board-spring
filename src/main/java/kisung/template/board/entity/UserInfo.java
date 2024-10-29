@@ -6,6 +6,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "USER_INFO")
 @Getter
@@ -17,14 +20,21 @@ public class UserInfo extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @Column(name = "email")
   private String email;
+
   @Column(name = "password")
   private String password;
+
   @Column(name = "nickname")
   private String nickname;
+
   @Column(name = "role")
   private String role;
+
+  @OneToMany(mappedBy = "userInfo")
+  List<Feed> feeds = new ArrayList<>();
 
   // 비밀번호 암호화
   public UserInfo hashPassword(PasswordEncoder passwordEncoder) {
