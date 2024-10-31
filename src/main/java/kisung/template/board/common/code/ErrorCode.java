@@ -21,6 +21,8 @@ public enum ErrorCode {
   WRONG_PASSWORD(404, "USER_ERROR_010", "User's password is wrong."),
   NON_EXIST_USER(400, "USER_ERROR_011", "Not exist user"),
 
+  NON_EXIST_CONTENT(400, "FEED_ERROR_001", "Content is empty"),
+
 
   INTERNAL_SERVER_ERROR(500, "SERVER_ERROR_001", "Server Error");
 
