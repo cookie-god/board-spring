@@ -11,7 +11,7 @@ public class BasicResponse<T> {
   private T result;
   @Schema(description = "조회 및 삭제 성공은 200, 삽입 성공은 201, 수정은 204", example = "200")
   private int resultCode;
-  @Schema(description = "성공 메시지", example = "READ SUCCESS")
+  @Schema(description = "성공 메시지", example = "SUCCESS")
   private String resultMsg;
 
   // API 성공 Response로 사용
