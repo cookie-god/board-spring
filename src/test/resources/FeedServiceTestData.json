@@ -1,0 +1,10 @@
+{
+  "postFeedReq": {
+    "validFeed": {
+      "content": "테스트 피드"
+    },
+    "emptyContent": {
+      "content": ""
+    }
+  }
+}
