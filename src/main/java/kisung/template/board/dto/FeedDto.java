@@ -27,6 +27,16 @@ public class FeedDto {
 
   @Data
   @Builder
+  public static class GetFeedsReq {
+    @Schema(description = "피드 아이디", example = "1")
+    private Long feedId;
+    @Schema(description = "페이징 사이즈", example = "10")
+    private int size;
+
+  }
+
+  @Data
+  @Builder
   public static class GetFeedsRes {
     @Schema(description = "피드 개수", example = "100")
     private int count;

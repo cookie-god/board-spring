@@ -1,6 +1,7 @@
 package kisung.template.board.repository.feed.impl;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kisung.template.board.dto.FeedDto;
 import kisung.template.board.repository.feed.custom.CustomFeedRepository;
@@ -33,10 +34,14 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
         feed.updatedAt
         ))
       .from(feed)
-      .leftJoin(userInfo).on(feed.userInfo.eq(userInfo)).fetchJoin()
+      .innerJoin(userInfo).on(feed.userInfo.eq(userInfo)).fetchJoin()
       .orderBy(
         feed.createdAt.desc()
       )
       .fetch();
+  }
+
+  private BooleanExpression cursorId(Long feedId) {
+    return feedId != 0 ? feed.id.lt(feedId) : null;
   }
 }
