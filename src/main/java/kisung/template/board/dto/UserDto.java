@@ -39,8 +39,11 @@ public class UserDto {
     private Long userId;
   }
 
-  @Getter
-  public static class PostUserLoginReq {
+  @Data
+  @Builder
+  @AllArgsConstructor
+  @NoArgsConstructor
+  public static class PostLoginReq {
     @Schema(description = "이메일", example = "lion0193@gmail.com")
     private String email;
     @Schema(description = "비밀번호 (영문 숫자 특수기호 조합 8자리 이상)", example = "qwer1234!")
@@ -56,7 +59,7 @@ public class UserDto {
 
   @Getter
   @Builder
-  public static class PostUserLoginRes {
+  public static class PostLoginRes {
     @Schema(description = "jwt 토큰", example = "asdasdasd")
     private String token;
     @Schema(description = "유저 아이디", example = "1")
