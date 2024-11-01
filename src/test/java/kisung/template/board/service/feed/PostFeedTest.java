@@ -57,7 +57,7 @@ public class PostFeedTest {
   }
 
   @Test
-  @DisplayName("내용이 비어있는 경우 실패1")
+  @DisplayName("피드 작성 실패 - 내용이 비어있는 경우 실패")
   void createFeed_fail_empty_content_1() {
     //given
     JsonNode emptyContent = testData.get("postFeedReq").get("emptyContent");
@@ -69,7 +69,7 @@ public class PostFeedTest {
   }
 
   @Test
-  @DisplayName("내용이 비어있는 경우 실패2")
+  @DisplayName("피드 작성 실패 - 내용이 null인 경우")
   void createFeed_fail_empty_content_2() {
     //given
     FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(null);
