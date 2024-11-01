@@ -34,12 +34,11 @@ class PostUserTest {
   @InjectMocks
   private UserService userService; // Mock 객체들을 주입받는 실제 테스트 대상
 
-  private ObjectMapper objectMapper;
   private JsonNode testData;
 
   @BeforeEach
   void setUp() throws Exception {
-    objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
     bCryptPasswordEncoder = new BCryptPasswordEncoder();
     testData = objectMapper.readTree(new File("src/test/resources/UserServiceTestData.json"));
   }
@@ -50,12 +49,11 @@ class PostUserTest {
     // given
     JsonNode validUser = testData.get("postUserReq").get("validUser");
     UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
-
-    // 유저 엔티티 생성
     UserInfo userInfo = makeUserInfoEntity(postUserReq.getEmail(), postUserReq.getNickname(), bCryptPasswordEncoder.encode(postUserReq.getPassword()));
 
-    // when
     when(userRepository.save(any(UserInfo.class))).thenReturn(userInfo);
+
+    // when
     UserDto.PostUsersRes result = userService.createUser(postUserReq);
 
     // then
@@ -103,7 +101,6 @@ class PostUserTest {
     JsonNode validUser = testData.get("postUserReq").get("validUser");
     UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
 
-    //when
     when(userRepository.existsByEmail(anyString())).thenReturn(true);
 
     //then
@@ -117,7 +114,6 @@ class PostUserTest {
     JsonNode validUser = testData.get("postUserReq").get("validUser");
     UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
 
-    //when
     when(userRepository.existsByNickname(anyString())).thenReturn(true);
 
     //then

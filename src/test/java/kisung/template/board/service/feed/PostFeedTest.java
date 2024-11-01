@@ -30,12 +30,11 @@ public class PostFeedTest {
   private FeedRepository feedRepository;
   @InjectMocks
   private FeedService feedService;
-  private ObjectMapper objectMapper;
   private JsonNode testData;
 
   @BeforeEach
   void setUp() throws Exception {
-    objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = new ObjectMapper();
     testData = objectMapper.readTree(new File("src/test/resources/FeedServiceTestData.json"));
   }
 
@@ -48,8 +47,9 @@ public class PostFeedTest {
     Feed feed = makeFeedEntity(postFeedsReq.getContent());
     UserInfo userInfo = makeUserInfoEntity();
 
-    // when
     when(feedRepository.save(any(Feed.class))).thenReturn(feed);
+
+    // when
     FeedDto.PostFeedsRes postFeedsRes = feedService.createFeed(postFeedsReq, userInfo);
 
     // then
@@ -74,7 +74,6 @@ public class PostFeedTest {
     //given
     FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(null);
     UserInfo userInfo = makeUserInfoEntity();
-    System.out.println("postFeedsReq = " + postFeedsReq);
 
     //then
     assertThrows(BoardException.class, () -> feedService.createFeed(postFeedsReq, userInfo));
