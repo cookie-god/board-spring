@@ -5,8 +5,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import kisung.template.board.common.code.ErrorCode;
-import kisung.template.board.common.code.SuccessCode;
 import kisung.template.board.common.response.BasicResponse;
 import kisung.template.board.common.response.ErrorResponse;
 import kisung.template.board.config.SecurityUtil;
@@ -17,10 +15,10 @@ import kisung.template.board.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static kisung.template.board.common.code.ErrorCode.*;
+import static kisung.template.board.common.code.SuccessCode.*;
 
 @RestController
 @RequestMapping(value = "/apis/v1/feeds")
@@ -29,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeedController {
   private final FeedService feedService;
 
-  @Operation(summary = "피드 생성", description = "피드 조회 서비스 입니다.")
+  @Operation(summary = "피드 생성", description = "피드 작성 서비스입니다.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "201", description = "Success"),
     @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
@@ -44,9 +42,18 @@ public class FeedController {
   @PreAuthorize("hasRole('USER')")
   @PostMapping(value = "")
   public BasicResponse<FeedDto.PostFeedsRes> postFeeds(@RequestBody FeedDto.PostFeedsReq postFeedsReq) {
-    UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(ErrorCode.NON_EXIST_USER));
-    return BasicResponse.success(feedService.createFeed(postFeedsReq, userInfo), SuccessCode.CREATE_SUCCESS);
+    UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
+    return BasicResponse.success(feedService.createFeed(postFeedsReq, userInfo), CREATE_SUCCESS);
   }
 
+  @Operation(summary = "피드 조회 및 검색", description = "피드 조회 및 검색 서비스입니다.")
+  @ApiResponses(value = {
 
+  })
+  @PreAuthorize("hasRole('USER')")
+  @GetMapping(value = "")
+  public BasicResponse<FeedDto.GetFeedsRes> getPosts() {
+    UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
+    return BasicResponse.success(feedService.retrieveFeeds(), READ_SUCCESS);
+  }
 }

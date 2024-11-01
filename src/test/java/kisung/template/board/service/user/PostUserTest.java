@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.*;
 class PostUserTest {
   @Mock
   private UserRepository userRepository; // UserRepository Mock
-  @Mock
+  @Spy
   private BCryptPasswordEncoder bCryptPasswordEncoder;
   @InjectMocks
   private UserService userService; // Mock 객체들을 주입받는 실제 테스트 대상
@@ -39,6 +40,7 @@ class PostUserTest {
   @BeforeEach
   void setUp() throws Exception {
     objectMapper = new ObjectMapper();
+    bCryptPasswordEncoder = new BCryptPasswordEncoder();
     testData = objectMapper.readTree(new File("src/test/resources/UserServiceTestData.json"));
   }
 
@@ -50,7 +52,7 @@ class PostUserTest {
     UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
 
     // 유저 엔티티 생성
-    UserInfo userInfo = makeUserInfoEntity(postUserReq.getEmail(), postUserReq.getNickname(), postUserReq.getPassword());
+    UserInfo userInfo = makeUserInfoEntity(postUserReq.getEmail(), postUserReq.getNickname(), bCryptPasswordEncoder.encode(postUserReq.getPassword()));
 
     // when
     when(userRepository.save(any(UserInfo.class))).thenReturn(userInfo);

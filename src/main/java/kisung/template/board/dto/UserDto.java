@@ -72,9 +72,13 @@ public class UserDto {
   @Getter
   @Builder
   public static class UserBasicInfo {
+    @Schema(description = "유저 아이디", example = "1")
     private Long userId;
+    @Schema(description = "이메일", example = "lion0193@gmail.com")
     private String email;
+    @Schema(description = "닉네임", example = "쿠키갓")
     private String nickname;
+    @Schema(description = "권한", example = "ROLE_USER")
     private String role;
   }
 }

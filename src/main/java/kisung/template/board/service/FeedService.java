@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import kisung.template.board.common.code.ErrorCode;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.FeedDto;
+import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.Feed;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.repository.feed.FeedRepository;
@@ -12,6 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 import static kisung.template.board.enums.Status.ACTIVE;
 
@@ -41,6 +46,39 @@ public class FeedService {
     if (postFeedsReq.getContent() == null || postFeedsReq.getContent().isEmpty()) {
       throw new BoardException(ErrorCode.NON_EXIST_CONTENT);
     }
+  }
+
+  /**
+   * 피드 조회 서비스
+   */
+  public FeedDto.GetFeedsRes retrieveFeeds() {
+    List<FeedDto.FeedRawInfo> feedRawInfoList = feedRepository.findFeedInfos();
+    return FeedDto.GetFeedsRes.builder()
+      .count(feedRawInfoList.size())
+      .feeds(makeFeedInfosByRawDatas(feedRawInfoList))
+      .build();
+  }
+
+  /**
+   * FeedRawInfo -> FeedInfo로 변환해주는 메서드
+   */
+  public List<FeedDto.FeedInfo> makeFeedInfosByRawDatas(List<FeedDto.FeedRawInfo> feedRawInfos) {
+    return feedRawInfos.stream().map(feedRawInfo -> FeedDto.FeedInfo.builder()
+      .feedId(feedRawInfo.getId())
+      .content(feedRawInfo.getContent())
+      .userBasicInfo(UserDto.UserBasicInfo.builder()
+        .userId(feedRawInfo.getUserId())
+        .email(feedRawInfo.getEmail())
+        .nickname(feedRawInfo.getNickname())
+        .role(feedRawInfo.getRole())
+        .build()
+      )
+      .commentCnt(feedRawInfo.getCommentCnt())
+      .bookmarkCnt(feedRawInfo.getBookmarkCnt())
+      .createdAt(feedRawInfo.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+      .updatedAt(feedRawInfo.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+      .build()
+    ).toList();
   }
 
   /**
