@@ -70,7 +70,7 @@ public class UserController {
                   content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PostMapping(value = "login", produces = "application/json")
-  public BasicResponse<UserDto.PostUserLoginRes> postUserLogin(@RequestBody UserDto.PostUserLoginReq postUserLoginReq) {
-    return BasicResponse.success(userService.login(postUserLoginReq), READ_SUCCESS);
+  public BasicResponse<UserDto.PostLoginRes> postUserLogin(@RequestBody UserDto.PostLoginReq postLoginReq) {
+    return BasicResponse.success(userService.login(postLoginReq), READ_SUCCESS);
   }
 }
