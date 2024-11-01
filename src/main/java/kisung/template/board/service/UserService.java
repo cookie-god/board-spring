@@ -43,10 +43,10 @@ public class UserService {
   /**
    * 유저 로그인 서비스 메서드
    */
-  public UserDto.PostUserLoginRes login(UserDto.PostUserLoginReq postUserLoginReq) {
-    validate(postUserLoginReq);
-    UserInfo userInfo = userRepository.findUserInfoByEmail(postUserLoginReq.getEmail()).orElseThrow(() -> new BoardException(NOT_EXIST_USER_BY_EMAIL));
-    if (!checkPassword(userInfo, postUserLoginReq.getPassword())) { // 비밀번호 확인
+  public UserDto.PostLoginRes login(UserDto.PostLoginReq postLoginReq) {
+    validate(postLoginReq);
+    UserInfo userInfo = userRepository.findUserInfoByEmail(postLoginReq.getEmail()).orElseThrow(() -> new BoardException(NOT_EXIST_USER_BY_EMAIL));
+    if (!checkPassword(userInfo, postLoginReq.getPassword())) { // 비밀번호 확인
       throw new BoardException(WRONG_PASSWORD);
     }
     String jwt = jwtTokenProvider.createAccessToken(
@@ -58,7 +58,7 @@ public class UserService {
             .build()
     );
 
-    return UserDto.PostUserLoginRes.builder()
+    return UserDto.PostLoginRes.builder()
         .token(jwt)
         .userId(userInfo.getId())
         .email(userInfo.getEmail())
@@ -115,17 +115,17 @@ public class UserService {
    * 4. 비밀번호 정규식 체크
    * 5. 비밀번호 일치 여부 체크
    */
-  public void validate(UserDto.PostUserLoginReq postUserLoginReq) {
-    if (postUserLoginReq.getEmail() == null || postUserLoginReq.getEmail().isEmpty()) {
+  public void validate(UserDto.PostLoginReq postLoginReq) {
+    if (postLoginReq.getEmail() == null || postLoginReq.getEmail().isEmpty()) {
       throw new BoardException(NON_EXIST_EMAIL);
     }
-    if (!postUserLoginReq.isEmail()) {
+    if (!postLoginReq.isEmail()) {
       throw new BoardException(INVALID_EMAIL);
     }
-    if (postUserLoginReq.getPassword() == null || postUserLoginReq.getPassword().isEmpty()) {
+    if (postLoginReq.getPassword() == null || postLoginReq.getPassword().isEmpty()) {
       throw new BoardException(NON_EXIST_PASSWORD);
     }
-    if (!postUserLoginReq.isPassword()) {
+    if (!postLoginReq.isPassword()) {
       throw new BoardException(INVALID_PASSWORD);
     }
   }
@@ -133,7 +133,7 @@ public class UserService {
   /**
    * 로그인 여부 체크
    */
-  private boolean checkPassword(UserInfo userInfo, String password) {
+  public boolean checkPassword(UserInfo userInfo, String password) {
     return userInfo.checkPassword(password, bCryptPasswordEncoder);
   }
 

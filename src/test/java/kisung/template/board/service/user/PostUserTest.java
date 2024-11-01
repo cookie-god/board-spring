@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
+import kisung.template.board.enums.Role;
 import kisung.template.board.repository.user.UserRepository;
 import kisung.template.board.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -135,6 +136,7 @@ class PostUserTest {
       .email(email)
       .nickname(nickname)
       .password(password)
+      .role(Role.USER.value())
       .createdAt(now)
       .updatedAt(now)
       .status(ACTIVE.value())

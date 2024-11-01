@@ -6,6 +6,7 @@ import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.FeedDto;
 import kisung.template.board.entity.Feed;
 import kisung.template.board.entity.UserInfo;
+import kisung.template.board.enums.Role;
 import kisung.template.board.repository.feed.FeedRepository;
 import kisung.template.board.service.FeedService;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,6 +93,7 @@ public class PostFeedTest {
       .email("lion0193@gmail.com")
       .nickname("쿠키")
       .password("99999999")
+      .role(Role.USER.value())
       .createdAt(now)
       .updatedAt(now)
       .status(ACTIVE.value())
