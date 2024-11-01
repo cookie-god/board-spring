@@ -1,6 +1,5 @@
 package kisung.template.board.config;
 
-import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -14,16 +13,16 @@ public class SecurityUtil {
 
   }
 
-  public static Optional<Long> getUserId() {
+  public static Optional<UserInfo> getUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || authentication.getPrincipal() == null) {
       throw new RuntimeException("Security Context 에 인증 정보가 없습니다.");
     }
     try {
-      UserDto.UserBasicInfo userBasicInfo = (UserDto.UserBasicInfo) authentication.getPrincipal();
-      return Optional.ofNullable(userBasicInfo.getUserId());
+      UserInfo userInfo = (UserInfo) authentication.getPrincipal();
+      return Optional.ofNullable(userInfo);
     } catch (Exception e) {
-      System.out.println("e = " + e);
+      log.error("error = {}", e);
       return Optional.empty();
     }
   }

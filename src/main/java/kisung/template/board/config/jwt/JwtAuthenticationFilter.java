@@ -51,15 +51,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     if (userInfo == null) { // 존재하지 않는 유저 체크
                         throw new BoardException(ErrorCode.NON_EXIST_USER);
                     }
-                    UserDto.UserBasicInfo userBasicInfo = UserDto.UserBasicInfo.builder()
-                        .userId(userInfo.getId())
-                        .email(userInfo.getEmail())
-                        .nickname(userInfo.getNickname())
-                        .role(userInfo.getRole())
-                        .build();
+                    userInfo.setInitPassword();
                     Collection<GrantedAuthority> authorities = new ArrayList<>();
-                    authorities.add(new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + userBasicInfo.getRole())); // 유저 권한 authority에 삽입
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userBasicInfo, null, authorities); // authentication 생성
+                    authorities.add(new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + userInfo.getRole())); // 유저 권한 authority에 삽입
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userInfo, null, authorities); // authentication 생성
                     SecurityContextHolder.getContext().setAuthentication(authentication); // authetication 셋팅
                     log.info("Current Authentication: {}", SecurityContextHolder.getContext().getAuthentication());
                 } else {

@@ -19,16 +19,14 @@ import static kisung.template.board.enums.Status.ACTIVE;
 @Service
 @RequiredArgsConstructor
 public class FeedService {
-  private final AuthService authService;
   private final FeedRepository feedRepository;
 
   /**
    * 피드 생성 서비스
    */
   @Transactional
-  public FeedDto.PostFeedsRes createFeed(FeedDto.PostFeedsReq postFeedsReq, Long userId) {
+  public FeedDto.PostFeedsRes createFeed(FeedDto.PostFeedsReq postFeedsReq, UserInfo userInfo) {
     validate(postFeedsReq);
-    UserInfo userInfo = authService.retrieveUserInfoById(userId);
     Feed feed = createFeedEntity(postFeedsReq.getContent(), userInfo);
     feed = feedRepository.save(feed);
     return FeedDto.PostFeedsRes.builder()

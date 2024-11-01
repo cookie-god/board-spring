@@ -7,6 +7,7 @@ import kisung.template.board.common.response.BasicResponse;
 import kisung.template.board.config.SecurityUtil;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.FeedDto;
+import kisung.template.board.entity.UserInfo;
 import kisung.template.board.service.FeedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +25,11 @@ public class FeedController {
   private final FeedService feedService;
 
   @Operation(summary = "피드 생성", description = "피드 조회 서비스 입니다.")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('USER')")
   @PostMapping(value = "")
   public BasicResponse<FeedDto.PostFeedsRes> postFeeds(@RequestBody FeedDto.PostFeedsReq postFeedsReq) {
-    Long userId = SecurityUtil.getUserId().orElseThrow(() -> new BoardException(ErrorCode.NON_EXIST_USER));
-    return BasicResponse.success(feedService.createFeed(postFeedsReq, userId), SuccessCode.CREATE_SUCCESS);
+    UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(ErrorCode.NON_EXIST_USER));
+    return BasicResponse.success(feedService.createFeed(postFeedsReq, userInfo), SuccessCode.CREATE_SUCCESS);
   }
 
 

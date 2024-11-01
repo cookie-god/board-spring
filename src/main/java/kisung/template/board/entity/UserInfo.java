@@ -6,9 +6,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "USER_INFO")
 @Getter
@@ -33,8 +30,9 @@ public class UserInfo extends BaseEntity {
   @Column(name = "role")
   private String role;
 
-  @OneToMany(mappedBy = "userInfo")
-  List<Feed> feeds = new ArrayList<>();
+  public void setInitPassword() {
+    this.password = null;
+  }
 
   // 비밀번호 암호화
   public UserInfo hashPassword(PasswordEncoder passwordEncoder) {
