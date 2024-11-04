@@ -1,4 +1,4 @@
-package kisung.template.board.config.jwt;
+package kisung.template.board.config.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kisung.template.board.common.code.ErrorCode;
 import kisung.template.board.common.response.ErrorResponse;
 import kisung.template.board.config.exception.BoardException;
+import kisung.template.board.config.jwt.JwtTokenProvider;
 import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.service.AuthService;

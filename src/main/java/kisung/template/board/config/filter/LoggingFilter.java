@@ -1,4 +1,4 @@
-package kisung.template.board.config;
+package kisung.template.board.config.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
