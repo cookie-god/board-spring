@@ -1,6 +1,5 @@
 package kisung.template.board.service;
 
-import jakarta.transaction.Transactional;
 import kisung.template.board.common.code.ErrorCode;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.FeedDto;
@@ -11,11 +10,10 @@ import kisung.template.board.repository.feed.FeedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
 
 import static kisung.template.board.enums.Status.ACTIVE;
