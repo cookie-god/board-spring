@@ -56,7 +56,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authorities.add(new SimpleGrantedAuthority(DEFAULT_ROLE_PREFIX + userInfo.getRole())); // 유저 권한 authority에 삽입
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userInfo, null, authorities); // authentication 생성
                     SecurityContextHolder.getContext().setAuthentication(authentication); // authetication 셋팅
-                    log.info("Current Authentication: {}", SecurityContextHolder.getContext().getAuthentication());
                 } else {
                     throw new AccessDeniedException("access denied");
                 }

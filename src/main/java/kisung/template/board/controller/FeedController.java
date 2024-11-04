@@ -40,7 +40,7 @@ public class FeedController {
       content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
   })
   @PreAuthorize("hasRole('USER')")
-  @PostMapping(value = "")
+  @PostMapping(value = "", produces = "application/json")
   public BasicResponse<FeedDto.PostFeedsRes> postFeeds(@RequestBody FeedDto.PostFeedsReq postFeedsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(feedService.createFeed(postFeedsReq, userInfo), CREATE_SUCCESS);
@@ -51,7 +51,7 @@ public class FeedController {
 
   })
   @PreAuthorize("hasRole('USER')")
-  @GetMapping(value = "")
+  @GetMapping(value = "", produces = "application/json")
   public BasicResponse<FeedDto.GetFeedsRes> getPosts() {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(feedService.retrieveFeeds(), READ_SUCCESS);
