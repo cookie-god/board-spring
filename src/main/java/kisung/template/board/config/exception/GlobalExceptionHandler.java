@@ -8,6 +8,8 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Arrays;
+
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -34,6 +36,7 @@ public class GlobalExceptionHandler {
     ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
     StackTraceElement[] stackTraceElements = ex.getStackTrace();
     log.error("error = {}", stackTraceElements[0]);
+    System.out.println("stackTraceElements = " + Arrays.toString(stackTraceElements));
     return ResponseEntity
         .status(errorResponse.getStatus())
         .body(errorResponse);

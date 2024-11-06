@@ -48,12 +48,18 @@ public class FeedController {
 
   @Operation(summary = "피드 조회 및 검색", description = "피드 조회 및 검색 서비스입니다.")
   @ApiResponses(value = {
-
+      @ApiResponse(responseCode = "200", description = "Success"),
+      @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "AUTH_ERROR_002", description = "Authorize Error",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PreAuthorize("hasRole('USER')")
   @GetMapping(value = "", produces = "application/json")
-  public BasicResponse<FeedDto.GetFeedsRes> getPosts() {
+  public BasicResponse<FeedDto.GetFeedsRes> getPosts(FeedDto.GetFeedsReq getFeedsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
-    return BasicResponse.success(feedService.retrieveFeeds(), READ_SUCCESS);
+    return BasicResponse.success(feedService.retrieveFeeds(getFeedsReq), READ_SUCCESS);
   }
 }

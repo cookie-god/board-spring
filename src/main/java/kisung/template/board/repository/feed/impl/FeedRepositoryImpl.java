@@ -19,26 +19,36 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
   private final JPAQueryFactory jpaQueryFactory;
 
   @Override
-  public List<FeedDto.FeedRawInfo> findFeedInfos() {
+  public Long countFeedInfos(FeedDto.GetFeedsReq getFeedsReq) {
     return jpaQueryFactory
-      .select(Projections.bean(FeedDto.FeedRawInfo.class,
-        feed.id,
-        feed.content,
-        userInfo.id.as("userId"),
-        userInfo.email,
-        userInfo.nickname,
-        userInfo.role,
-        feed.commentCnt,
-        feed.bookmarkCnt,
-        feed.createdAt,
-        feed.updatedAt
+        .select(feed.count())
+        .from(feed)
+        .fetchFirst();
+  }
+
+  @Override
+  public List<FeedDto.FeedRawInfo> findFeedInfos(FeedDto.GetFeedsReq getFeedsReq) {
+    return jpaQueryFactory
+        .select(Projections.bean(FeedDto.FeedRawInfo.class,
+            feed.id,
+            feed.content,
+            userInfo.id.as("userId"),
+            userInfo.email,
+            userInfo.nickname,
+            userInfo.role,
+            feed.commentCnt,
+            feed.bookmarkCnt,
+            feed.createdAt,
+            feed.updatedAt
         ))
-      .from(feed)
-      .innerJoin(userInfo).on(feed.userInfo.eq(userInfo)).fetchJoin()
-      .orderBy(
-        feed.createdAt.desc()
-      )
-      .fetch();
+        .from(feed)
+        .innerJoin(userInfo).on(feed.userInfo.eq(userInfo)).fetchJoin()
+        .where(cursorId(getFeedsReq.getFeedId()))
+        .orderBy(
+            feed.id.desc()
+        )
+        .limit(getFeedsReq.getSize())
+        .fetch();
   }
 
   private BooleanExpression cursorId(Long feedId) {

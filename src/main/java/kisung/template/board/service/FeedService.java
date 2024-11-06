@@ -49,10 +49,12 @@ public class FeedService {
   /**
    * 피드 조회 서비스
    */
-  public FeedDto.GetFeedsRes retrieveFeeds() {
-    List<FeedDto.FeedRawInfo> feedRawInfoList = feedRepository.findFeedInfos();
+  public FeedDto.GetFeedsRes retrieveFeeds(FeedDto.GetFeedsReq getFeedsReq) {
+    //TODO: redis 사용하는 방식으로 변경할 예정
+    Long count = feedRepository.countFeedInfos(getFeedsReq);
+    List<FeedDto.FeedRawInfo> feedRawInfoList = feedRepository.findFeedInfos(getFeedsReq);
     return FeedDto.GetFeedsRes.builder()
-      .count(feedRawInfoList.size())
+      .count(count)
       .feeds(makeFeedInfosByRawDatas(feedRawInfoList))
       .build();
   }

@@ -11,8 +11,8 @@ public class FeedDto {
 
   @Data
   @Builder
-  @AllArgsConstructor
   @NoArgsConstructor
+  @AllArgsConstructor
   public static class PostFeedsReq {
     @Schema(description = "내용", example = "오늘도 행복하세요ㅎㅎ")
     private String content;
@@ -27,19 +27,20 @@ public class FeedDto {
 
   @Data
   @Builder
+  @AllArgsConstructor
+  @NoArgsConstructor
   public static class GetFeedsReq {
-    @Schema(description = "피드 아이디", example = "1")
+    @Schema(description = "조회시 마지막 피드 아이디, 처음 조회라면 0 삽입", example = "0")
     private Long feedId;
     @Schema(description = "페이징 사이즈", example = "10")
     private int size;
-
   }
 
   @Data
   @Builder
   public static class GetFeedsRes {
-    @Schema(description = "피드 개수", example = "100")
-    private int count;
+    @Schema(description = "피드 총 개수", example = "100")
+    private Long count;
     @Schema(description = "피드 리스트")
     private List<FeedInfo> feeds = new ArrayList<>();
   }
