@@ -11,7 +11,7 @@ import kisung.template.board.config.SecurityUtil;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.FeedDto;
 import kisung.template.board.entity.UserInfo;
-import kisung.template.board.service.FeedService;
+import kisung.template.board.service.FeedServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +25,7 @@ import static kisung.template.board.common.code.SuccessCode.*;
 @RequiredArgsConstructor
 @Slf4j
 public class FeedController {
-  private final FeedService feedService;
+  private final FeedServiceImpl feedServiceImpl;
 
   @Operation(summary = "피드 생성", description = "피드 작성 서비스입니다.")
   @ApiResponses(value = {
@@ -43,7 +43,7 @@ public class FeedController {
   @PostMapping(value = "", produces = "application/json")
   public BasicResponse<FeedDto.PostFeedsRes> postFeeds(@RequestBody FeedDto.PostFeedsReq postFeedsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
-    return BasicResponse.success(feedService.createFeed(postFeedsReq, userInfo), CREATE_SUCCESS);
+    return BasicResponse.success(feedServiceImpl.createFeed(postFeedsReq, userInfo), CREATE_SUCCESS);
   }
 
   @Operation(summary = "피드 조회 및 검색", description = "피드 조회 및 검색 서비스입니다.")
@@ -60,6 +60,6 @@ public class FeedController {
   @GetMapping(value = "", produces = "application/json")
   public BasicResponse<FeedDto.GetFeedsRes> getPosts(FeedDto.GetFeedsReq getFeedsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
-    return BasicResponse.success(feedService.retrieveFeeds(getFeedsReq), READ_SUCCESS);
+    return BasicResponse.success(feedServiceImpl.retrieveFeeds(getFeedsReq), READ_SUCCESS);
   }
 }

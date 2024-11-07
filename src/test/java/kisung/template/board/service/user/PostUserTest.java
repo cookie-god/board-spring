@@ -7,7 +7,7 @@ import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.enums.Role;
 import kisung.template.board.repository.user.UserRepository;
-import kisung.template.board.service.UserService;
+import kisung.template.board.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class PostUserTest {
   @Spy
   private BCryptPasswordEncoder bCryptPasswordEncoder;
   @InjectMocks
-  private UserService userService; // Mock 객체들을 주입받는 실제 테스트 대상
+  private UserServiceImpl userServiceImpl; // Mock 객체들을 주입받는 실제 테스트 대상
 
   private JsonNode testData;
 
@@ -55,7 +55,7 @@ class PostUserTest {
     when(userRepository.save(any(UserInfo.class))).thenReturn(userInfo);
 
     // when
-    UserDto.PostUsersRes result = userService.createUser(postUserReq);
+    UserDto.PostUsersRes result = userServiceImpl.createUser(postUserReq);
 
     // then
     assertNotNull(result);
@@ -70,7 +70,7 @@ class PostUserTest {
     UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
 
     //then
-    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+    assertThrows(BoardException.class, () -> userServiceImpl.createUser(postUserReq));
   }
 
   @Test
@@ -81,7 +81,7 @@ class PostUserTest {
     UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
 
     //then
-    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+    assertThrows(BoardException.class, () -> userServiceImpl.createUser(postUserReq));
   }
 
   @Test
@@ -92,7 +92,7 @@ class PostUserTest {
     UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
 
     //then
-    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+    assertThrows(BoardException.class, () -> userServiceImpl.createUser(postUserReq));
   }
 
   @Test
@@ -105,7 +105,7 @@ class PostUserTest {
     when(userRepository.existsByEmail(anyString())).thenReturn(true);
 
     //then
-    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+    assertThrows(BoardException.class, () -> userServiceImpl.createUser(postUserReq));
   }
 
   @Test
@@ -118,7 +118,7 @@ class PostUserTest {
     when(userRepository.existsByNickname(anyString())).thenReturn(true);
 
     //then
-    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+    assertThrows(BoardException.class, () -> userServiceImpl.createUser(postUserReq));
   }
 
   private UserDto.PostUserReq makePostUserReq(String email, String nickname, String password) {

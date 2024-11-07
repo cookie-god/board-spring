@@ -8,7 +8,7 @@ import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.enums.Role;
 import kisung.template.board.repository.user.UserRepository;
-import kisung.template.board.service.UserService;
+import kisung.template.board.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ public class PostLoginTest {
   @Mock
   private BCryptPasswordEncoder bCryptPasswordEncoder;
   @InjectMocks
-  private UserService userService;
+  private UserServiceImpl userServiceImpl;
   private JsonNode testData;
 
   @BeforeEach
@@ -59,7 +59,7 @@ public class PostLoginTest {
     when(jwtTokenProvider.createAccessToken(any(UserDto.UserBasicInfo.class))).thenReturn("token");
 
     //when
-    UserDto.PostLoginRes result = userService.login(postLoginReq);
+    UserDto.PostLoginRes result = userServiceImpl.login(postLoginReq);
 
     // then
     assertEquals("token", result.getToken());  // userId 검증
@@ -73,7 +73,7 @@ public class PostLoginTest {
     UserDto.PostLoginReq postLoginReq = makePostLoginReq(validUser.get("email").asText(), validUser.get("password").asText());
 
     // then
-    assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
+    assertThrows(BoardException.class, () -> userServiceImpl.login(postLoginReq));  // userId 검증
   }
 
   @Test
@@ -84,7 +84,7 @@ public class PostLoginTest {
     UserDto.PostLoginReq postLoginReq = makePostLoginReq(validUser.get("email").asText(), validUser.get("password").asText());
 
     // then
-    assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
+    assertThrows(BoardException.class, () -> userServiceImpl.login(postLoginReq));  // userId 검증
   }
 
   @Test
@@ -97,7 +97,7 @@ public class PostLoginTest {
     when(userRepository.findUserInfoByEmail(any(String.class))).thenReturn(Optional.empty());
 
     // then
-    assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
+    assertThrows(BoardException.class, () -> userServiceImpl.login(postLoginReq));  // userId 검증
   }
 
   @Test
@@ -112,7 +112,7 @@ public class PostLoginTest {
     when(bCryptPasswordEncoder.matches(any(String.class), any(String.class))).thenReturn(false);
 
     // then
-    assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
+    assertThrows(BoardException.class, () -> userServiceImpl.login(postLoginReq));  // userId 검증
   }
 
   private UserDto.PostLoginReq makePostLoginReq(String email, String password) {
