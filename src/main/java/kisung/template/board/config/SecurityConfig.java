@@ -3,7 +3,7 @@ package kisung.template.board.config;
 import kisung.template.board.config.filter.JwtAuthenticationFilter;
 import kisung.template.board.config.filter.LoggingFilter;
 import kisung.template.board.config.jwt.JwtTokenProvider;
-import kisung.template.board.service.AuthServiceImpl;
+import kisung.template.board.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
   private final JwtTokenProvider jwtTokenProvider;
-  private final AuthServiceImpl authServiceImpl;
+  private final AuthService authService;
 
   /**
    * PasswordEncoder를 Bean으로 등록
@@ -58,7 +58,7 @@ public class SecurityConfig {
         .anyRequest().authenticated()
       )
       .addFilterBefore(new LoggingFilter(), UsernamePasswordAuthenticationFilter.class)
-      .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, authServiceImpl), LoggingFilter.class)
+      .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, authService), LoggingFilter.class)
     ;  // CSRF 비활성화
 
 

@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import kisung.template.board.common.response.BasicResponse;
 import kisung.template.board.common.response.ErrorResponse;
 import kisung.template.board.dto.UserDto;
-import kisung.template.board.service.UserServiceImpl;
+import kisung.template.board.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +24,7 @@ import static kisung.template.board.common.code.SuccessCode.READ_SUCCESS;
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
-  private final UserServiceImpl userServiceImpl;
+  private final UserService userService;
 
   @Operation(summary = "유저 회원 가입", description = "유저 회원 가입 입니다.")
   @ApiResponses(value = {
@@ -50,7 +50,7 @@ public class UserController {
   })
   @PostMapping(value = "", produces = "application/json")
   public BasicResponse<UserDto.PostUsersRes> postUsers(@RequestBody UserDto.PostUserReq postUserReq) {
-    return BasicResponse.success(userServiceImpl.createUser(postUserReq), CREATE_SUCCESS);
+    return BasicResponse.success(userService.createUser(postUserReq), CREATE_SUCCESS);
   }
 
   @Operation(summary = "유저 로그인", description = "유저 로그인 입니다.")
@@ -71,6 +71,6 @@ public class UserController {
   })
   @PostMapping(value = "login", produces = "application/json")
   public BasicResponse<UserDto.PostLoginRes> postUserLogin(@RequestBody UserDto.PostLoginReq postLoginReq) {
-    return BasicResponse.success(userServiceImpl.login(postLoginReq), READ_SUCCESS);
+    return BasicResponse.success(userService.login(postLoginReq), READ_SUCCESS);
   }
 }

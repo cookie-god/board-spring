@@ -10,7 +10,7 @@ import kisung.template.board.common.response.ErrorResponse;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.config.jwt.JwtTokenProvider;
 import kisung.template.board.entity.UserInfo;
-import kisung.template.board.service.AuthServiceImpl;
+import kisung.template.board.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -29,7 +29,7 @@ import java.util.List;
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthServiceImpl authServiceImpl;
+    private final AuthService authService;
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String DEFAULT_ROLE_PREFIX = "ROLE_";
@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (token != null && token.startsWith(TOKEN_PREFIX)) {
                     token = token.substring(TOKEN_PREFIX.length()); // bearer 토큰 만큼 문자열 자름
                     jwtTokenProvider.validateToken(token); // 토큰 유효성 체크 -> AccessDeniedException 나올 수 있음
-                    UserInfo userInfo = authServiceImpl.retrieveUserInfoById(jwtTokenProvider.getUserId(token)); // NullPointerException 나올 수 있음
+                    UserInfo userInfo = authService.retrieveUserInfoById(jwtTokenProvider.getUserId(token)); // NullPointerException 나올 수 있음
                     if (userInfo == null) { // 존재하지 않는 유저 체크
                         throw new BoardException(ErrorCode.NON_EXIST_USER);
                     }
