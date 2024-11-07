@@ -22,7 +22,8 @@ public enum ErrorCode {
   NON_EXIST_USER(400, "USER_ERROR_011", "Not exist user"),
 
   NON_EXIST_CONTENT(400, "FEED_ERROR_001", "Content is empty"),
-
+  NON_EXIST_FEED_ID(400, "FEED_ERROR_002", "Feed Id is empty"),
+  NON_EXIST_PAGE_SIZE(400, "FEED_ERROR_003", "Page Size is empty"),
 
   INTERNAL_SERVER_ERROR(500, "SERVER_ERROR_001", "Server Error");
 

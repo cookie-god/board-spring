@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
+import static kisung.template.board.common.code.ErrorCode.*;
 import static kisung.template.board.enums.Status.ACTIVE;
 
 @Slf4j
@@ -44,6 +45,7 @@ public class FeedServiceImpl implements FeedService{
   @Override
   public FeedDto.GetFeedsRes retrieveFeeds(FeedDto.GetFeedsReq getFeedsReq) {
     //TODO: redis 사용하는 방식으로 변경할 예정
+    validate(getFeedsReq);
     Long count = feedRepository.countFeedInfos(getFeedsReq);
     List<FeedDto.FeedRawInfo> feedRawInfoList = feedRepository.findFeedInfos(getFeedsReq);
     return FeedDto.GetFeedsRes.builder()
@@ -57,7 +59,16 @@ public class FeedServiceImpl implements FeedService{
    */
   private void validate(FeedDto.PostFeedsReq postFeedsReq) {
     if (postFeedsReq.getContent() == null || postFeedsReq.getContent().isEmpty()) {
-      throw new BoardException(ErrorCode.NON_EXIST_CONTENT);
+      throw new BoardException(NON_EXIST_CONTENT);
+    }
+  }
+
+  private void validate(FeedDto.GetFeedsReq getFeedsReq) {
+    if (getFeedsReq.getFeedId() == null) {
+      throw new BoardException(NON_EXIST_FEED_ID);
+    }
+    if (getFeedsReq.getSize() == null) {
+      throw new BoardException(NON_EXIST_PAGE_SIZE);
     }
   }
 

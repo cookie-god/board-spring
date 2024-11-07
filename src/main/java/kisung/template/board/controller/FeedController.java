@@ -54,6 +54,10 @@ public class FeedController {
       @ApiResponse(responseCode = "AUTH_ERROR_002", description = "Authorize Error",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_002", description = "Feed Id is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_003", description = "Page Size is empty",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PreAuthorize("hasRole('USER')")

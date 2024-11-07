@@ -33,7 +33,7 @@ public class FeedDto {
     @Schema(description = "조회시 마지막 피드 아이디, 처음 조회라면 0 삽입", example = "0")
     private Long feedId;
     @Schema(description = "페이징 사이즈", example = "10")
-    private int size;
+    private Integer size;
   }
 
   @Data
