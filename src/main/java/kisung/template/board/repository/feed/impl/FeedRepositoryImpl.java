@@ -23,6 +23,7 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
     return jpaQueryFactory
         .select(feed.count())
         .from(feed)
+        .where(search(getFeedsReq.getSearchKeyword()))
         .fetchFirst();
   }
 
@@ -43,7 +44,10 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
         ))
         .from(feed)
         .innerJoin(userInfo).on(feed.userInfo.eq(userInfo)).fetchJoin()
-        .where(cursorId(getFeedsReq.getFeedId()))
+        .where(
+            search(getFeedsReq.getSearchKeyword()),
+            cursorId(getFeedsReq.getFeedId())
+        )
         .orderBy(
             feed.id.desc()
         )
@@ -53,5 +57,11 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
 
   private BooleanExpression cursorId(Long feedId) {
     return feedId != 0 ? feed.id.lt(feedId) : null;
+  }
+  private BooleanExpression search(String searchKeyword) {
+    if (searchKeyword != null) {
+      return feed.content.startsWith(searchKeyword.toUpperCase());
+    }
+    return null;
   }
 }
