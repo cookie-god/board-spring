@@ -8,7 +8,6 @@ import kisung.template.board.entity.Feed;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.enums.Role;
 import kisung.template.board.repository.feed.FeedRepository;
-import kisung.template.board.service.FeedServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ public class PostFeedTest {
   @Mock
   private FeedRepository feedRepository;
   @InjectMocks
-  private FeedServiceImpl feedServiceImpl;
+  private FeedServiceImpl feedService;
   private JsonNode testData;
 
   @BeforeEach
@@ -51,7 +50,7 @@ public class PostFeedTest {
     when(feedRepository.save(any(Feed.class))).thenReturn(feed);
 
     // when
-    FeedDto.PostFeedsRes postFeedsRes = feedServiceImpl.createFeed(postFeedsReq, userInfo);
+    FeedDto.PostFeedsRes postFeedsRes = feedService.createFeed(postFeedsReq, userInfo);
 
     // then
     assertEquals(1L, postFeedsRes.getFeedId());
@@ -66,7 +65,7 @@ public class PostFeedTest {
     UserInfo userInfo = makeUserInfoEntity();
 
     //then
-    assertThrows(BoardException.class, () -> feedServiceImpl.createFeed(postFeedsReq, userInfo));
+    assertThrows(BoardException.class, () -> feedService.createFeed(postFeedsReq, userInfo));
   }
 
   @Test
@@ -77,7 +76,7 @@ public class PostFeedTest {
     UserInfo userInfo = makeUserInfoEntity();
 
     //then
-    assertThrows(BoardException.class, () -> feedServiceImpl.createFeed(postFeedsReq, userInfo));
+    assertThrows(BoardException.class, () -> feedService.createFeed(postFeedsReq, userInfo));
   }
 
   private FeedDto.PostFeedsReq makePostFeedReq(String content) {

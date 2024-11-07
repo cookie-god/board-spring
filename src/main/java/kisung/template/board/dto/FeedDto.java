@@ -71,7 +71,9 @@ public class FeedDto {
   }
 
   @Data
+  @Builder
   @NoArgsConstructor
+  @AllArgsConstructor
   public static class FeedRawInfo {
     private Long id;
     private String content;

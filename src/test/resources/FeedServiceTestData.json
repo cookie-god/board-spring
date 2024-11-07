@@ -6,5 +6,22 @@
     "emptyContent": {
       "content": ""
     }
+  },
+  "getFeedsReq": {
+    "validRequestWithSearch": {
+      "feedId": 0,
+      "size": 10,
+      "searchKeyword": "하이"
+    },
+    "validRequestWithoutSearch": {
+      "feedId": 0,
+      "size": 10
+    },
+    "emptyFeedId": {
+      "size": 10
+    },
+    "emptyPageSize": {
+      "feedId": 0
+    }
   }
 }

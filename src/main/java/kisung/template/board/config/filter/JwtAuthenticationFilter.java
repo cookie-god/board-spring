@@ -10,7 +10,7 @@ import kisung.template.board.common.response.ErrorResponse;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.config.jwt.JwtTokenProvider;
 import kisung.template.board.entity.UserInfo;
-import kisung.template.board.service.AuthService;
+import kisung.template.board.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;

@@ -11,7 +11,7 @@ import kisung.template.board.config.SecurityUtil;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.FeedDto;
 import kisung.template.board.entity.UserInfo;
-import kisung.template.board.service.FeedService;
+import kisung.template.board.service.feed.FeedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;

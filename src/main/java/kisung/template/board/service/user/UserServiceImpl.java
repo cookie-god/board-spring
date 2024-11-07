@@ -1,4 +1,4 @@
-package kisung.template.board.service;
+package kisung.template.board.service.user;
 
 import kisung.template.board.config.jwt.JwtTokenProvider;
 import kisung.template.board.config.exception.BoardException;

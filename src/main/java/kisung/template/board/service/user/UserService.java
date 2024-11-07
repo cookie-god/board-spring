@@ -1,4 +1,4 @@
-package kisung.template.board.service;
+package kisung.template.board.service.user;
 
 import kisung.template.board.dto.UserDto;
 

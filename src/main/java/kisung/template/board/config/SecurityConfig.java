@@ -3,7 +3,7 @@ package kisung.template.board.config;
 import kisung.template.board.config.filter.JwtAuthenticationFilter;
 import kisung.template.board.config.filter.LoggingFilter;
 import kisung.template.board.config.jwt.JwtTokenProvider;
-import kisung.template.board.service.AuthService;
+import kisung.template.board.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

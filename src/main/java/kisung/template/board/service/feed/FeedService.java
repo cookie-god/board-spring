@@ -1,4 +1,4 @@
-package kisung.template.board.service;
+package kisung.template.board.service.feed;
 
 import kisung.template.board.dto.FeedDto;
 import kisung.template.board.entity.UserInfo;

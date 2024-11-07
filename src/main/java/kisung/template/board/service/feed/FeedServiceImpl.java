@@ -1,6 +1,5 @@
-package kisung.template.board.service;
+package kisung.template.board.service.feed;
 
-import kisung.template.board.common.code.ErrorCode;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.FeedDto;
 import kisung.template.board.dto.UserDto;

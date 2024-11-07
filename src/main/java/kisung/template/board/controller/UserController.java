@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import kisung.template.board.common.response.BasicResponse;
 import kisung.template.board.common.response.ErrorResponse;
 import kisung.template.board.dto.UserDto;
-import kisung.template.board.service.UserService;
+import kisung.template.board.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

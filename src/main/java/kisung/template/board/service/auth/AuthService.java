@@ -1,4 +1,4 @@
-package kisung.template.board.service;
+package kisung.template.board.service.auth;
 
 import kisung.template.board.entity.UserInfo;
 
