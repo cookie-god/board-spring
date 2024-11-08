@@ -29,7 +29,7 @@ public class FeedServiceImpl implements FeedService{
    */
   @Override
   @Transactional
-  public FeedDto.PostFeedsRes createFeed(FeedDto.PostFeedsReq postFeedsReq, UserInfo userInfo) {
+  public FeedDto.PostFeedsRes createFeeds(FeedDto.PostFeedsReq postFeedsReq, UserInfo userInfo) {
     validate(postFeedsReq);
     Feed feed = createFeedEntity(postFeedsReq.getContent(), userInfo);
     feed = feedRepository.save(feed);
@@ -51,6 +51,11 @@ public class FeedServiceImpl implements FeedService{
       .count(count)
       .feeds(makeFeedInfosByRawDatas(feedRawInfoList))
       .build();
+  }
+
+  @Override
+  public FeedDto.PutFeedsRes editFeeds(FeedDto.PutFeedsReq putFeedsReq, UserInfo userInfo) {
+    return null;
   }
 
   /**

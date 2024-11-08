@@ -50,7 +50,7 @@ public class PostFeedTest {
     when(feedRepository.save(any(Feed.class))).thenReturn(feed);
 
     // when
-    FeedDto.PostFeedsRes postFeedsRes = feedService.createFeed(postFeedsReq, userInfo);
+    FeedDto.PostFeedsRes postFeedsRes = feedService.createFeeds(postFeedsReq, userInfo);
 
     // then
     assertEquals(1L, postFeedsRes.getFeedId());
@@ -65,7 +65,7 @@ public class PostFeedTest {
     UserInfo userInfo = makeUserInfoEntity();
 
     //then
-    assertThrows(BoardException.class, () -> feedService.createFeed(postFeedsReq, userInfo));
+    assertThrows(BoardException.class, () -> feedService.createFeeds(postFeedsReq, userInfo));
   }
 
   @Test
@@ -76,7 +76,7 @@ public class PostFeedTest {
     UserInfo userInfo = makeUserInfoEntity();
 
     //then
-    assertThrows(BoardException.class, () -> feedService.createFeed(postFeedsReq, userInfo));
+    assertThrows(BoardException.class, () -> feedService.createFeeds(postFeedsReq, userInfo));
   }
 
   private FeedDto.PostFeedsReq makePostFeedReq(String content) {
