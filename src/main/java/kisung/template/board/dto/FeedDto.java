@@ -55,16 +55,16 @@ public class FeedDto {
   @AllArgsConstructor
   @NoArgsConstructor
   public static class PutFeedsReq {
-    @Schema(description = "조회시 마지막 피드 아이디, 처음 조회라면 0 삽입", example = "0", requiredMode = REQUIRED)
+    @Schema(description = "수정할 피드 아이디", example = "1", requiredMode = REQUIRED)
     private Long feedId;
-    @Schema(description = "내용", example = "오늘도 행복하세요ㅎㅎ")
+    @Schema(description = "내용", example = "오늘도 행복하세요ㅎㅎ", requiredMode = REQUIRED)
     private String content;
   }
 
   @Data
   @Builder
   public static class PutFeedsRes {
-    @Schema(description = "조회시 마지막 피드 아이디, 처음 조회라면 0 삽입", example = "0", requiredMode = REQUIRED)
+    @Schema(description = "수정된 피드 아이디", example = "0", requiredMode = REQUIRED)
     private Long feedId;
   }
 
