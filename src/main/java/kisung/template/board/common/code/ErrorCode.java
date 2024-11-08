@@ -19,11 +19,13 @@ public enum ErrorCode {
   DUPLICATE_NICKNAME(404, "USER_ERROR_008", "Nickname is already exist"),
   NOT_EXIST_USER_BY_EMAIL(404, "USER_ERROR_009", "User's email is not exist."),
   WRONG_PASSWORD(404, "USER_ERROR_010", "User's password is wrong."),
-  NON_EXIST_USER(400, "USER_ERROR_011", "Not exist user"),
+  NON_EXIST_USER(404, "USER_ERROR_011", "Not exist user"),
 
   NON_EXIST_CONTENT(400, "FEED_ERROR_001", "Content is empty"),
   NON_EXIST_FEED_ID(400, "FEED_ERROR_002", "Feed Id is empty"),
   NON_EXIST_PAGE_SIZE(400, "FEED_ERROR_003", "Page Size is empty"),
+  NON_EXIST_FEED(404, "FEED_ERROR_004", "Not exist feed"),
+  NOT_MY_FEED(404, "FEED_ERROR_005", "Not my feed"),
 
   INTERNAL_SERVER_ERROR(500, "SERVER_ERROR_001", "Server Error");
 

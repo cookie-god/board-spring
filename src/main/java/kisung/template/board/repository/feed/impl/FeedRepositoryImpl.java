@@ -4,11 +4,14 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kisung.template.board.dto.FeedDto;
+import kisung.template.board.entity.Feed;
+import kisung.template.board.enums.Status;
 import kisung.template.board.repository.feed.custom.CustomFeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static kisung.template.board.entity.QFeed.feed;
 import static kisung.template.board.entity.QUserInfo.userInfo;
@@ -53,6 +56,22 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
         )
         .limit(getFeedsReq.getSize())
         .fetch();
+  }
+
+  @Override
+  public Optional<Feed> findFeedById(Long feedId) {
+    return Optional.ofNullable(
+      jpaQueryFactory
+        .select(feed)
+        .from(feed)
+        .innerJoin(feed.userInfo).fetchJoin()
+        .where(
+          feed.id.eq(feedId),
+          feed.status.eq(Status.ACTIVE.value())
+        )
+        .fetchFirst()
+
+    );
   }
 
   private BooleanExpression cursorId(Long feedId) {

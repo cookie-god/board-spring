@@ -43,7 +43,7 @@ public class FeedController {
   @PostMapping(value = "", produces = "application/json")
   public BasicResponse<FeedDto.PostFeedsRes> postFeeds(@RequestBody FeedDto.PostFeedsReq postFeedsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
-    return BasicResponse.success(feedService.createFeed(postFeedsReq, userInfo), CREATE_SUCCESS);
+    return BasicResponse.success(feedService.createFeeds(postFeedsReq, userInfo), CREATE_SUCCESS);
   }
 
   @Operation(summary = "피드 조회 및 검색", description = "피드 조회 및 검색 서비스입니다.")
@@ -62,8 +62,31 @@ public class FeedController {
   })
   @PreAuthorize("hasRole('USER')")
   @GetMapping(value = "", produces = "application/json")
-  public BasicResponse<FeedDto.GetFeedsRes> getPosts(FeedDto.GetFeedsReq getFeedsReq) {
+  public BasicResponse<FeedDto.GetFeedsRes> getFeeds(FeedDto.GetFeedsReq getFeedsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(feedService.retrieveFeeds(getFeedsReq), READ_SUCCESS);
+  }
+
+  @Operation(summary = "피드 수정", description = "피드 수정 서비스입니다.")
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "204", description = "Success"),
+    @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
+      content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+    @ApiResponse(responseCode = "AUTH_ERROR_002", description = "Authorize Error",
+      content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+    @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
+      content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+    @ApiResponse(responseCode = "FEED_ERROR_001", description = "Content is empty",
+      content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+    @ApiResponse(responseCode = "FEED_ERROR_004", description = "Not exist feed",
+      content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+    @ApiResponse(responseCode = "FEED_ERROR_005", description = "Not my feed",
+      content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  @PreAuthorize("hasRole('USER')")
+  @PutMapping(value = "", produces = "application/json")
+  public BasicResponse<FeedDto.PutFeedsRes> putFeeds(@RequestBody FeedDto.PutFeedsReq putFeedsReq) {
+    UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
+    return BasicResponse.success(feedService.editFeeds(putFeedsReq, userInfo), UPDATE_SUCCESS);
   }
 }

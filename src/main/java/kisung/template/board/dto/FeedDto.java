@@ -53,6 +53,24 @@ public class FeedDto {
   @Data
   @Builder
   @AllArgsConstructor
+  @NoArgsConstructor
+  public static class PutFeedsReq {
+    @Schema(description = "조회시 마지막 피드 아이디, 처음 조회라면 0 삽입", example = "0", requiredMode = REQUIRED)
+    private Long feedId;
+    @Schema(description = "내용", example = "오늘도 행복하세요ㅎㅎ")
+    private String content;
+  }
+
+  @Data
+  @Builder
+  public static class PutFeedsRes {
+    @Schema(description = "조회시 마지막 피드 아이디, 처음 조회라면 0 삽입", example = "0", requiredMode = REQUIRED)
+    private Long feedId;
+  }
+
+  @Data
+  @Builder
+  @AllArgsConstructor
   public static class FeedInfo {
     @Schema(description = "피드 아이디", example = "1", requiredMode = REQUIRED)
     private Long feedId;

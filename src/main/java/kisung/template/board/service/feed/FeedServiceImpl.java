@@ -54,8 +54,17 @@ public class FeedServiceImpl implements FeedService{
   }
 
   @Override
+  @Transactional
   public FeedDto.PutFeedsRes editFeeds(FeedDto.PutFeedsReq putFeedsReq, UserInfo userInfo) {
-    return null;
+    validate(putFeedsReq);
+    Feed feed = feedRepository.findFeedById(putFeedsReq.getFeedId()).orElseThrow(() -> new BoardException(NON_EXIST_FEED));
+    if (!feed.getUserInfo().getId().equals(userInfo.getId())) {
+      throw new BoardException(NOT_MY_FEED);
+    }
+    feed.editFeed(putFeedsReq.getContent(), userInfo);
+    return FeedDto.PutFeedsRes.builder()
+      .feedId(feed.getId())
+      .build();
   }
 
   /**
@@ -67,12 +76,24 @@ public class FeedServiceImpl implements FeedService{
     }
   }
 
+  /**
+   * 피드 조회 및 검색 서비스 유효성 검사
+   */
   private void validate(FeedDto.GetFeedsReq getFeedsReq) {
     if (getFeedsReq.getFeedId() == null) {
       throw new BoardException(NON_EXIST_FEED_ID);
     }
     if (getFeedsReq.getSize() == null) {
       throw new BoardException(NON_EXIST_PAGE_SIZE);
+    }
+  }
+
+  /**
+   * 피드 수정 서비스 유효성 검사
+   */
+  private void validate(FeedDto.PutFeedsReq putFeedsReq) {
+    if (putFeedsReq.getContent() == null || putFeedsReq.getContent().isEmpty()) {
+      throw new BoardException(NON_EXIST_CONTENT);
     }
   }
 

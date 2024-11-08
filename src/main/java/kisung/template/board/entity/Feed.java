@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kisung.template.board.entity.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.context.annotation.Lazy;
 
 
 @Entity
@@ -31,4 +32,10 @@ public class Feed extends BaseEntity {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private UserInfo userInfo;
+
+  public void editFeed(String content, UserInfo userInfo) {
+    this.content = content;
+    this.userInfo = userInfo;
+    this.changeUpdatedAt();
+  }
 }

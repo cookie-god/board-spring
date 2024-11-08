@@ -19,4 +19,8 @@ public abstract class BaseEntity {
   private LocalDateTime  updatedAt;
   @Column(name="status")
   private String status;
+
+  protected void changeUpdatedAt() {
+    this.updatedAt = LocalDateTime.now();
+  }
 }
