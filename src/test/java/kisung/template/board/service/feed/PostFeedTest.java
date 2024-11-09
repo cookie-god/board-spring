@@ -42,8 +42,8 @@ public class PostFeedTest {
   @DisplayName("피드 작성 성공")
   void createFeed_success() {
     // given
-    JsonNode validFeed = testData.get("postFeedReq").get("validFeed");
-    FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(validFeed.get("content").asText());
+    JsonNode data = testData.get("postFeedReq").get("validFeed");
+    FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(data.get("content").asText());
     Feed feed = makeFeedEntity(postFeedsReq.getContent());
     UserInfo userInfo = makeUserInfoEntity();
 
@@ -60,8 +60,8 @@ public class PostFeedTest {
   @DisplayName("피드 작성 실패 - 내용이 비어있는 경우 실패")
   void createFeed_fail_empty_content_1() {
     //given
-    JsonNode emptyContent = testData.get("postFeedReq").get("emptyContent");
-    FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(emptyContent.get("content").asText());
+    JsonNode data = testData.get("postFeedReq").get("emptyContent");
+    FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(data.get("content").asText());
     UserInfo userInfo = makeUserInfoEntity();
 
     //then
