@@ -12,35 +12,39 @@ import static kisung.template.board.enums.Status.INACTIVE;
 
 
 @Entity
-@Table(name = "FEED")
+@Table(name = "COMMENT")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 @ToString
-public class Feed extends BaseEntity {
+public class Comment extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Lob
-  @Column(name = "content", columnDefinition = "TEXT")
+  @Column(name = "content", length = 300)
   private String content;
-
-  @Column(name = "comment_cnt")
-  private Long commentCnt;
 
   @Column(name = "bookmark_cnt")
   private Long bookmarkCnt;
 
   @ManyToOne
+  @JoinColumn(name = "parent_comment_id")
+  private Comment parent;
+
+  @ManyToOne
   @JoinColumn(name = "user_id")
   private UserInfo userInfo;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "feed")
-  private List<Comment> comments = new ArrayList<>();
+  @ManyToOne
+  @JoinColumn(name = "feed_id")
+  private Feed feed;
 
-  public void editFeed(String content) {
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+  private List<Comment> children = new ArrayList<>();
+
+  public void editComment(String content) {
     this.content = content;
     this.changeUpdatedAt();
   }
