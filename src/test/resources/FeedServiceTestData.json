@@ -4,7 +4,7 @@
       "content": "테스트 피드"
     },
     "emptyContent": {
-      "content": ""
+      "content": null
     }
   },
   "getFeedsReq": {
@@ -18,10 +18,12 @@
       "size": 10
     },
     "emptyFeedId": {
+      "feedId": null,
       "size": 10
     },
     "emptyPageSize": {
-      "feedId": 0
+      "feedId": 0,
+      "size": null
     }
   },
   "putFeedReq": {
@@ -38,11 +40,26 @@
       "content": "테스트 피드"
     },
     "emptyFeedId": {
+      "feedId": null,
       "content": "테스트 피드"
     },
     "emptyContent": {
       "feedId": 1,
       "content": ""
+    }
+  },
+  "deleteFeedReq": {
+    "validFeed": {
+      "feedId": 1
+    },
+    "notExistFeed": {
+      "feedId": 0
+    },
+    "notMyFeed": {
+      "feedId": 1
+    },
+    "emptyFeedId": {
+      "feedId": null
     }
   }
 }

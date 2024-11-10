@@ -61,7 +61,7 @@ public class PostFeedTest {
   void createFeed_fail_empty_content_1() {
     //given
     JsonNode data = testData.get("postFeedReq").get("emptyContent");
-    FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(data.get("content").asText());
+    FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(null);
     UserInfo userInfo = makeUserInfoEntity();
 
     //then
