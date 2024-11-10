@@ -28,136 +28,136 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PutFeedTest {
-    @Mock
-    private FeedRepository feedRepository;
-    @InjectMocks
-    private FeedServiceImpl feedService;
-    private JsonNode testData;
+  @Mock
+  private FeedRepository feedRepository;
+  @InjectMocks
+  private FeedServiceImpl feedService;
+  private JsonNode testData;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        testData = objectMapper.readTree(new File("src/test/resources/FeedServiceTestData.json"));
-    }
+  @BeforeEach
+  void setUp() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    testData = objectMapper.readTree(new File("src/test/resources/FeedServiceTestData.json"));
+  }
 
-    @Test
-    @DisplayName("피드 수정 성공")
-    void editFeeds_success() {
-        // given
-        JsonNode data = testData.get("putFeedReq").get("validFeed");
-        FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
-        UserInfo userInfo = makeUserInfoEntity(1L);
-        Feed feed = makeFeedEntity(putFeedsReq.getFeedId(), putFeedsReq.getContent(), userInfo);
+  @Test
+  @DisplayName("피드 수정 성공")
+  void editFeeds_success() {
+    // given
+    JsonNode data = testData.get("putFeedReq").get("validFeed");
+    FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
+    UserInfo userInfo = makeUserInfoEntity(1L);
+    Feed feed = makeFeedEntity(putFeedsReq.getFeedId(), putFeedsReq.getContent(), userInfo);
 
-        when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.of(feed));
+    when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.of(feed));
 
-        // when
-        FeedDto.PutFeedsRes putFeedsRes = feedService.editFeeds(putFeedsReq, userInfo);
+    // when
+    FeedDto.PutFeedsRes putFeedsRes = feedService.editFeeds(putFeedsReq, userInfo);
 
-        // then
-        assertEquals(1L, putFeedsRes.getFeedId());
-    }
+    // then
+    assertEquals(1L, putFeedsRes.getFeedId());
+  }
 
-    @Test
-    @DisplayName("피드 수정 실패 - 존재하지 않는 피드")
-    void editFeeds_fail_not_exist_feed_1() {
-        //given
-        JsonNode data = testData.get("putFeedReq").get("notExistFeed");
-        FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
-        UserInfo userInfo = makeUserInfoEntity(1L);
-        Feed feed = makeFeedEntity(putFeedsReq.getFeedId(), putFeedsReq.getContent(), userInfo);
+  @Test
+  @DisplayName("피드 수정 실패 - 존재하지 않는 피드")
+  void editFeeds_fail_not_exist_feed_1() {
+    //given
+    JsonNode data = testData.get("putFeedReq").get("notExistFeed");
+    FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
+    UserInfo userInfo = makeUserInfoEntity(1L);
+    Feed feed = makeFeedEntity(putFeedsReq.getFeedId(), putFeedsReq.getContent(), userInfo);
 
-        when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.empty());
+    when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.empty());
 
-        //then
-        assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
-    }
+    //then
+    assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
+  }
 
-    @Test
-    @DisplayName("피드 수정 실패 - 내 게시물이 아닌 피드")
-    void editFeeds_fail_not_my_feed_2() {
-        //given
-        JsonNode data = testData.get("putFeedReq").get("notMyFeed");
-        FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
-        UserInfo userInfo = makeUserInfoEntity(1L);
-        UserInfo anotherUserInfo = makeUserInfoEntity(2L);
-        Feed feed = makeFeedEntity(putFeedsReq.getFeedId(), putFeedsReq.getContent(), anotherUserInfo);
+  @Test
+  @DisplayName("피드 수정 실패 - 내 게시물이 아닌 피드")
+  void editFeeds_fail_not_my_feed_2() {
+    //given
+    JsonNode data = testData.get("putFeedReq").get("notMyFeed");
+    FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
+    UserInfo userInfo = makeUserInfoEntity(1L);
+    UserInfo anotherUserInfo = makeUserInfoEntity(2L);
+    Feed feed = makeFeedEntity(putFeedsReq.getFeedId(), putFeedsReq.getContent(), anotherUserInfo);
 
-        when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.of(feed));
+    when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.of(feed));
 
-        //then
-        assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
-    }
+    //then
+    assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
+  }
 
-    @Test
-    @DisplayName("피드 수정 실패 - 피드 아이디가 존재하지 않는 경우")
-    void editFeeds_fail_empty_content_3() {
-        //given
-        JsonNode data = testData.get("putFeedReq").get("emptyFeedId");
-        FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(null, data.get("content").asText());
-        UserInfo userInfo = makeUserInfoEntity(1L);
+  @Test
+  @DisplayName("피드 수정 실패 - 피드 아이디가 존재하지 않는 경우")
+  void editFeeds_fail_empty_content_3() {
+    //given
+    JsonNode data = testData.get("putFeedReq").get("emptyFeedId");
+    FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(null, data.get("content").asText());
+    UserInfo userInfo = makeUserInfoEntity(1L);
 
-        //then
-        assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
-    }
+    //then
+    assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
+  }
 
-    @Test
-    @DisplayName("피드 수정 실패 - 내용이 빈 경우")
-    void editFeeds_fail_empty_content_4() {
-        //given
-        JsonNode data = testData.get("putFeedReq").get("emptyContent");
-        FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
-        UserInfo userInfo = makeUserInfoEntity(1L);
+  @Test
+  @DisplayName("피드 수정 실패 - 내용이 빈 경우")
+  void editFeeds_fail_empty_content_4() {
+    //given
+    JsonNode data = testData.get("putFeedReq").get("emptyContent");
+    FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
+    UserInfo userInfo = makeUserInfoEntity(1L);
 
-        //then
-        assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
-    }
+    //then
+    assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
+  }
 
-    @Test
-    @DisplayName("피드 수정 실패 - 내용이 null인 경우")
-    void editFeeds_fail_empty_content_5() {
-        //given
-        JsonNode data = testData.get("putFeedReq").get("emptyContent");
-        FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), null);
-        UserInfo userInfo = makeUserInfoEntity(1L);
+  @Test
+  @DisplayName("피드 수정 실패 - 내용이 null인 경우")
+  void editFeeds_fail_empty_content_5() {
+    //given
+    JsonNode data = testData.get("putFeedReq").get("emptyContent");
+    FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), null);
+    UserInfo userInfo = makeUserInfoEntity(1L);
 
-        //then
-        assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
-    }
+    //then
+    assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
+  }
 
-    private FeedDto.PutFeedsReq makePutFeedReq(Long feedId, String content) {
-        return FeedDto.PutFeedsReq.builder()
-                .feedId(feedId)
-                .content(content)
-                .build();
-    }
+  private FeedDto.PutFeedsReq makePutFeedReq(Long feedId, String content) {
+    return FeedDto.PutFeedsReq.builder()
+        .feedId(feedId)
+        .content(content)
+        .build();
+  }
 
-    private UserInfo makeUserInfoEntity(Long userId) {
-        LocalDateTime now = LocalDateTime.now();
-        return UserInfo.builder()
-                .id(userId)
-                .email("lion0193@gmail.com")
-                .nickname("쿠키")
-                .password("99999999")
-                .role(Role.USER.value())
-                .createdAt(now)
-                .updatedAt(now)
-                .status(ACTIVE.value())
-                .build();
-    }
+  private UserInfo makeUserInfoEntity(Long userId) {
+    LocalDateTime now = LocalDateTime.now();
+    return UserInfo.builder()
+        .id(userId)
+        .email("lion0193@gmail.com")
+        .nickname("쿠키")
+        .password("99999999")
+        .role(Role.USER.value())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
+  }
 
-    private Feed makeFeedEntity(Long feedId, String content, UserInfo userInfo) {
-        LocalDateTime now = LocalDateTime.now();
-        return Feed.builder()
-                .id(feedId)
-                .content(content)
-                .commentCnt(0L)
-                .bookmarkCnt(0L)
-                .userInfo(userInfo)
-                .createdAt(now)
-                .updatedAt(now)
-                .status(ACTIVE.value())
-                .build();
-    }
+  private Feed makeFeedEntity(Long feedId, String content, UserInfo userInfo) {
+    LocalDateTime now = LocalDateTime.now();
+    return Feed.builder()
+        .id(feedId)
+        .content(content)
+        .commentCnt(0L)
+        .bookmarkCnt(0L)
+        .userInfo(userInfo)
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
+  }
 
 }
