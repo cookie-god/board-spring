@@ -49,8 +49,8 @@ public class PostLoginTest {
   @DisplayName("로그인 성공")
   void loginUser_success() {
     // given
-    JsonNode validUser = testData.get("postLoginReq").get("validUser");
-    UserDto.PostLoginReq postLoginReq = makePostLoginReq(validUser.get("email").asText(), validUser.get("password").asText());
+    JsonNode data = testData.get("postLoginReq").get("validUser");
+    UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), data.get("password").asText());
     UserInfo userInfo = makeUserInfoEntity(postLoginReq.getEmail(), postLoginReq.getEmail());
 
     when(userRepository.findUserInfoByEmail(any(String.class))).thenReturn(Optional.of(userInfo));
@@ -68,8 +68,8 @@ public class PostLoginTest {
   @DisplayName("로그인 실패 - 유효하지 않은 이메일")
   void loginUser_fail_invalid_email() {
     // given
-    JsonNode validUser = testData.get("postLoginReq").get("invalidUserByEmail");
-    UserDto.PostLoginReq postLoginReq = makePostLoginReq(validUser.get("email").asText(), validUser.get("password").asText());
+    JsonNode data = testData.get("postLoginReq").get("invalidUserByEmail");
+    UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), data.get("password").asText());
 
     // then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
@@ -79,8 +79,8 @@ public class PostLoginTest {
   @DisplayName("로그인 실패 - 유효하지 않은 비밀번호")
   void loginUser_fail_invalid_password() {
     // given
-    JsonNode validUser = testData.get("postLoginReq").get("invalidUserByPassword");
-    UserDto.PostLoginReq postLoginReq = makePostLoginReq(validUser.get("email").asText(), validUser.get("password").asText());
+    JsonNode data = testData.get("postLoginReq").get("invalidUserByPassword");
+    UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), data.get("password").asText());
 
     // then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
@@ -90,8 +90,8 @@ public class PostLoginTest {
   @DisplayName("로그인 실패 - 존재하지 않는 이메일")
   void loginUser_fail_non_exist_email() {
     // given
-    JsonNode validUser = testData.get("postLoginReq").get("validUser");
-    UserDto.PostLoginReq postLoginReq = makePostLoginReq(validUser.get("email").asText(), validUser.get("password").asText());
+    JsonNode data = testData.get("postLoginReq").get("validUser");
+    UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), data.get("password").asText());
 
     when(userRepository.findUserInfoByEmail(any(String.class))).thenReturn(Optional.empty());
 
@@ -103,8 +103,8 @@ public class PostLoginTest {
   @DisplayName("로그인 실패 - 일치하지 않는 비밀번호")
   void loginUser_fail_not_match_password() {
     // given
-    JsonNode validUser = testData.get("postLoginReq").get("validUser");
-    UserDto.PostLoginReq postLoginReq = makePostLoginReq(validUser.get("email").asText(), validUser.get("password").asText());
+    JsonNode data = testData.get("postLoginReq").get("validUser");
+    UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), data.get("password").asText());
     UserInfo userInfo = makeUserInfoEntity(postLoginReq.getEmail(), postLoginReq.getEmail());
 
     when(userRepository.findUserInfoByEmail(any(String.class))).thenReturn(Optional.of(userInfo));
@@ -112,6 +112,28 @@ public class PostLoginTest {
 
     // then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
+  }
+
+  @Test
+  @DisplayName("로그인 실패 - 이메일 존재 하지 않음")
+  void createUser_fail_empty_email() {
+    //given
+    JsonNode data = testData.get("postLoginReq").get("emptyEmail");
+    UserDto.PostLoginReq postLoginReq = makePostLoginReq(null, data.get("password").asText());
+
+    //then
+    assertThrows(BoardException.class, () -> userService.login(postLoginReq));
+  }
+
+  @Test
+  @DisplayName("로그인 실패 - 비밀번호 존재 하지 않음")
+  void createUser_fail_empty_password() {
+    //given
+    JsonNode data = testData.get("postLoginReq").get("emptyPassword");
+    UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), null);
+
+    //then
+    assertThrows(BoardException.class, () -> userService.login(postLoginReq));
   }
 
   private UserDto.PostLoginReq makePostLoginReq(String email, String password) {

@@ -47,8 +47,8 @@ class PostUserTest {
   @DisplayName("회원가입 성공")
   void createUser_success() {
     // given
-    JsonNode validUser = testData.get("postUserReq").get("validUser");
-    UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
+    JsonNode data = testData.get("postUserReq").get("validUser");
+    UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
     UserInfo userInfo = makeUserInfoEntity(postUserReq.getEmail(), postUserReq.getNickname(), bCryptPasswordEncoder.encode(postUserReq.getPassword()));
 
     when(userRepository.save(any(UserInfo.class))).thenReturn(userInfo);
@@ -65,8 +65,8 @@ class PostUserTest {
   @DisplayName("회원가입 실패 - 유효하지 않은 이메일")
   void createUser_fail_invalid_email() {
     //given
-    JsonNode inValidUserByEmail = testData.get("postUserReq").get("invalidUserByEmail");
-    UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
+    JsonNode data = testData.get("postUserReq").get("invalidUserByEmail");
+    UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
 
     //then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
@@ -76,8 +76,8 @@ class PostUserTest {
   @DisplayName("회원가입 실패 - 유효하지 않은 비밀번호")
   void createUser_fail_invalid_password() {
     //given
-    JsonNode inValidUserByEmail = testData.get("postUserReq").get("invalidUserByPassword");
-    UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
+    JsonNode data = testData.get("postUserReq").get("invalidUserByPassword");
+    UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
 
     //then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
@@ -87,8 +87,8 @@ class PostUserTest {
   @DisplayName("회원가입 실패 - 유효하지 않은 닉네임")
   void createUser_fail_invalid_nickname() {
     //given
-    JsonNode inValidUserByEmail = testData.get("postUserReq").get("invalidUserByNickname");
-    UserDto.PostUserReq postUserReq = makePostUserReq(inValidUserByEmail.get("email").asText(), inValidUserByEmail.get("nickname").asText(), inValidUserByEmail.get("password").asText());
+    JsonNode data = testData.get("postUserReq").get("invalidUserByNickname");
+    UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
 
     //then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
@@ -98,8 +98,8 @@ class PostUserTest {
   @DisplayName("회원가입 실패 - 중복된 이메일")
   void createUser_fail_duplicate_email() {
     //given
-    JsonNode validUser = testData.get("postUserReq").get("validUser");
-    UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
+    JsonNode data = testData.get("postUserReq").get("validUser");
+    UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
 
     when(userRepository.existsByEmail(anyString())).thenReturn(true);
 
@@ -111,10 +111,43 @@ class PostUserTest {
   @DisplayName("회원가입 실패 - 중복된 닉네임")
   void createUser_fail_duplicate_nickname() {
     //given
-    JsonNode validUser = testData.get("postUserReq").get("validUser");
-    UserDto.PostUserReq postUserReq = makePostUserReq(validUser.get("email").asText(), validUser.get("nickname").asText(), validUser.get("password").asText());
+    JsonNode data = testData.get("postUserReq").get("validUser");
+    UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
 
     when(userRepository.existsByNickname(anyString())).thenReturn(true);
+
+    //then
+    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+  }
+
+  @Test
+  @DisplayName("회원가입 실패 - 이메일 존재 하지 않음")
+  void createUser_fail_empty_email() {
+    //given
+    JsonNode data = testData.get("postUserReq").get("emptyEmail");
+    UserDto.PostUserReq postUserReq = makePostUserReq(null, data.get("nickname").asText(), data.get("password").asText());
+
+    //then
+    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+  }
+
+  @Test
+  @DisplayName("회원가입 실패 - 비밀번호 존재 하지 않음")
+  void createUser_fail_empty_password() {
+    //given
+    JsonNode data = testData.get("postUserReq").get("emptyPassword");
+    UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), null);
+
+    //then
+    assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
+  }
+
+  @Test
+  @DisplayName("회원가입 실패 - 닉네임 존재 하지 않음")
+  void createUser_fail_empty_nickname() {
+    //given
+    JsonNode data = testData.get("postUserReq").get("emptyNickname");
+    UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), null, data.get("password").asText());
 
     //then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));

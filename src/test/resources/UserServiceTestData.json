@@ -19,6 +19,21 @@
       "email": "lion0193@gmail.com",
       "password": "qwer1234!",
       "nickname": "cookiegodgodgod"
+    },
+    "emptyEmail": {
+      "email": null,
+      "password": "qwer1234!",
+      "nickname": "cookie-god"
+    },
+    "emptyPassword": {
+      "email": "lion0193@gmail.com",
+      "password": null,
+      "nickname": "cookie-god"
+    },
+    "emptyNickname": {
+      "email": "lion0193@gmail.com",
+      "password": "qwer1234!",
+      "nickname": null
     }
   },
   "postLoginReq": {
@@ -33,6 +48,14 @@
     "invalidUserByPassword": {
       "email": "lion0193@gmail.com",
       "password": "qwer1234"
+    },
+    "emptyEmail": {
+      "email": null,
+      "password": "qwer1234!"
+    },
+    "emptyPassword": {
+      "email": "lion0193@gmail.com",
+      "password": null
     }
   }
 }
