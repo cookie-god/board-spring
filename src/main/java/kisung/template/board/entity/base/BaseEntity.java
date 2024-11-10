@@ -2,6 +2,7 @@ package kisung.template.board.entity.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import kisung.template.board.enums.Status;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -22,5 +23,9 @@ public abstract class BaseEntity {
 
   protected void changeUpdatedAt() {
     this.updatedAt = LocalDateTime.now();
+  }
+
+  protected void changeStatus(Status status) {
+    this.status = status.value();
   }
 }

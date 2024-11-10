@@ -70,6 +70,22 @@ public class FeedDto {
 
   @Data
   @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class DeleteFeedsReq {
+    @Schema(description = "삭제할 피드 아이디", example = "0", requiredMode = REQUIRED)
+    private Long feedId;
+  }
+
+  @Data
+  @Builder
+  public static class DeleteFeedsRes {
+    @Schema(description = "삭제된 피드 아이디", example = "0", requiredMode = REQUIRED)
+    private Long feedId;
+  }
+
+  @Data
+  @Builder
   @AllArgsConstructor
   public static class FeedInfo {
     @Schema(description = "피드 아이디", example = "1", requiredMode = REQUIRED)

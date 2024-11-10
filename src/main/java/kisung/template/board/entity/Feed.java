@@ -2,9 +2,12 @@ package kisung.template.board.entity;
 
 import jakarta.persistence.*;
 import kisung.template.board.entity.base.BaseEntity;
+import kisung.template.board.enums.Status;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.context.annotation.Lazy;
+
+import static kisung.template.board.enums.Status.INACTIVE;
 
 
 @Entity
@@ -37,5 +40,9 @@ public class Feed extends BaseEntity {
     this.content = content;
     this.userInfo = userInfo;
     this.changeUpdatedAt();
+  }
+
+  public void delete() {
+    this.changeStatus(INACTIVE);
   }
 }

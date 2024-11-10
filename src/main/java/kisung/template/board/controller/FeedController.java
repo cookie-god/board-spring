@@ -27,7 +27,7 @@ import static kisung.template.board.common.code.SuccessCode.*;
 public class FeedController {
   private final FeedService feedService;
 
-  @Operation(summary = "피드 생성", description = "피드 작성 서비스입니다.")
+  @Operation(summary = "피드 생성", description = "피드 작성 서비스 입니다.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "201", description = "Success"),
     @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
@@ -46,7 +46,7 @@ public class FeedController {
     return BasicResponse.success(feedService.createFeeds(postFeedsReq, userInfo), CREATE_SUCCESS);
   }
 
-  @Operation(summary = "피드 조회 및 검색", description = "피드 조회 및 검색 서비스입니다.")
+  @Operation(summary = "피드 조회 및 검색", description = "피드 조회 및 검색 서비스 입니다.")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Success"),
       @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
@@ -67,7 +67,7 @@ public class FeedController {
     return BasicResponse.success(feedService.retrieveFeeds(getFeedsReq), READ_SUCCESS);
   }
 
-  @Operation(summary = "피드 수정", description = "피드 수정 서비스입니다.")
+  @Operation(summary = "피드 수정", description = "피드 수정 서비스 입니다.")
   @ApiResponses(value = {
     @ApiResponse(responseCode = "204", description = "Success"),
     @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
@@ -88,5 +88,28 @@ public class FeedController {
   public BasicResponse<FeedDto.PutFeedsRes> putFeeds(@RequestBody FeedDto.PutFeedsReq putFeedsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(feedService.editFeeds(putFeedsReq, userInfo), UPDATE_SUCCESS);
+  }
+
+  @Operation(summary = "피드 삭제", description = "피드 삭제 서비스 입니다.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Success"),
+      @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "AUTH_ERROR_002", description = "Authorize Error",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_002", description = "Feed Id is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_004", description = "Not exist feed",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_005", description = "Not my feed",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  @PreAuthorize("hasRole('USER')")
+  @DeleteMapping(value = "", produces = "application/json")
+  public BasicResponse<FeedDto.DeleteFeedsRes> deleteFeeds(@RequestBody FeedDto.DeleteFeedsReq deleteFeedsReq) {
+    UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
+    return BasicResponse.success(feedService.deleteFeeds(deleteFeedsReq, userInfo), DELETE_SUCCESS);
   }
 }

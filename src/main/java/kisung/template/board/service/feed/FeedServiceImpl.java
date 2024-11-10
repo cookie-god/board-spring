@@ -67,6 +67,20 @@ public class FeedServiceImpl implements FeedService{
       .build();
   }
 
+  @Override
+  @Transactional
+  public FeedDto.DeleteFeedsRes deleteFeeds(FeedDto.DeleteFeedsReq deleteFeedsReq, UserInfo userInfo) {
+    validate(deleteFeedsReq);
+    Feed feed = feedRepository.findFeedById(deleteFeedsReq.getFeedId()).orElseThrow(() -> new BoardException(NON_EXIST_FEED));
+    if (!feed.getUserInfo().getId().equals(userInfo.getId())) {
+      throw new BoardException(NOT_MY_FEED);
+    }
+    feed.delete();
+    return FeedDto.DeleteFeedsRes.builder()
+        .feedId(feed.getId())
+        .build();
+  }
+
   /**
    * 피드 생성 서비스 유효성 검사
    */
@@ -94,6 +108,15 @@ public class FeedServiceImpl implements FeedService{
   private void validate(FeedDto.PutFeedsReq putFeedsReq) {
     if (putFeedsReq.getContent() == null || putFeedsReq.getContent().isEmpty()) {
       throw new BoardException(NON_EXIST_CONTENT);
+    }
+  }
+
+  /**
+   * 피드 수정 서비스 유효성 검사
+   */
+  private void validate(FeedDto.DeleteFeedsReq deleteFeedsReq) {
+    if (deleteFeedsReq.getFeedId() == null) {
+      throw new BoardException(NON_EXIST_FEED_ID);
     }
   }
 
