@@ -50,15 +50,16 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http, RoleHierarchy roleHierarchy) throws Exception {
     http
-      .csrf(AbstractHttpConfigurer::disable)
-      .authorizeHttpRequests(authz -> authz
-        .requestMatchers("/apis/v1/users/**").permitAll()  // 모든 요청을 허용
-        .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()  // 모든 요청을 허용
-        .requestMatchers("/apis/v1/feeds/**").authenticated() // 피드 시스템엔 인증 정보 체크
-        .anyRequest().authenticated()
-      )
-      .addFilterBefore(new LoggingFilter(), UsernamePasswordAuthenticationFilter.class)
-      .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, authService), LoggingFilter.class)
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers("/apis/v1/users/**").permitAll()  // 모든 요청을 허용
+            .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**").permitAll()  // 모든 요청을 허용
+            .requestMatchers("/apis/v1/feeds/**").authenticated() // 피드 시스템엔 인증 정보 체크
+            .requestMatchers("/apis/v1/comments/**").authenticated() // 댓글 시스템엔 인증 정보 체크
+            .anyRequest().authenticated()
+        )
+        .addFilterBefore(new LoggingFilter(), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, authService), LoggingFilter.class)
     ;  // CSRF 비활성화
 
 
