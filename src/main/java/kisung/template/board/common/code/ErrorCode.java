@@ -21,11 +21,18 @@ public enum ErrorCode {
   WRONG_PASSWORD(404, "USER_ERROR_010", "User's password is wrong."),
   NON_EXIST_USER(404, "USER_ERROR_011", "Not exist user"),
 
-  NON_EXIST_CONTENT(400, "FEED_ERROR_001", "Content is empty"),
+  NON_EXIST_FEED_CONTENT(400, "FEED_ERROR_001", "Content is empty"),
   NON_EXIST_FEED_ID(400, "FEED_ERROR_002", "Feed Id is empty"),
   NON_EXIST_PAGE_SIZE(400, "FEED_ERROR_003", "Page Size is empty"),
   NON_EXIST_FEED(404, "FEED_ERROR_004", "Not exist feed"),
   NOT_MY_FEED(404, "FEED_ERROR_005", "Not my feed"),
+
+
+  NON_EXIST_COMMENT_CONTENT(400, "COMMENT_ERROR_001", "Content is empty"),
+  NON_EXIST_COMMENT(404, "COMMENT_ERROR_002", "Not exist comment"),
+  NON_EXIST_PARENT_COMMENT(404, "COMMENT_ERROR_003", "Not exist parent comment"),
+  INVALID_CONTENT(400, "COMMENT_ERROR_004", "Comment content' length is under 300 characters"),
+
 
   INTERNAL_SERVER_ERROR(500, "SERVER_ERROR_001", "Server Error");
 

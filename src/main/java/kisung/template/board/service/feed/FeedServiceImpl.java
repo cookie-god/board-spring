@@ -81,12 +81,17 @@ public class FeedServiceImpl implements FeedService {
         .build();
   }
 
+  @Override
+  public Feed retrieveFeedEntity(Long feedId) {
+    return feedRepository.findFeedById(feedId).orElseThrow(() -> new BoardException(NON_EXIST_FEED));
+  }
+
   /**
    * 피드 생성 서비스 유효성 검사
    */
   private void validate(FeedDto.PostFeedsReq postFeedsReq) {
     if (postFeedsReq.getContent() == null || postFeedsReq.getContent().isEmpty()) {
-      throw new BoardException(NON_EXIST_CONTENT);
+      throw new BoardException(NON_EXIST_FEED_CONTENT);
     }
   }
 
@@ -110,7 +115,7 @@ public class FeedServiceImpl implements FeedService {
       throw new BoardException(NON_EXIST_FEED_ID);
     }
     if (putFeedsReq.getContent() == null || putFeedsReq.getContent().isEmpty()) {
-      throw new BoardException(NON_EXIST_CONTENT);
+      throw new BoardException(NON_EXIST_FEED_CONTENT);
     }
   }
 

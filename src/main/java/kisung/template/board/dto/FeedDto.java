@@ -64,7 +64,7 @@ public class FeedDto {
   @Data
   @Builder
   public static class PutFeedsRes {
-    @Schema(description = "수정된 피드 아이디", example = "0", requiredMode = REQUIRED)
+    @Schema(description = "수정된 피드 아이디", example = "1", requiredMode = REQUIRED)
     private Long feedId;
   }
 
@@ -73,14 +73,14 @@ public class FeedDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class DeleteFeedsReq {
-    @Schema(description = "삭제할 피드 아이디", example = "0", requiredMode = REQUIRED)
+    @Schema(description = "삭제할 피드 아이디", example = "1", requiredMode = REQUIRED)
     private Long feedId;
   }
 
   @Data
   @Builder
   public static class DeleteFeedsRes {
-    @Schema(description = "삭제된 피드 아이디", example = "0", requiredMode = REQUIRED)
+    @Schema(description = "삭제된 피드 아이디", example = "1", requiredMode = REQUIRED)
     private Long feedId;
   }
 
