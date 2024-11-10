@@ -90,8 +90,20 @@ public class PutFeedTest {
     }
 
     @Test
-    @DisplayName("피드 수정 실패 - 내용이 빈 경우")
+    @DisplayName("피드 수정 실패 - 피드 아이디가 존재하지 않는 경우")
     void editFeeds_fail_empty_content_3() {
+        //given
+        JsonNode data = testData.get("putFeedReq").get("emptyFeedId");
+        FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(null, data.get("content").asText());
+        UserInfo userInfo = makeUserInfoEntity(1L);
+
+        //then
+        assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
+    }
+
+    @Test
+    @DisplayName("피드 수정 실패 - 내용이 빈 경우")
+    void editFeeds_fail_empty_content_4() {
         //given
         JsonNode data = testData.get("putFeedReq").get("emptyContent");
         FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
@@ -103,7 +115,7 @@ public class PutFeedTest {
 
     @Test
     @DisplayName("피드 수정 실패 - 내용이 null인 경우")
-    void editFeeds_fail_empty_content_4() {
+    void editFeeds_fail_empty_content_5() {
         //given
         JsonNode data = testData.get("putFeedReq").get("emptyContent");
         FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), null);

@@ -37,6 +37,9 @@
       "feedId": 1,
       "content": "테스트 피드"
     },
+    "emptyFeedId": {
+      "content": "테스트 피드"
+    },
     "emptyContent": {
       "feedId": 1,
       "content": ""

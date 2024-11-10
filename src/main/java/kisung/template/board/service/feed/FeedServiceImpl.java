@@ -21,7 +21,7 @@ import static kisung.template.board.enums.Status.ACTIVE;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class FeedServiceImpl implements FeedService{
+public class FeedServiceImpl implements FeedService {
   private final FeedRepository feedRepository;
 
   /**
@@ -48,9 +48,9 @@ public class FeedServiceImpl implements FeedService{
     Long count = feedRepository.countFeedInfos(getFeedsReq);
     List<FeedDto.FeedRawInfo> feedRawInfoList = feedRepository.findFeedInfos(getFeedsReq);
     return FeedDto.GetFeedsRes.builder()
-      .count(count)
-      .feeds(makeFeedInfosByRawDatas(feedRawInfoList))
-      .build();
+        .count(count)
+        .feeds(makeFeedInfosByRawDatas(feedRawInfoList))
+        .build();
   }
 
   @Override
@@ -61,10 +61,10 @@ public class FeedServiceImpl implements FeedService{
     if (!feed.getUserInfo().getId().equals(userInfo.getId())) {
       throw new BoardException(NOT_MY_FEED);
     }
-    feed.editFeed(putFeedsReq.getContent(), userInfo);
+    feed.editFeed(putFeedsReq.getContent());
     return FeedDto.PutFeedsRes.builder()
-      .feedId(feed.getId())
-      .build();
+        .feedId(feed.getId())
+        .build();
   }
 
   @Override
@@ -106,6 +106,9 @@ public class FeedServiceImpl implements FeedService{
    * 피드 수정 서비스 유효성 검사
    */
   private void validate(FeedDto.PutFeedsReq putFeedsReq) {
+    if (putFeedsReq.getFeedId() == null) {
+      throw new BoardException(NON_EXIST_FEED_ID);
+    }
     if (putFeedsReq.getContent() == null || putFeedsReq.getContent().isEmpty()) {
       throw new BoardException(NON_EXIST_CONTENT);
     }
@@ -125,20 +128,20 @@ public class FeedServiceImpl implements FeedService{
    */
   public List<FeedDto.FeedInfo> makeFeedInfosByRawDatas(List<FeedDto.FeedRawInfo> feedRawInfos) {
     return feedRawInfos.stream().map(feedRawInfo -> FeedDto.FeedInfo.builder()
-      .feedId(feedRawInfo.getId())
-      .content(feedRawInfo.getContent())
-      .userBasicInfo(UserDto.UserBasicInfo.builder()
-        .userId(feedRawInfo.getUserId())
-        .email(feedRawInfo.getEmail())
-        .nickname(feedRawInfo.getNickname())
-        .role(feedRawInfo.getRole())
+        .feedId(feedRawInfo.getId())
+        .content(feedRawInfo.getContent())
+        .userBasicInfo(UserDto.UserBasicInfo.builder()
+            .userId(feedRawInfo.getUserId())
+            .email(feedRawInfo.getEmail())
+            .nickname(feedRawInfo.getNickname())
+            .role(feedRawInfo.getRole())
+            .build()
+        )
+        .commentCnt(feedRawInfo.getCommentCnt())
+        .bookmarkCnt(feedRawInfo.getBookmarkCnt())
+        .createdAt(feedRawInfo.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+        .updatedAt(feedRawInfo.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
         .build()
-      )
-      .commentCnt(feedRawInfo.getCommentCnt())
-      .bookmarkCnt(feedRawInfo.getBookmarkCnt())
-      .createdAt(feedRawInfo.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
-      .updatedAt(feedRawInfo.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
-      .build()
     ).toList();
   }
 

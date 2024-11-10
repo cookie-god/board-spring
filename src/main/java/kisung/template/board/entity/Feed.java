@@ -36,9 +36,8 @@ public class Feed extends BaseEntity {
   @JoinColumn(name = "user_id")
   private UserInfo userInfo;
 
-  public void editFeed(String content, UserInfo userInfo) {
+  public void editFeed(String content) {
     this.content = content;
-    this.userInfo = userInfo;
     this.changeUpdatedAt();
   }
 
