@@ -1,0 +1,39 @@
+{
+  "postCommentReq": {
+    "validComment": {
+      "feedId": 1,
+      "parentCommentId": 0,
+      "content": "테스트 댓글"
+    },
+    "validCommentWithParentComment": {
+      "feedId": 1,
+      "parentCommentId": 1,
+      "content": "테스트 댓글"
+    },
+    "notExistParentComment": {
+      "feedId": 1,
+      "parentCommentId": 1,
+      "content": "테스트 댓글"
+    },
+    "emptyFeedId": {
+      "feedId": null,
+      "parentCommentId": 0,
+      "content": "테스트 댓글"
+    },
+    "emptyContent": {
+      "feedId": 1,
+      "parentCommentId": 0,
+      "content": null
+    },
+    "emptyParentCommentId": {
+      "feedId": 1,
+      "parentCommentId": null,
+      "content": "테스트 댓글"
+    },
+    "inValidContentLength": {
+      "feedId": 1,
+      "parentCommentId": 0,
+      "content": "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+    }
+  }
+}

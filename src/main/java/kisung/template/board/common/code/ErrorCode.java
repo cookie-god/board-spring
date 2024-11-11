@@ -32,6 +32,7 @@ public enum ErrorCode {
   NON_EXIST_COMMENT(404, "COMMENT_ERROR_002", "Not exist comment"),
   NON_EXIST_PARENT_COMMENT(404, "COMMENT_ERROR_003", "Not exist parent comment"),
   INVALID_CONTENT(400, "COMMENT_ERROR_004", "Comment content' length is under 300 characters"),
+  NON_EXIST_PARENT_COMMENT_ID(400, "COMMENT_ERROR_005", "Parent Comment Id is empty"),
 
 
   INTERNAL_SERVER_ERROR(500, "SERVER_ERROR_001", "Server Error");

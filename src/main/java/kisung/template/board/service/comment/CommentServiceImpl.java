@@ -56,6 +56,9 @@ public class CommentServiceImpl implements CommentService {
     if (postCommentsReq.getContent().length() > 300) { // 게시글 내용 300자 이상인 경우
       throw new BoardException(INVALID_CONTENT);
     }
+    if (postCommentsReq.getParentCommentId() == null) { // 부모 댓글 아이디 존재 여부
+      throw new BoardException(NON_EXIST_PARENT_COMMENT_ID);
+    }
   }
 
   private Comment makeCommentEntity(Feed feed, UserInfo userInfo, Comment parentCommnet, String content) {

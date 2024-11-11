@@ -45,6 +45,8 @@ public class CommentController {
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "COMMENT_ERROR_003", description = "Not exist parent comment",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "COMMENT_ERROR_005", description = "Parent Comment Id is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "COMMENT_ERROR_004", description = "Comment content' length is under 300 characters",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "FEED_ERROR_004", description = "Not exist feed",
