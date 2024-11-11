@@ -14,7 +14,7 @@ class BoardApplicationTests {
 		if (applicationContext != null) {
 			String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
 			for (String bean: beanDefinitionNames) {
-				System.out.println("bean = " + bean);
+				System.out.println("bean = " + applicationContext.getBean(bean).getClass());
 			}
 		}
 	}
