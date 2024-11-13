@@ -40,7 +40,7 @@ public class GetFeedsTest {
 
   @Test
   @DisplayName("피드 조회 (검색 O) 성공")
-  void getFeedsWithSearch_success() {
+  void retrieveFeedsWithSearch_success() {
     // given
     JsonNode data = testData.get("getFeedsReq").get("validRequestWithSearch");
     FeedDto.GetFeedsReq getFeedsReq = makeGetFeedsReq(data.get("feedId").asLong(), data.get("size").asInt(), data.get("searchKeyword").asText());
@@ -59,7 +59,7 @@ public class GetFeedsTest {
 
   @Test
   @DisplayName("피드 조회 (검색 X) 성공")
-  void getFeedsWithoutSearch_success() {
+  void retrieveFeedsWithoutSearch_success() {
     // given
     JsonNode data = testData.get("getFeedsReq").get("validRequestWithoutSearch");
     FeedDto.GetFeedsReq getFeedsReq = makeGetFeedsReq(data.get("feedId").asLong(), data.get("size").asInt(), null);
@@ -78,7 +78,7 @@ public class GetFeedsTest {
 
   @Test
   @DisplayName("피드 조회 실패 - 피드 아이디가 없는 경우 실패")
-  void getFeeds_fail_empty_feed_id() {
+  void retrieveFeeds_fail_empty_feed_id() {
     //given
     JsonNode data = testData.get("getFeedsReq").get("emptyFeedId");
     FeedDto.GetFeedsReq getFeedsReq = makeGetFeedsReq(null, data.get("size").asInt(), null);
@@ -89,7 +89,7 @@ public class GetFeedsTest {
 
   @Test
   @DisplayName("피드 조회 실패 - 페이지 사이즈가 없는 경우 실패")
-  void getFeeds_fail_empty_page_size() {
+  void retrieveFeeds_fail_empty_page_size() {
     //given
     JsonNode data = testData.get("getFeedsReq").get("emptyPageSize");
     FeedDto.GetFeedsReq getFeedsReq = makeGetFeedsReq(data.get("feedId").asLong(), null, null);

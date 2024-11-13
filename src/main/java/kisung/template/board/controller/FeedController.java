@@ -125,6 +125,8 @@ public class FeedController {
       @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "FEED_ERROR_002", description = "Feed Id is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_004", description = "Not exist feed",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PreAuthorize("hasRole('USER')")
