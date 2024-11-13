@@ -12,5 +12,8 @@ public interface FeedService {
   FeedDto.PutFeedsRes editFeeds(FeedDto.PutFeedsReq putFeedsReq, UserInfo userInfo);
 
   FeedDto.DeleteFeedsRes deleteFeeds(FeedDto.DeleteFeedsReq deleteFeedsReq, UserInfo userInfo);
+  FeedDto.GetFeedRes retrieveFeed(Long feedId, UserInfo userInfo);
+
+
   Feed retrieveFeedEntity(Long feedId);
 }

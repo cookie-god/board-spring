@@ -5,7 +5,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kisung.template.board.dto.FeedDto;
 import kisung.template.board.entity.Feed;
-import kisung.template.board.enums.Status;
 import kisung.template.board.repository.feed.custom.CustomFeedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,6 +14,7 @@ import java.util.Optional;
 
 import static kisung.template.board.entity.QFeed.feed;
 import static kisung.template.board.entity.QUserInfo.userInfo;
+import static kisung.template.board.enums.Status.ACTIVE;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,7 +26,10 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
     return jpaQueryFactory
         .select(feed.count())
         .from(feed)
-        .where(search(getFeedsReq.getSearchKeyword()))
+        .where(
+            search(getFeedsReq.getSearchKeyword()),
+            feed.status.eq(ACTIVE.value())
+        )
         .fetchFirst();
   }
 
@@ -49,13 +52,40 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
         .innerJoin(userInfo).on(feed.userInfo.eq(userInfo)).fetchJoin()
         .where(
             search(getFeedsReq.getSearchKeyword()),
-            cursorId(getFeedsReq.getFeedId())
+            cursorId(getFeedsReq.getFeedId()),
+            feed.status.eq(ACTIVE.value())
         )
         .orderBy(
             feed.id.desc()
         )
         .limit(getFeedsReq.getSize())
         .fetch();
+  }
+
+  @Override
+  public Optional<FeedDto.FeedRawInfo> findFeedInfoById(Long feedId) {
+    return Optional.ofNullable(
+        jpaQueryFactory
+            .select(Projections.bean(FeedDto.FeedRawInfo.class,
+                feed.id,
+                feed.content,
+                userInfo.id.as("userId"),
+                userInfo.email,
+                userInfo.nickname,
+                userInfo.role,
+                feed.commentCnt,
+                feed.bookmarkCnt,
+                feed.createdAt,
+                feed.updatedAt
+            ))
+            .from(feed)
+            .innerJoin(userInfo).on(feed.userInfo.eq(userInfo)).fetchJoin()
+            .where(
+                feed.id.eq(feedId),
+                feed.status.eq(ACTIVE.value())
+            )
+            .fetchFirst()
+    );
   }
 
   @Override
@@ -67,7 +97,7 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
         .innerJoin(feed.userInfo).fetchJoin()
         .where(
           feed.id.eq(feedId),
-          feed.status.eq(Status.ACTIVE.value())
+          feed.status.eq(ACTIVE.value())
         )
         .fetchFirst()
 

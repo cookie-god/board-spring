@@ -114,4 +114,23 @@ public class FeedController {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(feedService.deleteFeeds(deleteFeedsReq, userInfo), DELETE_SUCCESS);
   }
+
+  @Operation(summary = "피드 상세 조회", description = "피드 상세 조회 서비스 입니다.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Success"),
+      @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "AUTH_ERROR_002", description = "Authorize Error",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_002", description = "Feed Id is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  @PreAuthorize("hasRole('USER')")
+  @GetMapping(value = "{feedId}", produces = "application/json")
+  public BasicResponse<FeedDto.GetFeedRes> getFeed(@PathVariable("feedId") Long feedId) {
+    UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
+    return BasicResponse.success(feedService.retrieveFeed(feedId, userInfo), READ_SUCCESS);
+  }
 }

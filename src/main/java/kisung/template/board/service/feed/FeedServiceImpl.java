@@ -82,6 +82,13 @@ public class FeedServiceImpl implements FeedService {
   }
 
   @Override
+  public FeedDto.GetFeedRes retrieveFeed(Long feedId, UserInfo userInfo) {
+    validate(feedId);
+    FeedDto.FeedRawInfo feedRawInfo = feedRepository.findFeedInfoById(feedId).orElseThrow(() -> new BoardException(NON_EXIST_FEED));
+    return makeGetFeedResByRawData(feedRawInfo);
+  }
+
+  @Override
   public Feed retrieveFeedEntity(Long feedId) {
     return feedRepository.findFeedById(feedId).orElseThrow(() -> new BoardException(NON_EXIST_FEED));
   }
@@ -120,7 +127,7 @@ public class FeedServiceImpl implements FeedService {
   }
 
   /**
-   * 피드 수정 서비스 유효성 검사
+   * 피드 삭제 서비스 유효성 검사
    */
   private void validate(FeedDto.DeleteFeedsReq deleteFeedsReq) {
     if (deleteFeedsReq.getFeedId() == null) {
@@ -129,7 +136,16 @@ public class FeedServiceImpl implements FeedService {
   }
 
   /**
-   * FeedRawInfo -> FeedInfo로 변환해주는 메서드
+   * 피드 상세 조회 서비스 유효성 검사
+   */
+  private void validate(Long feedId) {
+    if (feedId == null) {
+      throw new BoardException(NON_EXIST_FEED_ID);
+    }
+  }
+
+  /**
+   * List<FeedRawInfo> -> List<FeedInfo>로 변환해주는 메서드
    */
   public List<FeedDto.FeedInfo> makeFeedInfosByRawDatas(List<FeedDto.FeedRawInfo> feedRawInfos) {
     return feedRawInfos.stream().map(feedRawInfo -> FeedDto.FeedInfo.builder()
@@ -148,6 +164,27 @@ public class FeedServiceImpl implements FeedService {
         .updatedAt(feedRawInfo.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
         .build()
     ).toList();
+  }
+
+  /**
+   * FeedRawInfo -> GetFeedRes로 변환해주는 메서드
+   */
+  public FeedDto.GetFeedRes makeGetFeedResByRawData(FeedDto.FeedRawInfo feedRawInfo) {
+    return FeedDto.GetFeedRes.builder()
+        .feedId(feedRawInfo.getId())
+        .content(feedRawInfo.getContent())
+        .userBasicInfo(UserDto.UserBasicInfo.builder()
+            .userId(feedRawInfo.getUserId())
+            .email(feedRawInfo.getEmail())
+            .nickname(feedRawInfo.getNickname())
+            .role(feedRawInfo.getRole())
+            .build()
+        )
+        .commentCnt(feedRawInfo.getCommentCnt())
+        .bookmarkCnt(feedRawInfo.getBookmarkCnt())
+        .createdAt(feedRawInfo.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+        .updatedAt(feedRawInfo.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+        .build();
   }
 
   /**

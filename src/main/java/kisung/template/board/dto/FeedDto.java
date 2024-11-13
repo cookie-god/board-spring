@@ -106,6 +106,26 @@ public class FeedDto {
 
   @Data
   @Builder
+  @AllArgsConstructor
+  public static class GetFeedRes {
+    @Schema(description = "피드 아이디", example = "1", requiredMode = REQUIRED)
+    private Long feedId;
+    @Schema(description = "내용", example = "오늘도 행복하세요ㅎㅎ", requiredMode = REQUIRED)
+    private String content;
+    @Schema(description = "유저 기본 정보", requiredMode = REQUIRED)
+    private UserDto.UserBasicInfo userBasicInfo;
+    @Schema(description = "댓글 수", example = "10", requiredMode = REQUIRED)
+    private Long commentCnt;
+    @Schema(description = "좋아요 수", example = "10", requiredMode = REQUIRED)
+    private Long bookmarkCnt;
+    @Schema(description = "작성 시간(초 단위)", example = "1722580995", requiredMode = REQUIRED)
+    private Long createdAt;
+    @Schema(description = "수정 시간(초 단위)", example = "1722580995", requiredMode = REQUIRED)
+    private Long updatedAt;
+  }
+
+  @Data
+  @Builder
   @NoArgsConstructor
   @AllArgsConstructor
   public static class FeedRawInfo {
