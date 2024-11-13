@@ -68,7 +68,7 @@ class PostUserTest {
     JsonNode data = testData.get("postUserReq").get("invalidUserByEmail");
     UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
   }
 
@@ -79,7 +79,7 @@ class PostUserTest {
     JsonNode data = testData.get("postUserReq").get("invalidUserByPassword");
     UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
   }
 
@@ -90,7 +90,7 @@ class PostUserTest {
     JsonNode data = testData.get("postUserReq").get("invalidUserByNickname");
     UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), data.get("password").asText());
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
   }
 
@@ -103,7 +103,7 @@ class PostUserTest {
 
     when(userRepository.existsByEmail(anyString())).thenReturn(true);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
   }
 
@@ -116,7 +116,7 @@ class PostUserTest {
 
     when(userRepository.existsByNickname(anyString())).thenReturn(true);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
   }
 
@@ -127,7 +127,7 @@ class PostUserTest {
     JsonNode data = testData.get("postUserReq").get("emptyEmail");
     UserDto.PostUserReq postUserReq = makePostUserReq(null, data.get("nickname").asText(), data.get("password").asText());
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
   }
 
@@ -138,7 +138,7 @@ class PostUserTest {
     JsonNode data = testData.get("postUserReq").get("emptyPassword");
     UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), data.get("nickname").asText(), null);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
   }
 
@@ -149,7 +149,7 @@ class PostUserTest {
     JsonNode data = testData.get("postUserReq").get("emptyNickname");
     UserDto.PostUserReq postUserReq = makePostUserReq(data.get("email").asText(), null, data.get("password").asText());
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.createUser(postUserReq));
   }
 

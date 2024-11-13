@@ -83,7 +83,7 @@ public class GetFeedsTest {
     JsonNode data = testData.get("getFeedsReq").get("emptyFeedId");
     FeedDto.GetFeedsReq getFeedsReq = makeGetFeedsReq(null, data.get("size").asInt(), null);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.retrieveFeeds(getFeedsReq));
   }
 
@@ -94,7 +94,7 @@ public class GetFeedsTest {
     JsonNode data = testData.get("getFeedsReq").get("emptyPageSize");
     FeedDto.GetFeedsReq getFeedsReq = makeGetFeedsReq(data.get("feedId").asLong(), null, null);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.retrieveFeeds(getFeedsReq));
   }
 

@@ -69,7 +69,7 @@ public class PutFeedTest {
 
     when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.empty());
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
   }
 
@@ -85,7 +85,7 @@ public class PutFeedTest {
 
     when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.of(feed));
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
   }
 
@@ -97,7 +97,7 @@ public class PutFeedTest {
     FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(null, data.get("content").asText());
     UserInfo userInfo = makeUserInfoEntity(1L);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
   }
 
@@ -109,7 +109,7 @@ public class PutFeedTest {
     FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), data.get("content").asText());
     UserInfo userInfo = makeUserInfoEntity(1L);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
   }
 
@@ -121,7 +121,7 @@ public class PutFeedTest {
     FeedDto.PutFeedsReq putFeedsReq = makePutFeedReq(data.get("feedId").asLong(), null);
     UserInfo userInfo = makeUserInfoEntity(1L);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.editFeeds(putFeedsReq, userInfo));
   }
 

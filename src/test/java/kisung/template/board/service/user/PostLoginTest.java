@@ -71,7 +71,7 @@ public class PostLoginTest {
     JsonNode data = testData.get("postLoginReq").get("invalidUserByEmail");
     UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), data.get("password").asText());
 
-    // then
+    //when, then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
   }
 
@@ -82,7 +82,7 @@ public class PostLoginTest {
     JsonNode data = testData.get("postLoginReq").get("invalidUserByPassword");
     UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), data.get("password").asText());
 
-    // then
+    //when, then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
   }
 
@@ -95,7 +95,7 @@ public class PostLoginTest {
 
     when(userRepository.findUserInfoByEmail(any(String.class))).thenReturn(Optional.empty());
 
-    // then
+    //when, then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
   }
 
@@ -110,7 +110,7 @@ public class PostLoginTest {
     when(userRepository.findUserInfoByEmail(any(String.class))).thenReturn(Optional.of(userInfo));
     when(bCryptPasswordEncoder.matches(any(String.class), any(String.class))).thenReturn(false);
 
-    // then
+    //when, then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));  // userId 검증
   }
 
@@ -121,7 +121,7 @@ public class PostLoginTest {
     JsonNode data = testData.get("postLoginReq").get("emptyEmail");
     UserDto.PostLoginReq postLoginReq = makePostLoginReq(null, data.get("password").asText());
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));
   }
 
@@ -132,7 +132,7 @@ public class PostLoginTest {
     JsonNode data = testData.get("postLoginReq").get("emptyPassword");
     UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), null);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> userService.login(postLoginReq));
   }
 

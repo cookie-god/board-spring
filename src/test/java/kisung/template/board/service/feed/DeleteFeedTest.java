@@ -68,7 +68,7 @@ public class DeleteFeedTest {
 
     when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.empty());
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.deleteFeeds(deleteFeedsReq, userInfo));
   }
 
@@ -84,7 +84,7 @@ public class DeleteFeedTest {
 
     when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.of(feed));
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.deleteFeeds(deleteFeedsReq, userInfo));
   }
 
@@ -96,7 +96,7 @@ public class DeleteFeedTest {
     FeedDto.DeleteFeedsReq deleteFeedsReq = makeDeleteFeedReq(null);
     UserInfo userInfo = makeUserInfoEntity(1L);
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.deleteFeeds(deleteFeedsReq, userInfo));
   }
 

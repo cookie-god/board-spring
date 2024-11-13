@@ -64,7 +64,7 @@ public class PostFeedTest {
     FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(null);
     UserInfo userInfo = makeUserInfoEntity();
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.createFeeds(postFeedsReq, userInfo));
   }
 
@@ -75,7 +75,7 @@ public class PostFeedTest {
     FeedDto.PostFeedsReq postFeedsReq = makePostFeedReq(null);
     UserInfo userInfo = makeUserInfoEntity();
 
-    //then
+    //when, then
     assertThrows(BoardException.class, () -> feedService.createFeeds(postFeedsReq, userInfo));
   }
 
