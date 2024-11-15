@@ -49,7 +49,7 @@ public class FeedServiceImpl implements FeedService {
     List<FeedDto.FeedRawInfo> feedRawInfoList = feedRepository.findFeedInfos(getFeedsReq);
     return FeedDto.GetFeedsRes.builder()
         .count(count)
-        .feeds(makeFeedInfosByRawDatas(feedRawInfoList))
+        .feeds(makeFeedInfos(feedRawInfoList))
         .build();
   }
 
@@ -85,7 +85,7 @@ public class FeedServiceImpl implements FeedService {
   public FeedDto.GetFeedRes retrieveFeed(Long feedId, UserInfo userInfo) {
     validate(feedId);
     FeedDto.FeedRawInfo feedRawInfo = feedRepository.findFeedInfoById(feedId).orElseThrow(() -> new BoardException(NON_EXIST_FEED));
-    return makeGetFeedResByRawData(feedRawInfo);
+    return makeGetFeedRes(feedRawInfo);
   }
 
   @Override
@@ -147,7 +147,7 @@ public class FeedServiceImpl implements FeedService {
   /**
    * List<FeedRawInfo> -> List<FeedInfo>로 변환해주는 메서드
    */
-  public List<FeedDto.FeedInfo> makeFeedInfosByRawDatas(List<FeedDto.FeedRawInfo> feedRawInfos) {
+  public List<FeedDto.FeedInfo> makeFeedInfos(List<FeedDto.FeedRawInfo> feedRawInfos) {
     return feedRawInfos.stream().map(feedRawInfo -> FeedDto.FeedInfo.builder()
         .feedId(feedRawInfo.getId())
         .content(feedRawInfo.getContent())
@@ -169,7 +169,7 @@ public class FeedServiceImpl implements FeedService {
   /**
    * FeedRawInfo -> GetFeedRes로 변환해주는 메서드
    */
-  public FeedDto.GetFeedRes makeGetFeedResByRawData(FeedDto.FeedRawInfo feedRawInfo) {
+  public FeedDto.GetFeedRes makeGetFeedRes(FeedDto.FeedRawInfo feedRawInfo) {
     return FeedDto.GetFeedRes.builder()
         .feedId(feedRawInfo.getId())
         .content(feedRawInfo.getContent())

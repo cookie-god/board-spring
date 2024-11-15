@@ -5,4 +5,5 @@ import kisung.template.board.entity.UserInfo;
 
 public interface CommentService {
   CommentDto.PostCommetsRes createComments(CommentDto.PostCommentsReq postCommentsReq, UserInfo userInfo);
+  CommentDto.GetCommentsRes retrieveComments(CommentDto.GetCommentsReq getCommentsReq, UserInfo userInfo);
 }

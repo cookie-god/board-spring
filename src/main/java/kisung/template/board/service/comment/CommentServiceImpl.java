@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
 
 import static kisung.template.board.common.code.ErrorCode.*;
 import static kisung.template.board.enums.Status.ACTIVE;
@@ -39,8 +41,19 @@ public class CommentServiceImpl implements CommentService {
     comment = commentRepository.save(comment);
 
     return CommentDto.PostCommetsRes.builder()
-        .commentId(comment.getId())
-        .build();
+      .commentId(comment.getId())
+      .build();
+  }
+
+  @Override
+  public CommentDto.GetCommentsRes retrieveComments(CommentDto.GetCommentsReq getCommentsReq, UserInfo userInfo) {
+    validate(getCommentsReq);
+    Long count = commentRepository.countCommentInfos(getCommentsReq);
+    List<CommentDto.CommentRawInfo> commentRawInfos = commentRepository.findCommentInfos(getCommentsReq);
+    return CommentDto.GetCommentsRes.builder()
+      .count(count)
+      .commentInfos(makeCommentInfos(commentRawInfos))
+      .build();
   }
 
   /**
@@ -61,17 +74,44 @@ public class CommentServiceImpl implements CommentService {
     }
   }
 
+  /**
+   * 댓글 조회 서비스 유효성 검사
+   */
+  private void validate(CommentDto.GetCommentsReq getCommentsReq) {
+    if (getCommentsReq.getFeedId() == null) {
+      throw new BoardException(NON_EXIST_FEED_ID);
+    }
+    if (getCommentsReq.getCommentId() == null) {
+      throw new BoardException(NON_EXIST_COMMENT_ID);
+    }
+    if (getCommentsReq.getSize() == null) {
+      throw new BoardException(NON_EXIST_PAGE_SIZE);
+    }
+  }
+
   private Comment makeCommentEntity(Feed feed, UserInfo userInfo, Comment parentCommnet, String content) {
     LocalDateTime now = LocalDateTime.now();
     return Comment.builder()
-        .content(content)
-        .bookmarkCnt(0L)
-        .feed(feed)
-        .userInfo(userInfo)
-        .parent(parentCommnet)
-        .createdAt(now)
-        .updatedAt(now)
-        .status(ACTIVE.value())
-        .build();
+      .content(content)
+      .bookmarkCnt(0L)
+      .feed(feed)
+      .userInfo(userInfo)
+      .parent(parentCommnet)
+      .createdAt(now)
+      .updatedAt(now)
+      .status(ACTIVE.value())
+      .build();
+  }
+
+  private List<CommentDto.CommentInfo> makeCommentInfos(List<CommentDto.CommentRawInfo> commentRawInfos) {
+    return commentRawInfos.stream().map(commentRawInfo -> CommentDto.CommentInfo.builder()
+        .commentId(commentRawInfo.getCommentId())
+        .childCommentCnt(commentRawInfo.getChildCommentCnt())
+        .content(commentRawInfo.getContent())
+        .createdAt(commentRawInfo.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+        .updatedAt(commentRawInfo.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+        .build()
+      )
+      .toList();
   }
 }
