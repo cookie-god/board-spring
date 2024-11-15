@@ -74,7 +74,9 @@ public class CommentDto {
   }
 
   @Data
+  @Builder
   @NoArgsConstructor
+  @AllArgsConstructor
   public static class CommentRawInfo {
     private Long commentId;
     private Long childCommentCnt;
