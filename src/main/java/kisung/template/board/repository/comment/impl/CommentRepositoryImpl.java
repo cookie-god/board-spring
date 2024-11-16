@@ -41,7 +41,7 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
       .select(comment.count())
       .from(comment)
       .where(
-        getCommentCondition(getCommentsReq.getFeedId())
+          retrieveCommentCondition(getCommentsReq.getFeedId())
       )
       .fetchFirst();
   }
@@ -62,7 +62,7 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
       )
       .from(comment).leftJoin(childComment).on(comment.id.eq(childComment.parent.id).and(childComment.status.eq(ACTIVE.value())))
       .where(
-        getCommentCondition(getCommentsReq.getFeedId()),
+          retrieveCommentCondition(getCommentsReq.getFeedId()),
         cursorId(getCommentsReq.getCommentId())
       )
       .groupBy(comment.id)
@@ -75,7 +75,7 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
     return commentId != 0 ? comment.id.lt(commentId) : null;
   }
 
-  private BooleanExpression getCommentCondition(Long feedId) {
+  private BooleanExpression retrieveCommentCondition(Long feedId) {
     return comment.feed.id.eq(feedId).and(comment.parent.isNull()).and(comment.status.eq(ACTIVE.value()));
   }
 }
