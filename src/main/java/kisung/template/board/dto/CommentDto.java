@@ -56,6 +56,28 @@ public class CommentDto {
     private List<CommentInfo> commentInfos = new ArrayList<>();
   }
 
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class GetRepliesReq {
+    @Schema(description = "조회시 마지막 답글 아이디, 처음 조회라면 0 삽입", example = "0", requiredMode = REQUIRED)
+    private Long replyId;
+    @Schema(description = "댓글 아이디", example = "1", requiredMode = REQUIRED)
+    private Long commentId;
+    @Schema(description = "페이징 사이즈", example = "10", requiredMode = REQUIRED)
+    private Integer size;
+  }
+
+  @Data
+  @Builder
+  public static class GetRepliesRes {
+    @Schema(description = "답글 총 개수", example = "100", requiredMode = REQUIRED)
+    private Long count;
+    @Schema(description = "답글 리스트", requiredMode = NOT_REQUIRED)
+    private List<CommentInfo> replyInfos = new ArrayList<>();
+  }
+
 
   @Data
   @Builder

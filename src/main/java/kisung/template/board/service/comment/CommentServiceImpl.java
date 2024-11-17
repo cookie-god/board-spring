@@ -56,6 +56,14 @@ public class CommentServiceImpl implements CommentService {
       .build();
   }
 
+  @Override
+  public CommentDto.GetRepliesRes retrieveReplies(CommentDto.GetRepliesReq getRepliesReq, UserInfo userInfo) {
+    return CommentDto.GetRepliesRes.builder()
+        .count(10L)
+        .replyInfos(null)
+        .build();
+  }
+
   /**
    * 댓글 생성 유효성 검사
    */
