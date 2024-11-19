@@ -74,7 +74,7 @@ public class CommentController {
   })
   @GetMapping(value = "", produces = "application/json")
   @PreAuthorize("hasRole('USER')")
-  public BasicResponse<CommentDto.GetCommentsRes> getComments(@ModelAttribute CommentDto.GetCommentsReq getCommentsReq) {
+  public BasicResponse<CommentDto.GetCommentsRes> getComments(CommentDto.GetCommentsReq getCommentsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(commentService.retrieveComments(getCommentsReq, userInfo), READ_SUCCESS);
   }
@@ -97,7 +97,7 @@ public class CommentController {
   })
   @GetMapping(value = "replies", produces = "application/json")
   @PreAuthorize("hasRole('USER')")
-  public BasicResponse<CommentDto.GetRepliesRes> getReplies(@ModelAttribute CommentDto.GetRepliesReq getRepliesReq) {
+  public BasicResponse<CommentDto.GetRepliesRes> getReplies(CommentDto.GetRepliesReq getRepliesReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(commentService.retrieveReplies(getRepliesReq, userInfo), READ_SUCCESS);
   }
