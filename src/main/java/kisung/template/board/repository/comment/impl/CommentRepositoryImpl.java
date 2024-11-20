@@ -2,6 +2,7 @@ package kisung.template.board.repository.comment.impl;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kisung.template.board.dto.CommentDto;
 import kisung.template.board.entity.Comment;
@@ -24,14 +25,14 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
   @Override
   public Optional<Comment> findCommentById(Long commentId) {
     return Optional.ofNullable(
-        jpaQueryFactory
-            .select(comment)
-            .from(comment)
-            .where(
-                comment.id.eq(commentId),
-                comment.status.eq(ACTIVE.value())
-            )
-            .fetchFirst()
+      jpaQueryFactory
+        .select(comment)
+        .from(comment)
+        .where(
+          comment.id.eq(commentId),
+          comment.status.eq(ACTIVE.value())
+        )
+        .fetchFirst()
     );
   }
 
@@ -41,7 +42,7 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
       .select(comment.count())
       .from(comment)
       .where(
-          retrieveCommentCondition(getCommentsReq.getFeedId())
+        retrieveCommentCondition(getCommentsReq.getFeedId())
       )
       .fetchFirst();
   }
@@ -58,12 +59,12 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
           comment.content,
           comment.createdAt,
           comment.updatedAt
-          )
+        )
       )
       .from(comment).leftJoin(childComment).on(comment.id.eq(childComment.parent.id).and(childComment.status.eq(ACTIVE.value())))
       .where(
-          retrieveCommentCondition(getCommentsReq.getFeedId()),
-        cursorId(getCommentsReq.getCommentId())
+        commentCursorId(getCommentsReq.getCommentId()),
+        retrieveCommentCondition(getCommentsReq.getFeedId())
       )
       .groupBy(comment.id)
       .orderBy(comment.id.desc())
@@ -71,11 +72,60 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
       .fetch();
   }
 
-  private BooleanExpression cursorId(Long commentId) {
+  @Override
+  public Long countReplyInfos(CommentDto.GetRepliesReq getRepliesReq) {
+    return jpaQueryFactory
+      .select(comment.count())
+      .from(comment)
+      .where(
+        retrieveReplyCondition(getRepliesReq.getCommentId())
+      )
+      .fetchFirst();
+  }
+
+  @Override
+  public List<CommentDto.ReplyRawInfo> findReplyInfos(CommentDto.GetRepliesReq getRepliesReq) {
+    return jpaQueryFactory
+      .select(Projections.bean(
+        CommentDto.ReplyRawInfo.class,
+        comment.id.as("replyId"),
+        Expressions.as(Expressions.constant(getRepliesReq.getCommentId()), "commentId"),
+        comment.content,
+        comment.createdAt,
+        comment.updatedAt
+      ))
+      .from(comment)
+      .where(
+        replyCursorId(getRepliesReq.getReplyId()),
+        retrieveReplyCondition(getRepliesReq.getCommentId())
+      )
+      .orderBy(comment.id.desc())
+      .limit(getRepliesReq.getSize())
+      .fetch();
+  }
+
+  private BooleanExpression commentCursorId(Long commentId) {
     return commentId != 0 ? comment.id.lt(commentId) : null;
   }
 
+  private BooleanExpression replyCursorId(Long replyId) {
+    return replyId != 0 ? comment.id.lt(replyId) : null;
+  }
+
+  /**
+   * 1. 피드 아이디가 같은 것
+   * 2. 부모 아이디가 존재하지 않는 것
+   * 3. 삭제가 되지 않은 경우
+   */
   private BooleanExpression retrieveCommentCondition(Long feedId) {
     return comment.feed.id.eq(feedId).and(comment.parent.isNull()).and(comment.status.eq(ACTIVE.value()));
+  }
+
+  /**
+   * 1. 부모 댓글이 같은 것
+   * 2. 삭제가 되지 않은 경우
+   */
+  private BooleanExpression retrieveReplyCondition(Long commentId) {
+    return comment.parent.id.eq(commentId).and(comment.status.eq(ACTIVE.value()));
   }
 }

@@ -75,7 +75,7 @@ public class CommentDto {
     @Schema(description = "답글 총 개수", example = "100", requiredMode = REQUIRED)
     private Long count;
     @Schema(description = "답글 리스트", requiredMode = NOT_REQUIRED)
-    private List<CommentInfo> replyInfos = new ArrayList<>();
+    private List<ReplyInfo> replyInfos = new ArrayList<>();
   }
 
 
@@ -102,6 +102,34 @@ public class CommentDto {
   public static class CommentRawInfo {
     private Long commentId;
     private Long childCommentCnt;
+    private String content;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+  }
+
+  @Data
+  @Builder
+  @AllArgsConstructor
+  public static class ReplyInfo {
+    @Schema(description = "답글 아이디", example = "1", requiredMode = REQUIRED)
+    private Long replyId;
+    @Schema(description = "댓글(상위) 아이디", example = "1", requiredMode = REQUIRED)
+    private Long commentId;
+    @Schema(description = "댓글 내용", example = "당신은 행복하셨나요?", requiredMode = REQUIRED)
+    private String content;
+    @Schema(description = "작성 시간(초 단위)", example = "1722580995", requiredMode = REQUIRED)
+    private Long createdAt;
+    @Schema(description = "수정 시간(초 단위)", example = "1722580995", requiredMode = REQUIRED)
+    private Long updatedAt;
+  }
+
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class ReplyRawInfo {
+    private Long replyId;
+    private Long commentId;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
