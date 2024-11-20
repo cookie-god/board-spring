@@ -57,5 +57,27 @@
       "commentId": 0,
       "size": null
     }
+  },
+  "getRepliesReq": {
+    "validData": {
+      "replyId": 1,
+      "commentId": 0,
+      "size": 10
+    },
+    "emptyReplyId": {
+      "replyId": null,
+      "commentId": 0,
+      "size": 10
+    },
+    "emptyCommentId": {
+      "replyId": 1,
+      "commentId": null,
+      "size": 10
+    },
+    "emptyPageSize": {
+      "replyId": 1,
+      "commentId": 0,
+      "size": null
+    }
   }
 }

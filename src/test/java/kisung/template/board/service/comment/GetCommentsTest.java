@@ -73,7 +73,7 @@ public class GetCommentsTest {
   }
 
   @Test
-  @DisplayName("댓글 조회 실패 - 피드 아이디가 없는 경우 실패")
+  @DisplayName("댓글 조회 실패 - 댓글 아이디가 없는 경우 실패")
   void retrieveComments_fail_empty_comment_id() {
     //given
     JsonNode data = testData.get("getCommentsReq").get("emptyCommentId");
@@ -85,7 +85,7 @@ public class GetCommentsTest {
   }
 
   @Test
-  @DisplayName("댓글 조회 실패 - 피드 아이디가 없는 경우 실패")
+  @DisplayName("댓글 조회 실패 - 페이지 사이즈가 없는 경우 실패")
   void retrieveComments_fail_empty_size() {
     //given
     JsonNode data = testData.get("getCommentsReq").get("emptyPageSize");
