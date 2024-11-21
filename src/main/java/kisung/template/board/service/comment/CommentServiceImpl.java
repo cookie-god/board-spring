@@ -48,6 +48,7 @@ public class CommentServiceImpl implements CommentService {
   @Override
   public CommentDto.GetCommentsRes retrieveComments(CommentDto.GetCommentsReq getCommentsReq, UserInfo userInfo) {
     validate(getCommentsReq);
+    // TODO: 레디스를 이용하여 게시글의 댓글 수를 조회할 예정
     Long count = commentRepository.countCommentInfos(getCommentsReq);
     List<CommentDto.CommentRawInfo> commentRawInfos = commentRepository.findCommentInfos(getCommentsReq);
     return CommentDto.GetCommentsRes.builder()
@@ -59,6 +60,7 @@ public class CommentServiceImpl implements CommentService {
   @Override
   public CommentDto.GetRepliesRes retrieveReplies(CommentDto.GetRepliesReq getRepliesReq, UserInfo userInfo) {
     validate(getRepliesReq);
+    // TODO: 레디스를 이용하여 게시글의 댓글 수를 조회할 예정
     Long count = commentRepository.countReplyInfos(getRepliesReq);
     List<CommentDto.ReplyRawInfo> replyRawInfos = commentRepository.findReplyInfos(getRepliesReq);
     return CommentDto.GetRepliesRes.builder()
