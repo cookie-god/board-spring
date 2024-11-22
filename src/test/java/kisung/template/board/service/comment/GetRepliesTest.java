@@ -110,8 +110,8 @@ public class GetRepliesTest {
     for (long i = 1; i <= size; i++) {
       replyRawInfos.add(
         CommentDto.ReplyRawInfo.builder()
-          .replyId(i)
-          .commentId(1L)
+          .commentId(i)
+          .parentCommentId(1L)
           .content("내용")
           .createdAt(LocalDateTime.now())
           .updatedAt(LocalDateTime.now())

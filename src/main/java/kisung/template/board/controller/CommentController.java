@@ -88,7 +88,7 @@ public class CommentController {
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-      @ApiResponse(responseCode = "COMMENT_ERROR_007", description = "Reply Id is empty",
+      @ApiResponse(responseCode = "COMMENT_ERROR_005", description = "Parent Comment Id is empty",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "COMMENT_ERROR_006", description = "Comment Id is empty",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),

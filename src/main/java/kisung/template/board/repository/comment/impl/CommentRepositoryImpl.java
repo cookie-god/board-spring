@@ -78,7 +78,7 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
       .select(comment.count())
       .from(comment)
       .where(
-        retrieveReplyCondition(getRepliesReq.getCommentId())
+        retrieveReplyCondition(getRepliesReq.getParentCommentId())
       )
       .fetchFirst();
   }
@@ -88,16 +88,16 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
     return jpaQueryFactory
       .select(Projections.bean(
         CommentDto.ReplyRawInfo.class,
-        comment.id.as("replyId"),
-        Expressions.as(Expressions.constant(getRepliesReq.getCommentId()), "commentId"),
+        comment.id.as("commentId"),
+        Expressions.as(Expressions.constant(getRepliesReq.getParentCommentId()), "parentCommentId"),
         comment.content,
         comment.createdAt,
         comment.updatedAt
       ))
       .from(comment)
       .where(
-        replyCursorId(getRepliesReq.getReplyId()),
-        retrieveReplyCondition(getRepliesReq.getCommentId())
+        replyCursorId(getRepliesReq.getCommentId()),
+        retrieveReplyCondition(getRepliesReq.getParentCommentId())
       )
       .orderBy(comment.id.desc())
       .limit(getRepliesReq.getSize())
@@ -108,8 +108,8 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
     return commentId != 0 ? comment.id.lt(commentId) : null;
   }
 
-  private BooleanExpression replyCursorId(Long replyId) {
-    return replyId != 0 ? comment.id.lt(replyId) : null;
+  private BooleanExpression replyCursorId(Long commentId) {
+    return commentId != 0 ? comment.id.lt(commentId) : null;
   }
 
   /**
@@ -125,7 +125,7 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
    * 1. 부모 댓글이 같은 것
    * 2. 삭제가 되지 않은 경우
    */
-  private BooleanExpression retrieveReplyCondition(Long commentId) {
-    return comment.parent.id.eq(commentId).and(comment.status.eq(ACTIVE.value()));
+  private BooleanExpression retrieveReplyCondition(Long parentCommentId) {
+    return comment.parent.id.eq(parentCommentId).and(comment.status.eq(ACTIVE.value()));
   }
 }

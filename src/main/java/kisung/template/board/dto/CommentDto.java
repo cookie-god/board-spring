@@ -61,10 +61,10 @@ public class CommentDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class GetRepliesReq {
-    @Schema(description = "조회시 마지막 답글 아이디, 처음 조회라면 0 삽입", example = "0", requiredMode = REQUIRED)
-    private Long replyId;
-    @Schema(description = "댓글 아이디", example = "1", requiredMode = REQUIRED)
+    @Schema(description = "댓글(하위) 아이디, 처음 조회라면 0 삽입", example = "0", requiredMode = REQUIRED)
     private Long commentId;
+    @Schema(description = "댓글(상위) 아이디", example = "1", requiredMode = REQUIRED)
+    private Long parentCommentId;
     @Schema(description = "페이징 사이즈", example = "10", requiredMode = REQUIRED)
     private Integer size;
   }
@@ -83,7 +83,7 @@ public class CommentDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class PutCommentsReq {
-    @Schema(description = "댓글 또는 답글 아이디", example = "1", requiredMode = REQUIRED)
+    @Schema(description = "댓글", example = "1", requiredMode = REQUIRED)
     private Long commentId;
     @Schema(description = "댓글 내용", example = "당신은 행복하셨나요?", requiredMode = REQUIRED)
     private String content;
@@ -129,10 +129,10 @@ public class CommentDto {
   @Builder
   @AllArgsConstructor
   public static class ReplyInfo {
-    @Schema(description = "답글 아이디", example = "1", requiredMode = REQUIRED)
-    private Long replyId;
-    @Schema(description = "댓글(상위) 아이디", example = "1", requiredMode = REQUIRED)
+    @Schema(description = "댓글(하위) 아이디", example = "1", requiredMode = REQUIRED)
     private Long commentId;
+    @Schema(description = "댓글(상위) 아이디", example = "1", requiredMode = REQUIRED)
+    private Long parentCommentId;
     @Schema(description = "댓글 내용", example = "당신은 행복하셨나요?", requiredMode = REQUIRED)
     private String content;
     @Schema(description = "작성 시간(초 단위)", example = "1722580995", requiredMode = REQUIRED)
@@ -146,8 +146,8 @@ public class CommentDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class ReplyRawInfo {
-    private Long replyId;
     private Long commentId;
+    private Long parentCommentId;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

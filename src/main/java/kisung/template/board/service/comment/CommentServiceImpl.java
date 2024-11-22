@@ -104,11 +104,11 @@ public class CommentServiceImpl implements CommentService {
    * 답글 조회 서비스 유효성 검사
    */
   private void validate(CommentDto.GetRepliesReq getRepliesReq) {
-    if (getRepliesReq.getReplyId() == null) {
-      throw new BoardException(NON_EXIST_REPLY_ID);
-    }
     if (getRepliesReq.getCommentId() == null) {
       throw new BoardException(NON_EXIST_COMMENT_ID);
+    }
+    if (getRepliesReq.getParentCommentId() == null) {
+      throw new BoardException(NON_EXIST_PARENT_COMMENT_ID);
     }
     if (getRepliesReq.getSize() == null) {
       throw new BoardException(NON_EXIST_PAGE_SIZE);
@@ -143,8 +143,8 @@ public class CommentServiceImpl implements CommentService {
 
   private List<CommentDto.ReplyInfo> makeReplyInfos(List<CommentDto.ReplyRawInfo> replyRawInfos) {
     return replyRawInfos.stream().map(replyRawInfo -> CommentDto.ReplyInfo.builder()
-        .replyId(replyRawInfo.getReplyId())
         .commentId(replyRawInfo.getCommentId())
+        .parentCommentId(replyRawInfo.getParentCommentId())
         .content(replyRawInfo.getContent())
         .createdAt(replyRawInfo.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
         .updatedAt(replyRawInfo.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
