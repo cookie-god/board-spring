@@ -29,7 +29,7 @@ public class CommentDto {
 
   @Data
   @Builder
-  public static class PostCommetsRes {
+  public static class PostCommentsRes {
     @Schema(description = "댓글 아이디", example = "1", requiredMode = REQUIRED)
     private Long commentId;
   }
@@ -76,6 +76,24 @@ public class CommentDto {
     private Long count;
     @Schema(description = "답글 리스트", requiredMode = NOT_REQUIRED)
     private List<ReplyInfo> replyInfos = new ArrayList<>();
+  }
+
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class PutCommentsReq {
+    @Schema(description = "댓글 또는 답글 아이디", example = "1", requiredMode = REQUIRED)
+    private Long commentId;
+    @Schema(description = "댓글 내용", example = "당신은 행복하셨나요?", requiredMode = REQUIRED)
+    private String content;
+  }
+
+  @Data
+  @Builder
+  public static class PutCommentsRes {
+    @Schema(description = "댓글 아이디", example = "1", requiredMode = REQUIRED)
+    private Long commentId;
   }
 
 

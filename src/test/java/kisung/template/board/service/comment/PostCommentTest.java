@@ -57,7 +57,7 @@ public class PostCommentTest {
     when(commentRepository.save(any(Comment.class))).thenReturn(comment);
 
     // when
-    CommentDto.PostCommetsRes postCommetsRes = commentService.createComments(postCommentsReq, userInfo);
+    CommentDto.PostCommentsRes postCommetsRes = commentService.createComments(postCommentsReq, userInfo);
 
     // then
     assertEquals(1L, postCommetsRes.getCommentId()); // 댓글 아이디 체크
@@ -80,7 +80,7 @@ public class PostCommentTest {
     when(commentRepository.save(any(Comment.class))).thenReturn(comment);
 
     // when
-    CommentDto.PostCommetsRes postCommetsRes = commentService.createComments(postCommentsReq, userInfo);
+    CommentDto.PostCommentsRes postCommetsRes = commentService.createComments(postCommentsReq, userInfo);
 
     // then
     assertEquals(2L, postCommetsRes.getCommentId()); // 댓글 아이디 체크

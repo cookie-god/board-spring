@@ -7,6 +7,7 @@ import kisung.template.board.dto.FeedDto;
 import kisung.template.board.entity.Feed;
 import kisung.template.board.repository.feed.custom.CustomFeedRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import static kisung.template.board.enums.Status.ACTIVE;
 @RequiredArgsConstructor
 public class FeedRepositoryImpl implements CustomFeedRepository {
   private final JPAQueryFactory jpaQueryFactory;
+  private final JdbcTemplate jdbcTemplate;
 
   @Override
   public Long countFeedInfos(FeedDto.GetFeedsReq getFeedsReq) {

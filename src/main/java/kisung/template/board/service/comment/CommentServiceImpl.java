@@ -28,7 +28,7 @@ public class CommentServiceImpl implements CommentService {
 
   @Transactional
   @Override
-  public CommentDto.PostCommetsRes createComments(CommentDto.PostCommentsReq postCommentsReq, UserInfo userInfo) {
+  public CommentDto.PostCommentsRes createComments(CommentDto.PostCommentsReq postCommentsReq, UserInfo userInfo) {
     validate(postCommentsReq);
     Feed feed = feedService.retrieveFeedEntity(postCommentsReq.getFeedId()); // feed 조회 및 존재 여부 체크
     Comment parentComment = null;
@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
     feed.upCommentCnt();
     comment = commentRepository.save(comment);
 
-    return CommentDto.PostCommetsRes.builder()
+    return CommentDto.PostCommentsRes.builder()
       .commentId(comment.getId())
       .build();
   }

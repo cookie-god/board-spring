@@ -51,7 +51,7 @@ public class CommentController {
   })
   @PostMapping(value = "", produces = "application/json")
   @PreAuthorize("hasRole('USER')")
-  public BasicResponse<CommentDto.PostCommetsRes> postComments(@RequestBody CommentDto.PostCommentsReq postCommentsReq) {
+  public BasicResponse<CommentDto.PostCommentsRes> postComments(@RequestBody CommentDto.PostCommentsReq postCommentsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(commentService.createComments(postCommentsReq, userInfo), CREATE_SUCCESS);
   }
