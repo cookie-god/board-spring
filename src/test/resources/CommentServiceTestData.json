@@ -60,23 +60,23 @@
   },
   "getRepliesReq": {
     "validData": {
-      "replyId": 1,
-      "commentId": 0,
+      "commentId": 1,
+      "parentCommentId": 0,
       "size": 10
     },
     "emptyReplyId": {
-      "replyId": null,
-      "commentId": 0,
+      "commentId": null,
+      "parentCommentId": 0,
       "size": 10
     },
     "emptyCommentId": {
-      "replyId": 1,
-      "commentId": null,
+      "commentId": 1,
+      "parentCommentId": null,
       "size": 10
     },
     "emptyPageSize": {
-      "replyId": 1,
-      "commentId": 0,
+      "commentId": 1,
+      "parentCommentId": 0,
       "size": null
     }
   }

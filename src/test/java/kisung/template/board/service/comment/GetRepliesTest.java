@@ -45,7 +45,7 @@ public class GetRepliesTest {
   void retrieveReplies_success() {
     // given
     JsonNode data = testData.get("getRepliesReq").get("validData");
-    CommentDto.GetRepliesReq getRepliesReq = makeGetRepliesReq(data.get("replyId").asLong(), data.get("commentId").asLong(), data.get("size").asInt());
+    CommentDto.GetRepliesReq getRepliesReq = makeGetRepliesReq(data.get("commentId").asLong(), data.get("parentCommentId").asLong(), data.get("size").asInt());
     UserInfo userInfo = makeUserInfoEntity();
     List<CommentDto.ReplyRawInfo> replyRawInfos = makeReplyRawInfoList(getRepliesReq.getSize());
 
@@ -65,7 +65,7 @@ public class GetRepliesTest {
   void retrieveReplies_fail_empty_feed_id() {
     //given
     JsonNode data = testData.get("getRepliesReq").get("emptyReplyId");
-    CommentDto.GetRepliesReq getRepliesReq = makeGetRepliesReq(null, data.get("commentId").asLong(), data.get("size").asInt());
+    CommentDto.GetRepliesReq getRepliesReq = makeGetRepliesReq(null, data.get("parentCommentId").asLong(), data.get("size").asInt());
     UserInfo userInfo = makeUserInfoEntity();
 
     //when, then
@@ -77,7 +77,7 @@ public class GetRepliesTest {
   void retrieveReplies_fail_empty_comment_id() {
     //given
     JsonNode data = testData.get("getRepliesReq").get("emptyCommentId");
-    CommentDto.GetRepliesReq getRepliesReq = makeGetRepliesReq(data.get("replyId").asLong(), null, data.get("size").asInt());
+    CommentDto.GetRepliesReq getRepliesReq = makeGetRepliesReq(data.get("commentId").asLong(), null, data.get("size").asInt());
     UserInfo userInfo = makeUserInfoEntity();
 
     //when, then
@@ -89,7 +89,7 @@ public class GetRepliesTest {
   void retrieveReplies_fail_empty_size() {
     //given
     JsonNode data = testData.get("getRepliesReq").get("emptyCommentId");
-    CommentDto.GetRepliesReq getRepliesReq = makeGetRepliesReq(data.get("replyId").asLong(), data.get("commentId").asLong(), null);
+    CommentDto.GetRepliesReq getRepliesReq = makeGetRepliesReq(data.get("commentId").asLong(), data.get("parentCommentId").asLong(), null);
     UserInfo userInfo = makeUserInfoEntity();
 
     //when, then
@@ -97,10 +97,10 @@ public class GetRepliesTest {
   }
 
 
-  private CommentDto.GetRepliesReq makeGetRepliesReq(Long replyId, Long commentId, Integer size) {
+  private CommentDto.GetRepliesReq makeGetRepliesReq(Long commentId, Long parentCommentId, Integer size) {
     return CommentDto.GetRepliesReq.builder()
-      .replyId(replyId)
       .commentId(commentId)
+      .parentCommentId(parentCommentId)
       .size(size)
       .build();
   }
