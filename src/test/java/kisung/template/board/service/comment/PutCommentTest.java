@@ -9,7 +9,6 @@ import kisung.template.board.entity.Feed;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.enums.Role;
 import kisung.template.board.repository.comment.CommentRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
