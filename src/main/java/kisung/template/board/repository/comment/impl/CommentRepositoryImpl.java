@@ -57,11 +57,12 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
           comment.id.as("commentId"),
           childComment.id.count().as("childCommentCnt"),
           comment.content,
+          comment.status,
           comment.createdAt,
           comment.updatedAt
         )
       )
-      .from(comment).leftJoin(childComment).on(comment.id.eq(childComment.parent.id).and(childComment.status.eq(ACTIVE.value())))
+      .from(comment).leftJoin(childComment).on(comment.id.eq(childComment.parent.id))
       .where(
         commentCursorId(getCommentsReq.getCommentId()),
         retrieveCommentCondition(getCommentsReq.getFeedId())
@@ -91,6 +92,7 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
         comment.id.as("commentId"),
         Expressions.as(Expressions.constant(getRepliesReq.getParentCommentId()), "parentCommentId"),
         comment.content,
+        comment.status,
         comment.createdAt,
         comment.updatedAt
       ))
@@ -115,17 +117,15 @@ public class CommentRepositoryImpl implements CustomCommentRepository {
   /**
    * 1. 피드 아이디가 같은 것
    * 2. 부모 아이디가 존재하지 않는 것
-   * 3. 삭제가 되지 않은 경우
    */
   private BooleanExpression retrieveCommentCondition(Long feedId) {
-    return comment.feed.id.eq(feedId).and(comment.parent.isNull()).and(comment.status.eq(ACTIVE.value()));
+    return comment.feed.id.eq(feedId).and(comment.parent.isNull());
   }
 
   /**
    * 1. 부모 댓글이 같은 것
-   * 2. 삭제가 되지 않은 경우
    */
   private BooleanExpression retrieveReplyCondition(Long parentCommentId) {
-    return comment.parent.id.eq(parentCommentId).and(comment.status.eq(ACTIVE.value()));
+    return comment.parent.id.eq(parentCommentId);
   }
 }

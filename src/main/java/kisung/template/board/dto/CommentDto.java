@@ -136,6 +136,7 @@ public class CommentDto {
     private Long commentId;
     private Long childCommentCnt;
     private String content;
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
   }
@@ -164,6 +165,7 @@ public class CommentDto {
     private Long commentId;
     private Long parentCommentId;
     private String content;
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
   }
