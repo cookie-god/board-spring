@@ -80,6 +80,17 @@ public class CommentServiceImpl implements CommentService {
                 .build();
     }
 
+    @Transactional
+    @Override
+    public CommentDto.DeleteCommentsRes deleteComments(CommentDto.DeleteCommentsReq deleteCommentsReq, UserInfo userInfo) {
+        validate(deleteCommentsReq);
+        Comment comment = commentRepository.findCommentById(deleteCommentsReq.getCommentId()).orElseThrow(() -> new BoardException(NON_EXIST_COMMENT));
+        comment.delete();
+        return CommentDto.DeleteCommentsRes.builder()
+                .commentId(comment.getId())
+                .build();
+    }
+
     /**
      * 댓글 생성 유효성 검사
      */
@@ -140,6 +151,15 @@ public class CommentServiceImpl implements CommentService {
         }
         if (putCommentsReq.getContent().length() > 300) { // 게시글 내용 300자 이상인 경우
             throw new BoardException(INVALID_CONTENT);
+        }
+    }
+
+    /**
+     * 댓글 삭제 유효성 검사
+     */
+    private void validate(CommentDto.DeleteCommentsReq deleteCommentsReq) {
+        if (deleteCommentsReq.getCommentId() == null) { // 댓글 아이디 존재 여부
+            throw new BoardException(NON_EXIST_COMMENT_ID);
         }
     }
 

@@ -96,6 +96,21 @@ public class CommentDto {
     private Long commentId;
   }
 
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class DeleteCommentsReq {
+    @Schema(description = "댓글 아이디", example = "1", requiredMode = REQUIRED)
+    private Long commentId;
+  }
+
+  @Data
+  @Builder
+  public static class DeleteCommentsRes {
+    @Schema(description = "댓글 아이디", example = "1", requiredMode = REQUIRED)
+    private Long commentId;
+  }
 
   @Data
   @Builder

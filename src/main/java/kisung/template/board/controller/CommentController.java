@@ -38,8 +38,6 @@ public class CommentController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "COMMENT_ERROR_001", description = "Content is empty",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "COMMENT_ERROR_002", description = "Not exist comment",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "COMMENT_ERROR_003", description = "Not exist parent comment",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "COMMENT_ERROR_005", description = "Parent Comment Id is empty",
@@ -111,6 +109,8 @@ public class CommentController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "COMMENT_ERROR_006", description = "COMMENT Id is empty",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "COMMENT_ERROR_001", description = "Content is empty",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "COMMENT_ERROR_002", description = "Not exist comment",
@@ -123,5 +123,26 @@ public class CommentController {
     public BasicResponse<CommentDto.PutCommentsRes> putComments(@RequestBody CommentDto.PutCommentsReq putCommentsReq) {
         UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
         return BasicResponse.success(commentService.editComments(putCommentsReq, userInfo), UPDATE_SUCCESS);
+    }
+
+    @Operation(summary = "댓글 삭제", description = "댓글 삭제 서비스 입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Success"),
+            @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "AUTH_ERROR_002", description = "Authorize Error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "COMMENT_ERROR_006", description = "COMMENT Id is empty",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "COMMENT_ERROR_002", description = "Not exist comment",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @DeleteMapping(value = "", produces = "application/json")
+    @PreAuthorize("hasRole('USER')")
+    public BasicResponse<CommentDto.DeleteCommentsRes> deleteComments(@RequestBody CommentDto.DeleteCommentsReq deleteCommentsReq) {
+        UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
+        return BasicResponse.success(commentService.deleteComments(deleteCommentsReq, userInfo), DELETE_SUCCESS);
     }
 }
