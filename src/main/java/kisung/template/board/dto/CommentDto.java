@@ -83,7 +83,7 @@ public class CommentDto {
   @NoArgsConstructor
   @AllArgsConstructor
   public static class PutCommentsReq {
-    @Schema(description = "댓글", example = "1", requiredMode = REQUIRED)
+    @Schema(description = "댓글 아이디", example = "1", requiredMode = REQUIRED)
     private Long commentId;
     @Schema(description = "댓글 내용", example = "당신은 행복하셨나요?", requiredMode = REQUIRED)
     private String content;
