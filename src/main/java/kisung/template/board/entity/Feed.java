@@ -40,7 +40,7 @@ public class Feed extends BaseEntity {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "feed")
   private List<Comment> comments = new ArrayList<>();
 
-  public void editFeed(String content) {
+  public void edit(String content) {
     this.content = content;
     this.changeUpdatedAt();
   }

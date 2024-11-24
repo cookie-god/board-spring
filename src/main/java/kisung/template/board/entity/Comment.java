@@ -44,7 +44,7 @@ public class Comment extends BaseEntity {
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
   private List<Comment> children = new ArrayList<>();
 
-  public void editComment(String content) {
+  public void edit(String content) {
     this.content = content;
     this.changeUpdatedAt();
   }

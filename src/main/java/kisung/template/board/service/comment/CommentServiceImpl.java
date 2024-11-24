@@ -74,7 +74,7 @@ public class CommentServiceImpl implements CommentService {
   public CommentDto.PutCommentsRes editComments(CommentDto.PutCommentsReq putCommentsReq, UserInfo userInfo) {
     validate(putCommentsReq);
     Comment comment = commentRepository.findCommentById(putCommentsReq.getCommentId()).orElseThrow(() -> new BoardException(NON_EXIST_COMMENT));
-    comment.editComment(putCommentsReq.getContent());
+    comment.edit(putCommentsReq.getContent());
     return CommentDto.PutCommentsRes.builder()
         .commentId(comment.getId())
         .build();

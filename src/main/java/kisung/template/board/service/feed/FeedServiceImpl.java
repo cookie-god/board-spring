@@ -61,7 +61,7 @@ public class FeedServiceImpl implements FeedService {
     if (!feed.getUserInfo().getId().equals(userInfo.getId())) {
       throw new BoardException(NOT_MY_FEED);
     }
-    feed.editFeed(putFeedsReq.getContent());
+    feed.edit(putFeedsReq.getContent());
     return FeedDto.PutFeedsRes.builder()
         .feedId(feed.getId())
         .build();
