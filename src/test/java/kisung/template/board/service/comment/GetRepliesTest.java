@@ -99,23 +99,24 @@ public class GetRepliesTest {
 
   private CommentDto.GetRepliesReq makeGetRepliesReq(Long commentId, Long parentCommentId, Integer size) {
     return CommentDto.GetRepliesReq.builder()
-      .commentId(commentId)
-      .parentCommentId(parentCommentId)
-      .size(size)
-      .build();
+        .commentId(commentId)
+        .parentCommentId(parentCommentId)
+        .size(size)
+        .build();
   }
 
   List<CommentDto.ReplyRawInfo> makeReplyRawInfoList(int size) {
     List<CommentDto.ReplyRawInfo> replyRawInfos = new ArrayList<>();
     for (long i = 1; i <= size; i++) {
       replyRawInfos.add(
-        CommentDto.ReplyRawInfo.builder()
-          .commentId(i)
-          .parentCommentId(1L)
-          .content("내용")
-          .createdAt(LocalDateTime.now())
-          .updatedAt(LocalDateTime.now())
-          .build()
+          CommentDto.ReplyRawInfo.builder()
+              .commentId(i)
+              .parentCommentId(1L)
+              .content("내용")
+              .status(ACTIVE.value())
+              .createdAt(LocalDateTime.now())
+              .updatedAt(LocalDateTime.now())
+              .build()
       );
     }
     return replyRawInfos;
@@ -124,14 +125,14 @@ public class GetRepliesTest {
   private UserInfo makeUserInfoEntity() {
     LocalDateTime now = LocalDateTime.now();
     return UserInfo.builder()
-      .id(1L)
-      .email("lion0193@gmail.com")
-      .nickname("쿠키")
-      .password("99999999")
-      .role(Role.USER.value())
-      .createdAt(now)
-      .updatedAt(now)
-      .status(ACTIVE.value())
-      .build();
+        .id(1L)
+        .email("lion0193@gmail.com")
+        .nickname("쿠키")
+        .password("99999999")
+        .role(Role.USER.value())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
   }
 }

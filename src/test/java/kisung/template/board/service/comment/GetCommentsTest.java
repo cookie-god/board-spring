@@ -99,22 +99,23 @@ public class GetCommentsTest {
 
   private CommentDto.GetCommentsReq makeGetCommentsReq(Long feedId, Long commentId, Integer size) {
     return CommentDto.GetCommentsReq.builder()
-      .feedId(feedId)
-      .commentId(commentId)
-      .size(size)
-      .build();
+        .feedId(feedId)
+        .commentId(commentId)
+        .size(size)
+        .build();
   }
 
   List<CommentDto.CommentRawInfo> makeCommentRawInfoList(int size) {
     List<CommentDto.CommentRawInfo> commentRawInfos = new ArrayList<>();
     for (long i = 1; i <= size; i++) {
       commentRawInfos.add(
-        CommentDto.CommentRawInfo.builder()
-          .commentId(i)
-          .childCommentCnt(10L)
-          .createdAt(LocalDateTime.now())
-          .updatedAt(LocalDateTime.now())
-          .build()
+          CommentDto.CommentRawInfo.builder()
+              .commentId(i)
+              .childCommentCnt(10L)
+              .status(ACTIVE.value())
+              .createdAt(LocalDateTime.now())
+              .updatedAt(LocalDateTime.now())
+              .build()
       );
     }
     return commentRawInfos;
@@ -123,14 +124,14 @@ public class GetCommentsTest {
   private UserInfo makeUserInfoEntity() {
     LocalDateTime now = LocalDateTime.now();
     return UserInfo.builder()
-      .id(1L)
-      .email("lion0193@gmail.com")
-      .nickname("쿠키")
-      .password("99999999")
-      .role(Role.USER.value())
-      .createdAt(now)
-      .updatedAt(now)
-      .status(ACTIVE.value())
-      .build();
+        .id(1L)
+        .email("lion0193@gmail.com")
+        .nickname("쿠키")
+        .password("99999999")
+        .role(Role.USER.value())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
   }
 }
