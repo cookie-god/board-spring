@@ -49,7 +49,7 @@ public class Feed extends BaseEntity {
     this.changeStatus(INACTIVE);
   }
 
-  public void upCommentCnt() {
+  public void increaseCommentCnt() {
     this.commentCnt += 1;
   }
 }
