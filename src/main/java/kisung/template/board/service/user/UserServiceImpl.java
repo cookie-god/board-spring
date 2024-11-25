@@ -68,6 +68,17 @@ public class UserServiceImpl implements UserService {
         .build();
   }
 
+  @Override
+  @Transactional
+  public UserDto.PatchUserPasswordRes editUserPassword(UserDto.PatchUserPasswordReq patchUserPasswordReq) {
+    validate(patchUserPasswordReq);
+    UserInfo userInfo = userRepository.findUserInfoByEmail(patchUserPasswordReq.getEmail()).orElseThrow(() -> new BoardException(NON_EXIST_USER));
+    userInfo.changePassword(bCryptPasswordEncoder, patchUserPasswordReq.getPassword());
+    return UserDto.PatchUserPasswordRes.builder()
+        .userId(userInfo.getId())
+        .build();
+  }
+
   /**
    * 유저 회원 가입 validate
    * request에 대한 값 체크하는 메서드
@@ -127,6 +138,30 @@ public class UserServiceImpl implements UserService {
       throw new BoardException(NON_EXIST_PASSWORD);
     }
     if (!postLoginReq.isPassword()) {
+      throw new BoardException(INVALID_PASSWORD);
+    }
+  }
+
+  /**
+   * 유저 비밀번호 변경 validate
+   * request에 대한 값 체크하는 메서드
+   * 1. 이메일 값 존재 여부 체크
+   * 2. 이메일 정규식 체크
+   * 3. 비밀번호 값 존재 여부 체크
+   * 4. 비밀번호 정규식 체크
+   * 5. 비밀번호 일치 여부 체크
+   */
+  public void validate(UserDto.PatchUserPasswordReq patchUserPasswordReq) {
+    if (patchUserPasswordReq.getEmail() == null || patchUserPasswordReq.getEmail().isEmpty()) {
+      throw new BoardException(NON_EXIST_EMAIL);
+    }
+    if (!patchUserPasswordReq.isEmail()) {
+      throw new BoardException(INVALID_EMAIL);
+    }
+    if (patchUserPasswordReq.getPassword() == null || patchUserPasswordReq.getPassword().isEmpty()) {
+      throw new BoardException(NON_EXIST_PASSWORD);
+    }
+    if (!patchUserPasswordReq.isPassword()) {
       throw new BoardException(INVALID_PASSWORD);
     }
   }

@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static kisung.template.board.common.code.SuccessCode.CREATE_SUCCESS;
-import static kisung.template.board.common.code.SuccessCode.READ_SUCCESS;
+import static kisung.template.board.common.code.SuccessCode.*;
 
 @RestController
 @RequestMapping(value = "/apis/v1/users")
@@ -72,5 +71,26 @@ public class UserController {
   @PostMapping(value = "login", produces = "application/json")
   public BasicResponse<UserDto.PostLoginRes> postUserLogin(@RequestBody UserDto.PostLoginReq postLoginReq) {
     return BasicResponse.success(userService.login(postLoginReq), READ_SUCCESS);
+  }
+
+  @Operation(summary = "유저 비밀 번호 변경", description = "유저 비밀 번호 변경 입니다.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "204", description = "Success"),
+      @ApiResponse(responseCode = "USER_ERROR_001", description = "Email is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_002", description = "Password is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_004", description = "Email is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_005", description = "Password is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_010", description = "User's password is wrong.",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "SERVER_ERROR_001", description = "Server Error",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  @PostMapping(value = "password", produces = "application/json")
+  public BasicResponse<UserDto.PatchUserPasswordRes> patchUserPassword(@RequestBody UserDto.PatchUserPasswordReq patchUserPasswordReq) {
+    return BasicResponse.success(userService.editUserPassword(patchUserPasswordReq), UPDATE_SUCCESS);
   }
 }

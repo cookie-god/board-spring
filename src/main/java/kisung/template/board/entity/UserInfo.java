@@ -40,6 +40,11 @@ public class UserInfo extends BaseEntity {
     return this;
   }
 
+  // 비밀번호 암호화
+  public void changePassword(PasswordEncoder passwordEncoder, String newPassword) {
+    this.password = passwordEncoder.encode(newPassword);
+  }
+
   // 비밀번호 확인
   public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
     return passwordEncoder.matches(plainPassword, this.password);
