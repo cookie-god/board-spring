@@ -116,7 +116,7 @@ public class PostLoginTest {
 
   @Test
   @DisplayName("로그인 실패 - 이메일 존재 하지 않음")
-  void createUser_fail_empty_email() {
+  void loginUser_fail_empty_email() {
     //given
     JsonNode data = testData.get("postLoginReq").get("emptyEmail");
     UserDto.PostLoginReq postLoginReq = makePostLoginReq(null, data.get("password").asText());
@@ -127,7 +127,7 @@ public class PostLoginTest {
 
   @Test
   @DisplayName("로그인 실패 - 비밀번호 존재 하지 않음")
-  void createUser_fail_empty_password() {
+  void loginUser_fail_empty_password() {
     //given
     JsonNode data = testData.get("postLoginReq").get("emptyPassword");
     UserDto.PostLoginReq postLoginReq = makePostLoginReq(data.get("email").asText(), null);
