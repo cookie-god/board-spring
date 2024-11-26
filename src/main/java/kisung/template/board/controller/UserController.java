@@ -11,10 +11,7 @@ import kisung.template.board.dto.UserDto;
 import kisung.template.board.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static kisung.template.board.common.code.SuccessCode.*;
 
@@ -86,10 +83,14 @@ public class UserController {
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "USER_ERROR_010", description = "User's password is wrong.",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_012", description = "New Password is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_013", description = "New Password is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
       @ApiResponse(responseCode = "SERVER_ERROR_001", description = "Server Error",
           content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })
-  @PostMapping(value = "password", produces = "application/json")
+  @PatchMapping(value = "password", produces = "application/json")
   public BasicResponse<UserDto.PatchUserPasswordRes> patchUserPassword(@RequestBody UserDto.PatchUserPasswordReq patchUserPasswordReq) {
     return BasicResponse.success(userService.editUserPassword(patchUserPasswordReq), UPDATE_SUCCESS);
   }

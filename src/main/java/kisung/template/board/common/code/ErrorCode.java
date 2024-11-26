@@ -20,6 +20,8 @@ public enum ErrorCode {
   NOT_EXIST_USER_BY_EMAIL(404, "USER_ERROR_009", "User's email is not exist."),
   WRONG_PASSWORD(404, "USER_ERROR_010", "User's password is wrong."),
   NON_EXIST_USER(404, "USER_ERROR_011", "Not exist user"),
+  NON_EXIST_NEW_PASSWORD(400, "USER_ERROR_012", "New Password is empty"),
+  INVALID_NEW_PASSWORD(400, "USER_ERROR_013", "New Password is invalid"),
 
   NON_EXIST_FEED_CONTENT(400, "FEED_ERROR_001", "Content is empty"),
   NON_EXIST_FEED_ID(400, "FEED_ERROR_002", "Feed Id is empty"),

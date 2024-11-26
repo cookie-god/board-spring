@@ -79,13 +79,18 @@ public class UserDto {
   public static class PatchUserPasswordReq {
     @Schema(description = "이메일", example = "lion0193@gmail.com")
     private String email;
-    @Schema(description = "비밀번호 (영문 숫자 특수기호 조합 8자리 이상)", example = "qwer1234!")
+    @Schema(description = "이전 비밀번호 (영문 숫자 특수기호 조합 8자리 이상)", example = "qwer1234!")
     private String password;
+    @Schema(description = "새 비밀번호 (영문 숫자 특수기호 조합 8자리 이상)", example = "qwer5678!")
+    private String newPassword;
     public boolean isEmail() {
       return Pattern.matches(EMAIL_PATTERN, email);
     }
     public boolean isPassword() {
       return Pattern.matches(PASSWORD_PATTERN, password);
+    }
+    public boolean isNewPassword() {
+      return Pattern.matches(PASSWORD_PATTERN, newPassword);
     }
   }
 

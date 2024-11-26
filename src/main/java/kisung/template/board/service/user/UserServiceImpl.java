@@ -73,7 +73,10 @@ public class UserServiceImpl implements UserService {
   public UserDto.PatchUserPasswordRes editUserPassword(UserDto.PatchUserPasswordReq patchUserPasswordReq) {
     validate(patchUserPasswordReq);
     UserInfo userInfo = userRepository.findUserInfoByEmail(patchUserPasswordReq.getEmail()).orElseThrow(() -> new BoardException(NON_EXIST_USER));
-    userInfo.changePassword(bCryptPasswordEncoder, patchUserPasswordReq.getPassword());
+    if (!checkPassword(userInfo, patchUserPasswordReq.getPassword())) { // 기존 비밀 번호 확인
+      throw new BoardException(WRONG_PASSWORD);
+    }
+    userInfo.changePassword(bCryptPasswordEncoder, patchUserPasswordReq.getNewPassword()); // 비밀 번호 변경
     return UserDto.PatchUserPasswordRes.builder()
         .userId(userInfo.getId())
         .build();
@@ -163,6 +166,12 @@ public class UserServiceImpl implements UserService {
     }
     if (!patchUserPasswordReq.isPassword()) {
       throw new BoardException(INVALID_PASSWORD);
+    }
+    if (patchUserPasswordReq.getNewPassword() == null || patchUserPasswordReq.getNewPassword().isEmpty()) {
+      throw new BoardException(NON_EXIST_NEW_PASSWORD);
+    }
+    if (!patchUserPasswordReq.isNewPassword()) {
+      throw new BoardException(INVALID_NEW_PASSWORD);
     }
   }
 
