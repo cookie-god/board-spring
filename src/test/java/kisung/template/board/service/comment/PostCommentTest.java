@@ -47,7 +47,7 @@ public class PostCommentTest {
   @DisplayName("댓글 작성 성공")
   void createComment_success() {
     // given
-    JsonNode data = testData.get("postCommentReq").get("validComment");
+    JsonNode data = testData.get("postCommentReq").get("validData");
     CommentDto.PostCommentsReq postCommentsReq = makePostCommentReq(data.get("feedId").asLong(), data.get("parentCommentId").asLong(), data.get("content").asText());
     Feed feed = makeFeedEntity();
     UserInfo userInfo = makeUserInfoEntity();

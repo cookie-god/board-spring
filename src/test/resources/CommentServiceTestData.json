@@ -1,6 +1,6 @@
 {
   "postCommentReq": {
-    "validComment": {
+    "validData": {
       "feedId": 1,
       "parentCommentId": 0,
       "content": "테스트 댓글"
