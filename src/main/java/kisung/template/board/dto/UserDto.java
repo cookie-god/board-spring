@@ -24,9 +24,11 @@ public class UserDto {
     public boolean isEmail() {
       return Pattern.matches(EMAIL_PATTERN, email);
     }
+
     public boolean isPassword() {
       return Pattern.matches(PASSWORD_PATTERN, password);
     }
+
     public boolean isNickname() {
       return nickname.length() <= 10;
     }
@@ -52,6 +54,7 @@ public class UserDto {
     public boolean isEmail() {
       return Pattern.matches(EMAIL_PATTERN, email);
     }
+
     public boolean isPassword() {
       return Pattern.matches(PASSWORD_PATTERN, password);
     }
@@ -83,12 +86,15 @@ public class UserDto {
     private String password;
     @Schema(description = "새 비밀번호 (영문 숫자 특수기호 조합 8자리 이상)", example = "qwer5678!")
     private String newPassword;
+
     public boolean isEmail() {
       return Pattern.matches(EMAIL_PATTERN, email);
     }
+
     public boolean isPassword() {
       return Pattern.matches(PASSWORD_PATTERN, password);
     }
+
     public boolean isNewPassword() {
       return Pattern.matches(PASSWORD_PATTERN, newPassword);
     }

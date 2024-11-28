@@ -29,107 +29,107 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class DeleteCommentTest {
-    @Mock
-    private CommentRepository commentRepository;
-    @InjectMocks
-    private CommentServiceImpl commentService;
-    private JsonNode testData;
+  @Mock
+  private CommentRepository commentRepository;
+  @InjectMocks
+  private CommentServiceImpl commentService;
+  private JsonNode testData;
 
-    @BeforeEach
-    void setup() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        testData = objectMapper.readTree(new File("src/test/resources/CommentServiceTestData.json"));
-    }
+  @BeforeEach
+  void setup() throws Exception {
+    ObjectMapper objectMapper = new ObjectMapper();
+    testData = objectMapper.readTree(new File("src/test/resources/CommentServiceTestData.json"));
+  }
 
-    @Test
-    @DisplayName("댓글 삭제 성공")
-    void deleteComment_success() {
-        // given
-        JsonNode data = testData.get("deleteCommentReq").get("validData");
-        CommentDto.DeleteCommentsReq deleteCommentsReq = makeDeleteCommentReq(data.get("commentId").asLong());
-        Feed feed = makeFeedEntity();
-        UserInfo userInfo = makeUserInfoEntity();
-        Comment comment = makeCommentEntity(feed, null, userInfo, deleteCommentsReq.getCommentId(), "댓글");
-        when(commentRepository.findCommentById(any(Long.class))).thenReturn(Optional.of(comment));
+  @Test
+  @DisplayName("댓글 삭제 성공")
+  void deleteComment_success() {
+    // given
+    JsonNode data = testData.get("deleteCommentReq").get("validData");
+    CommentDto.DeleteCommentsReq deleteCommentsReq = makeDeleteCommentReq(data.get("commentId").asLong());
+    Feed feed = makeFeedEntity();
+    UserInfo userInfo = makeUserInfoEntity();
+    Comment comment = makeCommentEntity(feed, null, userInfo, deleteCommentsReq.getCommentId(), "댓글");
+    when(commentRepository.findCommentById(any(Long.class))).thenReturn(Optional.of(comment));
 
-        // when
-        CommentDto.DeleteCommentsRes deleteCommentsRes = commentService.deleteComments(deleteCommentsReq, userInfo);
+    // when
+    CommentDto.DeleteCommentsRes deleteCommentsRes = commentService.deleteComments(deleteCommentsReq, userInfo);
 
-        // then
-        assertEquals(comment.getId(), deleteCommentsRes.getCommentId());
-        assertEquals(comment.getStatus(), INACTIVE.value());
-    }
+    // then
+    assertEquals(comment.getId(), deleteCommentsRes.getCommentId());
+    assertEquals(comment.getStatus(), INACTIVE.value());
+  }
 
-    @Test
-    @DisplayName("답글 삭제 실패 - 댓글이 존재하지 않는 경우")
-    void deleteComment_fail_not_exist_comment() {
-        // given
-        JsonNode data = testData.get("deleteCommentReq").get("validData");
-        CommentDto.DeleteCommentsReq deleteCommentsReq = makeDeleteCommentReq(data.get("commentId").asLong());
-        UserInfo userInfo = makeUserInfoEntity();
-        when(commentRepository.findCommentById(any(Long.class))).thenReturn(Optional.empty());
+  @Test
+  @DisplayName("답글 삭제 실패 - 댓글이 존재하지 않는 경우")
+  void deleteComment_fail_not_exist_comment() {
+    // given
+    JsonNode data = testData.get("deleteCommentReq").get("validData");
+    CommentDto.DeleteCommentsReq deleteCommentsReq = makeDeleteCommentReq(data.get("commentId").asLong());
+    UserInfo userInfo = makeUserInfoEntity();
+    when(commentRepository.findCommentById(any(Long.class))).thenReturn(Optional.empty());
 
-        //when, then
-        assertThrows(BoardException.class, () -> commentService.deleteComments(deleteCommentsReq, userInfo));
-    }
+    //when, then
+    assertThrows(BoardException.class, () -> commentService.deleteComments(deleteCommentsReq, userInfo));
+  }
 
-    @Test
-    @DisplayName("답글 수정 실패 - 댓글 아이디가 존재하지 않는 경우")
-    void editComment_fail_empty_comment_id() {
-        // given
-        JsonNode data = testData.get("deleteCommentReq").get("validData");
-        CommentDto.DeleteCommentsReq deleteCommentsReq = makeDeleteCommentReq(data.get("commentId").asLong());
-        UserInfo userInfo = makeUserInfoEntity();
+  @Test
+  @DisplayName("답글 수정 실패 - 댓글 아이디가 존재하지 않는 경우")
+  void editComment_fail_empty_comment_id() {
+    // given
+    JsonNode data = testData.get("deleteCommentReq").get("validData");
+    CommentDto.DeleteCommentsReq deleteCommentsReq = makeDeleteCommentReq(data.get("commentId").asLong());
+    UserInfo userInfo = makeUserInfoEntity();
 
-        //when, then
-        assertThrows(BoardException.class, () -> commentService.deleteComments(deleteCommentsReq, userInfo));
-    }
+    //when, then
+    assertThrows(BoardException.class, () -> commentService.deleteComments(deleteCommentsReq, userInfo));
+  }
 
-    private CommentDto.DeleteCommentsReq makeDeleteCommentReq(Long commentId) {
-        return CommentDto.DeleteCommentsReq.builder()
-                .commentId(commentId)
-                .build();
-    }
+  private CommentDto.DeleteCommentsReq makeDeleteCommentReq(Long commentId) {
+    return CommentDto.DeleteCommentsReq.builder()
+        .commentId(commentId)
+        .build();
+  }
 
-    private Comment makeCommentEntity(Feed feed, Comment parentComment, UserInfo userInfo, Long commentId, String content) {
-        LocalDateTime now = LocalDateTime.now();
-        return Comment.builder()
-                .id(commentId)
-                .feed(feed)
-                .parent(parentComment)
-                .userInfo(userInfo)
-                .content(content)
-                .bookmarkCnt(0L)
-                .createdAt(now)
-                .updatedAt(now)
-                .status(ACTIVE.value())
-                .build();
-    }
+  private Comment makeCommentEntity(Feed feed, Comment parentComment, UserInfo userInfo, Long commentId, String content) {
+    LocalDateTime now = LocalDateTime.now();
+    return Comment.builder()
+        .id(commentId)
+        .feed(feed)
+        .parent(parentComment)
+        .userInfo(userInfo)
+        .content(content)
+        .bookmarkCnt(0L)
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
+  }
 
-    private UserInfo makeUserInfoEntity() {
-        LocalDateTime now = LocalDateTime.now();
-        return UserInfo.builder()
-                .id(1L)
-                .email("lion0193@gmail.com")
-                .nickname("쿠키")
-                .password("99999999")
-                .role(Role.USER.value())
-                .createdAt(now)
-                .updatedAt(now)
-                .status(ACTIVE.value())
-                .build();
-    }
+  private UserInfo makeUserInfoEntity() {
+    LocalDateTime now = LocalDateTime.now();
+    return UserInfo.builder()
+        .id(1L)
+        .email("lion0193@gmail.com")
+        .nickname("쿠키")
+        .password("99999999")
+        .role(Role.USER.value())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
+  }
 
-    private Feed makeFeedEntity() {
-        LocalDateTime now = LocalDateTime.now();
-        return Feed.builder()
-                .id(1L)
-                .content("내용")
-                .commentCnt(0L)
-                .bookmarkCnt(0L)
-                .createdAt(now)
-                .updatedAt(now)
-                .status(ACTIVE.value())
-                .build();
-    }
+  private Feed makeFeedEntity() {
+    LocalDateTime now = LocalDateTime.now();
+    return Feed.builder()
+        .id(1L)
+        .content("내용")
+        .commentCnt(0L)
+        .bookmarkCnt(0L)
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
+  }
 }

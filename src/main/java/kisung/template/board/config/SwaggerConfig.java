@@ -13,21 +13,21 @@ public class SwaggerConfig {
   @Bean
   public OpenAPI openAPI() {
     return new OpenAPI()
-      .components(new Components()
-        .addSecuritySchemes("bearerAuth", new SecurityScheme()
-          .type(SecurityScheme.Type.HTTP)
-          .scheme("bearer")
-          .bearerFormat("JWT")
+        .components(new Components()
+            .addSecuritySchemes("bearerAuth", new SecurityScheme()
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
+            )
         )
-      )
-      .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-      .info(apiInfo());
+        .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+        .info(apiInfo());
   }
 
   private Info apiInfo() {
     return new Info()
-      .title("board swagger")
-      .description("게시판 API 입니다.")
-      .version("1.0.0");
+        .title("board swagger")
+        .description("게시판 API 입니다.")
+        .version("1.0.0");
   }
 }

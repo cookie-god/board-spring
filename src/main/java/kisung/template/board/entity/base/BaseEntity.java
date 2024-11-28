@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseEntity {
-  @Column(name="created_at")
+  @Column(name = "created_at")
   private LocalDateTime createdAt;
-  @Column(name="updated_at")
-  private LocalDateTime  updatedAt;
-  @Column(name="status")
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
+  @Column(name = "status")
   private String status;
 
   protected void changeUpdatedAt() {

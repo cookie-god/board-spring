@@ -51,19 +51,19 @@ public class UserController {
 
   @Operation(summary = "유저 로그인", description = "유저 로그인 입니다.")
   @ApiResponses(value = {
-          @ApiResponse(responseCode = "200", description = "Success"),
-          @ApiResponse(responseCode = "USER_ERROR_001", description = "Email is empty",
-                  content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "USER_ERROR_002", description = "Password is empty",
-                  content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "USER_ERROR_004", description = "Email is invalid",
-                  content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "USER_ERROR_005", description = "Password is invalid",
-                  content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "USER_ERROR_010", description = "User's password is wrong.",
-                  content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-          @ApiResponse(responseCode = "SERVER_ERROR_001", description = "Server Error",
-                  content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+      @ApiResponse(responseCode = "200", description = "Success"),
+      @ApiResponse(responseCode = "USER_ERROR_001", description = "Email is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_002", description = "Password is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_004", description = "Email is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_005", description = "Password is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_010", description = "User's password is wrong.",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "SERVER_ERROR_001", description = "Server Error",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PostMapping(value = "login", produces = "application/json")
   public BasicResponse<UserDto.PostLoginRes> postUserLogin(@RequestBody UserDto.PostLoginReq postLoginReq) {

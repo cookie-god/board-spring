@@ -81,35 +81,35 @@ public class PostFeedTest {
 
   private FeedDto.PostFeedsReq makePostFeedReq(String content) {
     return FeedDto.PostFeedsReq.builder()
-      .content(content)
-      .build();
+        .content(content)
+        .build();
   }
 
   private UserInfo makeUserInfoEntity() {
     LocalDateTime now = LocalDateTime.now();
     return UserInfo.builder()
-      .id(1L)
-      .email("lion0193@gmail.com")
-      .nickname("쿠키")
-      .password("99999999")
-      .role(Role.USER.value())
-      .createdAt(now)
-      .updatedAt(now)
-      .status(ACTIVE.value())
-      .build();
+        .id(1L)
+        .email("lion0193@gmail.com")
+        .nickname("쿠키")
+        .password("99999999")
+        .role(Role.USER.value())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
   }
 
   private Feed makeFeedEntity(String content) {
     LocalDateTime now = LocalDateTime.now();
     return Feed.builder()
-      .id(1L)
-      .content(content)
-      .commentCnt(0L)
-      .bookmarkCnt(0L)
-      .createdAt(now)
-      .updatedAt(now)
-      .status(ACTIVE.value())
-      .build();
+        .id(1L)
+        .content(content)
+        .commentCnt(0L)
+        .bookmarkCnt(0L)
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
   }
 
 }

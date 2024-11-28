@@ -93,15 +93,15 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
   @Override
   public Optional<Feed> findFeedById(Long feedId) {
     return Optional.ofNullable(
-      jpaQueryFactory
-        .select(feed)
-        .from(feed)
-        .innerJoin(feed.userInfo).fetchJoin()
-        .where(
-          feed.id.eq(feedId),
-          feed.status.eq(ACTIVE.value())
-        )
-        .fetchFirst()
+        jpaQueryFactory
+            .select(feed)
+            .from(feed)
+            .innerJoin(feed.userInfo).fetchJoin()
+            .where(
+                feed.id.eq(feedId),
+                feed.status.eq(ACTIVE.value())
+            )
+            .fetchFirst()
 
     );
   }
@@ -109,6 +109,7 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
   private BooleanExpression cursorId(Long feedId) {
     return feedId != 0 ? feed.id.lt(feedId) : null;
   }
+
   private BooleanExpression search(String searchKeyword) {
     if (searchKeyword != null) {
       return feed.content.startsWith(searchKeyword.toUpperCase());

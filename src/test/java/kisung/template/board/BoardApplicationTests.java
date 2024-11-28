@@ -7,16 +7,17 @@ import org.springframework.context.ApplicationContext;
 
 @SpringBootTest
 class BoardApplicationTests {
-	@Autowired
-	private ApplicationContext applicationContext;
-	@Test
-	void contextLoads() {
-		if (applicationContext != null) {
-			String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
-			for (String bean: beanDefinitionNames) {
-				System.out.println("bean = " + applicationContext.getBean(bean).getClass());
-			}
-		}
-	}
+  @Autowired
+  private ApplicationContext applicationContext;
+
+  @Test
+  void contextLoads() {
+    if (applicationContext != null) {
+      String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+      for (String bean : beanDefinitionNames) {
+        System.out.println("bean = " + applicationContext.getBean(bean).getClass());
+      }
+    }
+  }
 
 }

@@ -155,11 +155,11 @@ public class PostCommentTest {
   }
 
   private CommentDto.PostCommentsReq makePostCommentReq(Long feedId, Long parentCommentId, String content) {
-   return CommentDto.PostCommentsReq.builder()
-       .feedId(feedId)
-       .parentCommentId(parentCommentId)
-       .content(content)
-       .build();
+    return CommentDto.PostCommentsReq.builder()
+        .feedId(feedId)
+        .parentCommentId(parentCommentId)
+        .content(content)
+        .build();
   }
 
   private Comment makeCommentEntity(Feed feed, Comment parentComment, UserInfo userInfo, Long commentId, String content) {

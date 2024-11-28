@@ -22,17 +22,17 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(AuthorizationDeniedException.class)
-  public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(AuthorizationDeniedException ex){
+  public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
     ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.USER_AUTHORIZE_ERROR);
     StackTraceElement[] stackTraceElements = ex.getStackTrace();
     log.error("error = {}", stackTraceElements[0]);
     return ResponseEntity
-            .status(errorResponse.getStatus())
-            .body(errorResponse);
+        .status(errorResponse.getStatus())
+        .body(errorResponse);
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorResponse> handleException(Exception ex){
+  public ResponseEntity<ErrorResponse> handleException(Exception ex) {
     ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
     StackTraceElement[] stackTraceElements = ex.getStackTrace();
     log.error("error = {}", stackTraceElements[0]);

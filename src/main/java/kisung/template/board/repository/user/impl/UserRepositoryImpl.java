@@ -60,14 +60,14 @@ public class UserRepositoryImpl implements CustomUserRepository {
   @Override
   public Optional<UserInfo> findUserInfoById(Long userId) {
     return Optional.ofNullable(
-      jpaQueryFactory
-        .select(userInfo)
-        .from(userInfo)
-        .where(
-          userInfo.id.eq(userId),
-          userInfo.status.eq(ACTIVE.value())
-        )
-        .fetchFirst()
+        jpaQueryFactory
+            .select(userInfo)
+            .from(userInfo)
+            .where(
+                userInfo.id.eq(userId),
+                userInfo.status.eq(ACTIVE.value())
+            )
+            .fetchFirst()
 
     );
   }

@@ -14,7 +14,8 @@ import java.util.UUID;
 public class TimeAop {
   private ThreadLocal<String> idHolder = new ThreadLocal<>();
 
-  @Around("execution(* kisung.template.board.controller..*.*(..))") // 리턴 타입은 자유로움, 패키지명 정의, 가로챌 메서드 어떤 클래스든 가능, 가로챌 메서드 어떤 메서드든 가능, 매개변수 어떤 것이라도 가능
+  @Around("execution(* kisung.template.board.controller..*.*(..))")
+  // 리턴 타입은 자유로움, 패키지명 정의, 가로챌 메서드 어떤 클래스든 가능, 가로챌 메서드 어떤 메서드든 가능, 매개변수 어떤 것이라도 가능
   public Object timeLogging(ProceedingJoinPoint joinPoint) throws Throwable {
     long startTimeMs = System.currentTimeMillis();
     String signature = joinPoint.getSignature().toShortString();

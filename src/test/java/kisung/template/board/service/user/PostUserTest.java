@@ -155,24 +155,24 @@ class PostUserTest {
 
   private UserDto.PostUserReq makePostUserReq(String email, String nickname, String password) {
     return UserDto.PostUserReq.builder()
-      .email(email)
-      .nickname(nickname)
-      .password(password)
-      .build();
+        .email(email)
+        .nickname(nickname)
+        .password(password)
+        .build();
   }
 
   private UserInfo makeUserInfoEntity(String email, String nickname, String password) {
     LocalDateTime now = LocalDateTime.now();
     return UserInfo.builder()
-      .id(1L)
-      .email(email)
-      .nickname(nickname)
-      .password(password)
-      .role(Role.USER.value())
-      .createdAt(now)
-      .updatedAt(now)
-      .status(ACTIVE.value())
-      .build();
+        .id(1L)
+        .email(email)
+        .nickname(nickname)
+        .password(password)
+        .role(Role.USER.value())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
   }
 
 }

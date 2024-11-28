@@ -138,22 +138,22 @@ public class PostLoginTest {
 
   private UserDto.PostLoginReq makePostLoginReq(String email, String password) {
     return UserDto.PostLoginReq.builder()
-      .email(email)
-      .password(password)
-      .build();
+        .email(email)
+        .password(password)
+        .build();
   }
 
   private UserInfo makeUserInfoEntity(String email, String password) {
     LocalDateTime now = LocalDateTime.now();
     return UserInfo.builder()
-      .id(1L)
-      .email(email)
-      .nickname("쿠키")
-      .password(password)
-      .role(Role.USER.value())
-      .createdAt(now)
-      .updatedAt(now)
-      .status(ACTIVE.value())
-      .build();
+        .id(1L)
+        .email(email)
+        .nickname("쿠키")
+        .password(password)
+        .role(Role.USER.value())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
+        .build();
   }
 }
