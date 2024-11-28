@@ -2,6 +2,7 @@ version: '3'
 
 services:
   spring-app:
+    container_name: spring-server
     build:
       context: .
       dockerfile: Dockerfile
