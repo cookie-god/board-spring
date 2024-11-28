@@ -76,3 +76,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+	archiveFileName = 'board.jar' // JAR 파일 이름 설정
+}
