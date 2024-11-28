@@ -3,4 +3,3 @@ spring:
     name: board
   profiles:
     active: ${APP_ENV:local}
-
