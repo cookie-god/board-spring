@@ -37,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
     }
     Comment comment = makeCommentEntity(feed, userInfo, parentComment, postCommentsReq.getContent());
     // TODO: 레디스를 이용하여 게시글의 댓글 수를 업데이트 할 예정
-    feed.increaseCommentCnt();
+    feed.increaseCommentCnt(); // 캡슐화 적용
     comment = commentRepository.save(comment);
 
     return CommentDto.PostCommentsRes.builder()
