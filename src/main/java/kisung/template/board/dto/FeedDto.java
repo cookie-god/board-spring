@@ -86,6 +86,26 @@ public class FeedDto {
 
   @Data
   @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class PutFeedBookmarkStatusReq {
+    @Schema(description = "좋아요 피드 아이디", example = "1", requiredMode = REQUIRED)
+    private Long feedId;
+    @Schema(description = "등록 or 해제 상태", example = "true", requiredMode = REQUIRED)
+    private Boolean status;
+  }
+
+  @Data
+  @Builder
+  public static class PutFeedBookmarkStatusRes {
+    @Schema(description = "좋아요 피드 아이디", example = "1", requiredMode = REQUIRED)
+    private Long feedId;
+    @Schema(description = "등록 or 해제 상태", example = "true", requiredMode = REQUIRED)
+    private Boolean status;
+  }
+
+  @Data
+  @Builder
   @AllArgsConstructor
   public static class FeedInfo {
     @Schema(description = "피드 아이디", example = "1", requiredMode = REQUIRED)

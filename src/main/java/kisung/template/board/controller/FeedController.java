@@ -135,4 +135,11 @@ public class FeedController {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(feedService.retrieveFeed(feedId, userInfo), READ_SUCCESS);
   }
+
+  @PreAuthorize("hasRole('USER')")
+  @PutMapping(value = "bookmark/{feedId}/status", produces = "application/json")
+  public BasicResponse<FeedDto.PutFeedBookmarkStatusRes> putFeedBookmark(@PathVariable("feedId") Long feedId) {
+    UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
+    return BasicResponse.success(feedService.editFeedBookmarkStatus(feedId, userInfo), UPDATE_SUCCESS);
+  }
 }

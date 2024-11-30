@@ -15,5 +15,7 @@ public interface FeedService {
 
   FeedDto.GetFeedRes retrieveFeed(Long feedId, UserInfo userInfo);
 
+  FeedDto.PutFeedBookmarkStatusRes editFeedBookmarkStatus(Long feedId, UserInfo userInfo);
+
   Feed retrieveFeedEntity(Long feedId);
 }

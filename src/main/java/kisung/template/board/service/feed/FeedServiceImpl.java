@@ -91,6 +91,18 @@ public class FeedServiceImpl implements FeedService {
     return makeGetFeedRes(feed);
   }
 
+  @Transactional
+  @Override
+  public FeedDto.PutFeedBookmarkStatusRes editFeedBookmarkStatus(Long feedId, UserInfo userInfo) {
+    Feed feed = retrieveFeedEntity(feedId);
+    // TODO: bookmark 서비스 만들어서 연동하기
+
+    return FeedDto.PutFeedBookmarkStatusRes.builder()
+        .feedId(feed.getId())
+        .status(true)
+        .build();
+  }
+
   @Override
   public Feed retrieveFeedEntity(Long feedId) {
     return feedRepository.findFeedById(feedId).orElseThrow(() -> new BoardException(NON_EXIST_FEED));
