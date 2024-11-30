@@ -11,7 +11,5 @@ public interface CustomFeedRepository {
 
   List<FeedDto.FeedRawInfo> findFeedInfos(FeedDto.GetFeedsReq getFeedsReq);
 
-  Optional<FeedDto.FeedRawInfo> findFeedInfoById(Long feedId);
-
   Optional<Feed> findFeedById(Long feedId);
 }

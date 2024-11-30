@@ -27,6 +27,9 @@ public class Feed extends BaseEntity {
   @Column(name = "content", columnDefinition = "TEXT")
   private String content;
 
+  @Column(name = "view_cnt")
+  private Long viewCnt;
+
   @Column(name = "comment_cnt")
   private Long commentCnt;
 
@@ -51,5 +54,9 @@ public class Feed extends BaseEntity {
 
   public void increaseCommentCnt() {
     this.commentCnt += 1;
+  }
+
+  public void increaseViewCnt() {
+    this.viewCnt += 1;
   }
 }

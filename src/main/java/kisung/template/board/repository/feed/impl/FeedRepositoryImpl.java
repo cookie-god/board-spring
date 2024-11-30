@@ -45,6 +45,7 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
             userInfo.email,
             userInfo.nickname,
             userInfo.role,
+            feed.viewCnt,
             feed.commentCnt,
             feed.bookmarkCnt,
             feed.createdAt,
@@ -62,32 +63,6 @@ public class FeedRepositoryImpl implements CustomFeedRepository {
         )
         .limit(getFeedsReq.getSize())
         .fetch();
-  }
-
-  @Override
-  public Optional<FeedDto.FeedRawInfo> findFeedInfoById(Long feedId) {
-    return Optional.ofNullable(
-        jpaQueryFactory
-            .select(Projections.bean(FeedDto.FeedRawInfo.class,
-                feed.id,
-                feed.content,
-                userInfo.id.as("userId"),
-                userInfo.email,
-                userInfo.nickname,
-                userInfo.role,
-                feed.commentCnt,
-                feed.bookmarkCnt,
-                feed.createdAt,
-                feed.updatedAt
-            ))
-            .from(feed)
-            .innerJoin(userInfo).on(feed.userInfo.eq(userInfo)).fetchJoin()
-            .where(
-                feed.id.eq(feedId),
-                feed.status.eq(ACTIVE.value())
-            )
-            .fetchFirst()
-    );
   }
 
   @Override

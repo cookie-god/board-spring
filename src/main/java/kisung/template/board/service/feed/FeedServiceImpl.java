@@ -81,11 +81,14 @@ public class FeedServiceImpl implements FeedService {
         .build();
   }
 
+  @Transactional
   @Override
   public FeedDto.GetFeedRes retrieveFeed(Long feedId, UserInfo userInfo) {
     validate(feedId);
-    FeedDto.FeedRawInfo feedRawInfo = feedRepository.findFeedInfoById(feedId).orElseThrow(() -> new BoardException(NON_EXIST_FEED));
-    return makeGetFeedRes(feedRawInfo);
+    // TODO: 추후 조회수 증가 로직은 redis로 변경 예정
+    Feed feed = retrieveFeedEntity(feedId);
+    feed.increaseViewCnt();
+    return makeGetFeedRes(feed);
   }
 
   @Override
@@ -158,6 +161,7 @@ public class FeedServiceImpl implements FeedService {
             .role(feedRawInfo.getRole())
             .build()
         )
+        .viewCnt(feedRawInfo.getViewCnt())
         .commentCnt(feedRawInfo.getCommentCnt())
         .bookmarkCnt(feedRawInfo.getBookmarkCnt())
         .createdAt(feedRawInfo.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
@@ -169,21 +173,22 @@ public class FeedServiceImpl implements FeedService {
   /**
    * FeedRawInfo -> GetFeedRes로 변환해주는 메서드
    */
-  public FeedDto.GetFeedRes makeGetFeedRes(FeedDto.FeedRawInfo feedRawInfo) {
+  public FeedDto.GetFeedRes makeGetFeedRes(Feed feed) {
     return FeedDto.GetFeedRes.builder()
-        .feedId(feedRawInfo.getId())
-        .content(feedRawInfo.getContent())
+        .feedId(feed.getId())
+        .content(feed.getContent())
         .userBasicInfo(UserDto.UserBasicInfo.builder()
-            .userId(feedRawInfo.getUserId())
-            .email(feedRawInfo.getEmail())
-            .nickname(feedRawInfo.getNickname())
-            .role(feedRawInfo.getRole())
+            .userId(feed.getUserInfo().getId())
+            .email(feed.getUserInfo().getEmail())
+            .nickname(feed.getUserInfo().getNickname())
+            .role(feed.getUserInfo().getRole())
             .build()
         )
-        .commentCnt(feedRawInfo.getCommentCnt())
-        .bookmarkCnt(feedRawInfo.getBookmarkCnt())
-        .createdAt(feedRawInfo.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
-        .updatedAt(feedRawInfo.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+        .viewCnt(feed.getViewCnt())
+        .commentCnt(feed.getCommentCnt())
+        .bookmarkCnt(feed.getBookmarkCnt())
+        .createdAt(feed.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
+        .updatedAt(feed.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
         .build();
   }
 
@@ -194,6 +199,7 @@ public class FeedServiceImpl implements FeedService {
     LocalDateTime now = LocalDateTime.now();
     return Feed.builder()
         .content(content)
+        .viewCnt(0L)
         .commentCnt(0L)
         .bookmarkCnt(0L)
         .userInfo(userInfo)

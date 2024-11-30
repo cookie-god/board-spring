@@ -94,6 +94,8 @@ public class FeedDto {
     private String content;
     @Schema(description = "유저 기본 정보", requiredMode = REQUIRED)
     private UserDto.UserBasicInfo userBasicInfo;
+    @Schema(description = "조회 수", example = "10", requiredMode = REQUIRED)
+    private Long viewCnt;
     @Schema(description = "댓글 수", example = "10", requiredMode = REQUIRED)
     private Long commentCnt;
     @Schema(description = "좋아요 수", example = "10", requiredMode = REQUIRED)
@@ -114,6 +116,8 @@ public class FeedDto {
     private String content;
     @Schema(description = "유저 기본 정보", requiredMode = REQUIRED)
     private UserDto.UserBasicInfo userBasicInfo;
+    @Schema(description = "조회 수", example = "10", requiredMode = REQUIRED)
+    private Long viewCnt;
     @Schema(description = "댓글 수", example = "10", requiredMode = REQUIRED)
     private Long commentCnt;
     @Schema(description = "좋아요 수", example = "10", requiredMode = REQUIRED)
@@ -135,6 +139,7 @@ public class FeedDto {
     private String email;
     private String nickname;
     private String role;
+    private Long viewCnt;
     private Long commentCnt;
     private Long bookmarkCnt;
     private LocalDateTime createdAt;
