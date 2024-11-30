@@ -104,6 +104,7 @@ public class PostFeedTest {
     return Feed.builder()
         .id(1L)
         .content(content)
+        .viewCnt(0L)
         .commentCnt(0L)
         .bookmarkCnt(0L)
         .createdAt(now)
@@ -111,5 +112,4 @@ public class PostFeedTest {
         .status(ACTIVE.value())
         .build();
   }
-
 }

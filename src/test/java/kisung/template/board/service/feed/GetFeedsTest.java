@@ -116,6 +116,7 @@ public class GetFeedsTest {
               .userId(1L)
               .email("lion0193@gmail.com")
               .role(Role.USER.value())
+              .viewCnt(0L)
               .commentCnt(0L)
               .bookmarkCnt(0L)
               .createdAt(LocalDateTime.now())

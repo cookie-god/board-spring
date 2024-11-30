@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.dto.FeedDto;
+import kisung.template.board.entity.Feed;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.enums.Role;
 import kisung.template.board.repository.feed.FeedRepository;
@@ -46,9 +47,9 @@ public class GetFeedTest {
     JsonNode data = testData.get("getFeedReq").get("validFeed");
     Long feedId = data.get("feedId").asLong();
     UserInfo userInfo = makeUserInfoEntity();
-    FeedDto.FeedRawInfo feedRawInfo = makeFeedRawInfo(feedId);
+    Feed feed = makeFeedEntity(userInfo);
 
-    when(feedRepository.findFeedInfoById(any(Long.class))).thenReturn(Optional.of(feedRawInfo));
+    when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.of(feed));
 
     // when
     FeedDto.GetFeedRes getFeedRes = feedService.retrieveFeed(feedId, userInfo);
@@ -64,9 +65,9 @@ public class GetFeedTest {
     JsonNode data = testData.get("getFeedReq").get("validFeed");
     Long feedId = data.get("feedId").asLong();
     UserInfo userInfo = makeUserInfoEntity();
-    FeedDto.FeedRawInfo feedRawInfo = makeFeedRawInfo(feedId);
+    Feed feed = makeFeedEntity(userInfo);
 
-    when(feedRepository.findFeedInfoById(any(Long.class))).thenReturn(Optional.empty());
+    when(feedRepository.findFeedById(any(Long.class))).thenReturn(Optional.empty());
 
     //when, then
     assertThrows(BoardException.class, () -> feedService.retrieveFeed(feedId, userInfo));
@@ -84,17 +85,18 @@ public class GetFeedTest {
     assertThrows(BoardException.class, () -> feedService.retrieveFeed(feedId, userInfo));
   }
 
-  FeedDto.FeedRawInfo makeFeedRawInfo(Long feedId) {
-    return FeedDto.FeedRawInfo.builder()
-        .id(feedId)
-        .content("하이용")
-        .userId(1L)
-        .email("lion0193@gmail.com")
-        .role(Role.USER.value())
+  private Feed makeFeedEntity(UserInfo userInfo) {
+    LocalDateTime now = LocalDateTime.now();
+    return Feed.builder()
+        .id(1L)
+        .userInfo(userInfo)
+        .content("테스트")
+        .viewCnt(0L)
         .commentCnt(0L)
         .bookmarkCnt(0L)
-        .createdAt(LocalDateTime.now())
-        .updatedAt(LocalDateTime.now())
+        .createdAt(now)
+        .updatedAt(now)
+        .status(ACTIVE.value())
         .build();
   }
 
