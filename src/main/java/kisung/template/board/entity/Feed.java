@@ -62,4 +62,10 @@ public class Feed extends BaseEntity {
   public void increaseViewCnt() {
     this.viewCnt += 1;
   }
+  public void increaseBookmarkCnt() {
+    this.bookmarkCnt += 1;
+  }
+  public void decreaseBookmarkCnt() {
+    this.bookmarkCnt -= 1;
+  }
 }

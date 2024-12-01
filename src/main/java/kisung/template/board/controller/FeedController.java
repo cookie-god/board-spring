@@ -136,6 +136,20 @@ public class FeedController {
     return BasicResponse.success(feedService.retrieveFeed(feedId, userInfo), READ_SUCCESS);
   }
 
+  @Operation(summary = "피드 북마크 상태 변경", description = "피드 북마크 상태 변경 서비스 입니다.")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "Success"),
+      @ApiResponse(responseCode = "AUTH_ERROR_001", description = "Token is invalid",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "AUTH_ERROR_002", description = "Authorize Error",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "USER_ERROR_011", description = "Not exist user",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_002", description = "Feed Id is empty",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+      @ApiResponse(responseCode = "FEED_ERROR_004", description = "Not exist feed",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+  })
   @PreAuthorize("hasRole('USER')")
   @PutMapping(value = "bookmark/{feedId}/status", produces = "application/json")
   public BasicResponse<FeedDto.PutFeedBookmarkStatusRes> putFeedBookmark(@PathVariable("feedId") Long feedId) {

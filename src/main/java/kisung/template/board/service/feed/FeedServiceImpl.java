@@ -96,12 +96,17 @@ public class FeedServiceImpl implements FeedService {
   @Transactional
   @Override
   public FeedDto.PutFeedBookmarkStatusRes editFeedBookmarkStatus(Long feedId, UserInfo userInfo) {
+    validate(feedId);
     Feed feed = retrieveFeedEntity(feedId);
-    // TODO: bookmark 서비스 만들어서 연동하기
-
+    boolean changeStatus = bookmarkService.changeFeedBookmark(userInfo, feed);
+    if (changeStatus) { // 즐겨 찾기 추가한 경우
+      feed.increaseBookmarkCnt();
+    } else { // 즐겨 찾기 해제한 경우
+      feed.decreaseBookmarkCnt();
+    }
     return FeedDto.PutFeedBookmarkStatusRes.builder()
         .feedId(feed.getId())
-        .status(true)
+        .status(changeStatus)
         .build();
   }
 
@@ -153,7 +158,7 @@ public class FeedServiceImpl implements FeedService {
   }
 
   /**
-   * 피드 상세 조회 서비스 유효성 검사
+   * 피드 아이디 존재 여부 체크
    */
   private void validate(Long feedId) {
     if (feedId == null) {
