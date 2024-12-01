@@ -6,6 +6,7 @@ import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.Feed;
 import kisung.template.board.entity.UserInfo;
 import kisung.template.board.repository.feed.FeedRepository;
+import kisung.template.board.service.bookmark.BookmarkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import static kisung.template.board.enums.Status.ACTIVE;
 @RequiredArgsConstructor
 public class FeedServiceImpl implements FeedService {
   private final FeedRepository feedRepository;
+  private final BookmarkService bookmarkService;
 
   /**
    * 피드 생성 서비스
