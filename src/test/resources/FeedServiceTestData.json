@@ -69,5 +69,13 @@
     "emptyFeedId": {
       "feedId": null
     }
+  },
+  "editFeedBookmarkReq": {
+    "validData": {
+      "feedId": 1
+    },
+    "emptyFeedId": {
+      "feedId": null
+    }
   }
 }
