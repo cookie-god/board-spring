@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>127.0.0.1:5044</destination>
+        <destination>localhost:5000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
         <layout class="net.logstash.logback.layout.LogstashLayout">
             <timestampPattern>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampPattern>
