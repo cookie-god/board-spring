@@ -4,6 +4,10 @@ networks:
   elk:
     driver: bridge
 
+volumes:
+  elasticsearch:
+    driver: local
+
 services:
   elasticsearch:
     container_name: elasticsearch
