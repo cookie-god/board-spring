@@ -17,13 +17,4 @@ public class WebConfig implements WebMvcConfigurer {
     registry.addInterceptor(customInterceptor)
         .addPathPatterns("/**");
   }
-
-  @Override
-
-  public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/**")
-      .allowedOrigins("*")
-      .allowedMethods("*")
-      .allowCredentials(true);
-  }
 }
