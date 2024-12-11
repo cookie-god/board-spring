@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 generated
 .env
+elasticsearch/nodes
 
 ### STS ###
 .apt_generated
