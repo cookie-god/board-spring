@@ -14,7 +14,7 @@ public class CustomInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     log.info("start interceptor");
-    log.info(request.getContextPath());
+    log.info(request.getContentType());
     return true;
   }
 
