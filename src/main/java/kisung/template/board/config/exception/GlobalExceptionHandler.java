@@ -21,15 +21,15 @@ public class GlobalExceptionHandler {
         .body(errorResponse);
   }
 
-  @ExceptionHandler(AuthorizationDeniedException.class)
-  public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
-    ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.USER_AUTHORIZE_ERROR);
-    StackTraceElement[] stackTraceElements = ex.getStackTrace();
-    log.error("error = {}", stackTraceElements[0]);
-    return ResponseEntity
-        .status(errorResponse.getStatus())
-        .body(errorResponse);
-  }
+//  @ExceptionHandler(AuthorizationDeniedException.class)
+//  public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(AuthorizationDeniedException ex) {
+//    ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.USER_AUTHORIZE_ERROR);
+//    StackTraceElement[] stackTraceElements = ex.getStackTrace();
+//    log.error("error = {}", stackTraceElements[0]);
+//    return ResponseEntity
+//        .status(errorResponse.getStatus())
+//        .body(errorResponse);
+//  }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleException(Exception ex) {
