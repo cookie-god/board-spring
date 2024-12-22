@@ -68,7 +68,6 @@ public class UserRepositoryImpl implements CustomUserRepository {
                 userInfo.status.eq(ACTIVE.value())
             )
             .fetchFirst()
-
     );
   }
 }
