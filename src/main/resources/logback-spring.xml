@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>logstash:5000</destination>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
-        <layout class="net.logstash.logback.layout.LogstashLayout">
-            <timestampPattern>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampPattern>
-        </layout>
-    </appender>
 
-    <root level="info">
-        <appender-ref ref="LOGSTASH" />
-    </root>
+    <!-- dev 환경에서만 LOGSTASH 설정 활성화 -->
+    <springProfile name="dev">
+        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>logstash:5000</destination>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+            <layout class="net.logstash.logback.layout.LogstashLayout">
+                <timestampPattern>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampPattern>
+            </layout>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="LOGSTASH" />
+        </root>
+    </springProfile>
+
+    <!-- dev 환경이 아닐 때 기본 설정 -->
+    <springProfile name="!dev">
+        <root level="info">
+            <!-- 필요한 경우 다른 appender 설정 추가 -->
+        </root>
+    </springProfile>
 </configuration>
