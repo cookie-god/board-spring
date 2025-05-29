@@ -14,6 +14,7 @@ import kisung.template.board.entity.UserInfo;
 import kisung.template.board.service.feed.FeedService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -62,7 +63,7 @@ public class FeedController {
   })
   @PreAuthorize("hasRole('USER')")
   @GetMapping(value = "", produces = "application/json")
-  public BasicResponse<FeedDto.GetFeedsRes> getFeeds(FeedDto.GetFeedsReq getFeedsReq) {
+  public BasicResponse<FeedDto.GetFeedsRes> getFeeds(@ParameterObject FeedDto.GetFeedsReq getFeedsReq) {
     UserInfo userInfo = SecurityUtil.getUser().orElseThrow(() -> new BoardException(NON_EXIST_USER));
     return BasicResponse.success(feedService.retrieveFeeds(getFeedsReq), READ_SUCCESS);
   }
