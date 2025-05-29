@@ -33,23 +33,9 @@ public class BookmarkServiceImpl implements BookmarkService {
       feedBookmarkRepository.delete(feedBookmark);
       return false;
     } else {
-      feedBookmark = createFeedBookmarkEntity(userInfo, feed);
+      feedBookmark = FeedBookmark.of(userInfo, feed);
       feedBookmarkRepository.save(feedBookmark);
       return true;
     }
-  }
-
-  /**
-   * 피드 북마크 엔티티 생성 메서드
-   */
-  private FeedBookmark createFeedBookmarkEntity(UserInfo userInfo, Feed feed) {
-    LocalDateTime now = LocalDateTime.now();
-    return FeedBookmark.builder()
-        .userInfo(userInfo)
-        .feed(feed)
-        .createdAt(now)
-        .updatedAt(now)
-        .status(ACTIVE.value())
-        .build();
   }
 }

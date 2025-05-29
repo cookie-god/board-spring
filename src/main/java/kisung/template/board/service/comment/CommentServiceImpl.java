@@ -35,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
     if (postCommentsReq.getParentCommentId() != 0) { // 부모 댓글이 존재하는 경우
       parentComment = commentRepository.findCommentById(postCommentsReq.getParentCommentId()).orElseThrow(() -> new BoardException(NON_EXIST_PARENT_COMMENT));
     }
-    Comment comment = makeCommentEntity(feed, userInfo, parentComment, postCommentsReq.getContent());
+    Comment comment = Comment.of(feed, userInfo, parentComment, postCommentsReq.getContent());
     // TODO: 레디스를 이용하여 게시글의 댓글 수를 업데이트 할 예정
     feed.increaseCommentCnt(); // 캡슐화 적용
     comment = commentRepository.save(comment);
@@ -161,20 +161,6 @@ public class CommentServiceImpl implements CommentService {
     if (deleteCommentsReq.getCommentId() == null) { // 댓글 아이디 존재 여부
       throw new BoardException(NON_EXIST_COMMENT_ID);
     }
-  }
-
-  private Comment makeCommentEntity(Feed feed, UserInfo userInfo, Comment parentCommnet, String content) {
-    LocalDateTime now = LocalDateTime.now();
-    return Comment.builder()
-        .content(content)
-        .bookmarkCnt(0L)
-        .feed(feed)
-        .userInfo(userInfo)
-        .parent(parentCommnet)
-        .createdAt(now)
-        .updatedAt(now)
-        .status(ACTIVE.value())
-        .build();
   }
 
   private List<CommentDto.CommentInfo> makeCommentInfos(List<CommentDto.CommentRawInfo> commentRawInfos) {

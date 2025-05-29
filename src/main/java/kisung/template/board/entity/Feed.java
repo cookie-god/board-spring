@@ -5,9 +5,11 @@ import kisung.template.board.entity.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static kisung.template.board.enums.Status.ACTIVE;
 import static kisung.template.board.enums.Status.INACTIVE;
 
 
@@ -45,6 +47,23 @@ public class Feed extends BaseEntity {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "feed")
   private List<FeedBookmark> feedBookmarks = new ArrayList<>();
+
+  /**
+   * 피드 엔티티 생성 정적 팩토리 메서드
+   */
+  public static Feed of(String content, UserInfo userInfo) {
+    LocalDateTime now = LocalDateTime.now();
+    return Feed.builder()
+      .content(content)
+      .viewCnt(0L)
+      .commentCnt(0L)
+      .bookmarkCnt(0L)
+      .userInfo(userInfo)
+      .createdAt(now)
+      .updatedAt(now)
+      .status(ACTIVE.value())
+      .build();
+  }
 
   public void edit(String content) {
     this.content = content;

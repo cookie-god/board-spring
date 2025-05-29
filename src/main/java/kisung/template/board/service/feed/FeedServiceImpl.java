@@ -33,7 +33,7 @@ public class FeedServiceImpl implements FeedService {
   @Transactional
   public FeedDto.PostFeedsRes createFeeds(FeedDto.PostFeedsReq postFeedsReq, UserInfo userInfo) {
     validate(postFeedsReq);
-    Feed feed = createFeedEntity(postFeedsReq.getContent(), userInfo);
+    Feed feed = Feed.of(postFeedsReq.getContent(), userInfo);
     feed = feedRepository.save(feed);
     return FeedDto.PostFeedsRes.builder()
         .feedId(feed.getId())
@@ -208,23 +208,6 @@ public class FeedServiceImpl implements FeedService {
         .bookmarkCnt(feed.getBookmarkCnt())
         .createdAt(feed.getCreatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
         .updatedAt(feed.getUpdatedAt().atZone(ZoneId.systemDefault()).toEpochSecond())
-        .build();
-  }
-
-  /**
-   * 피드 엔티티 생성 메서드
-   */
-  private Feed createFeedEntity(String content, UserInfo userInfo) {
-    LocalDateTime now = LocalDateTime.now();
-    return Feed.builder()
-        .content(content)
-        .viewCnt(0L)
-        .commentCnt(0L)
-        .bookmarkCnt(0L)
-        .userInfo(userInfo)
-        .createdAt(now)
-        .updatedAt(now)
-        .status(ACTIVE.value())
         .build();
   }
 }

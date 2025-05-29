@@ -1,10 +1,16 @@
 package kisung.template.board.entity;
 
 import jakarta.persistence.*;
+import kisung.template.board.dto.UserDto;
 import kisung.template.board.entity.base.BaseEntity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.LocalDateTime;
+
+import static kisung.template.board.enums.Role.USER;
+import static kisung.template.board.enums.Status.ACTIVE;
 
 @Entity
 @Table(name = "USER_INFO")
@@ -29,6 +35,22 @@ public class UserInfo extends BaseEntity {
 
   @Column(name = "role")
   private String role;
+
+  /**
+   * 유저 엔티티 인스턴스 생성하는 정적 팩토리 메서드
+   */
+  public static UserInfo of(String email, String nickname, String password) {
+    LocalDateTime now = LocalDateTime.now();
+    return UserInfo.builder()
+            .email(email)
+            .nickname(nickname)
+            .password(password)
+            .role(USER.value())
+            .createdAt(now)
+            .updatedAt(now)
+            .status(ACTIVE.value())
+            .build();
+  }
 
   public void setInitPassword() {
     this.password = null;
