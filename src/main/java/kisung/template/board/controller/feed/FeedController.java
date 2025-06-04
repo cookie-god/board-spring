@@ -1,12 +1,6 @@
 package kisung.template.board.controller.feed;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kisung.template.board.common.response.BasicResponse;
-import kisung.template.board.common.response.ErrorResponse;
 import kisung.template.board.config.SecurityUtil;
 import kisung.template.board.config.exception.BoardException;
 import kisung.template.board.controller.feed.swagger.*;
